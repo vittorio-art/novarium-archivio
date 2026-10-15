@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chi compra parti elettroniche usate per navi e barche</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #fff; --text: #37352f; --muted: #787774; --faint: #9b9a97;
+  --rule: rgba(55, 53, 47, .09); --rule-strong: rgba(55, 53, 47, .16);
+  --surface: #f7f6f3; --code-bg: rgba(135, 131, 120, .15);
+  --link-line: rgba(55, 53, 47, .35); --check: #787774;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #191919; --text: rgba(255, 255, 255, .86); --muted: rgba(255, 255, 255, .55); --faint: rgba(255, 255, 255, .4);
+    --rule: rgba(255, 255, 255, .08); --rule-strong: rgba(255, 255, 255, .14);
+    --surface: #202020; --code-bg: rgba(255, 255, 255, .08);
+    --link-line: rgba(255, 255, 255, .35); --check: rgba(255, 255, 255, .32);
+  }
+}
+* { box-sizing: border-box; }
+html { background: var(--bg); -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; padding: 4.5rem 3rem 6rem; color: var(--text); background: var(--bg);
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+}
+main > * { max-width: 720px; margin-left: auto; margin-right: auto; }
+main > :first-child { margin-top: 0; }
+p, ul, ol, blockquote, pre, dl { margin-top: 0; margin-bottom: 1em; }
+p, li, blockquote, dd { overflow-wrap: break-word; }
+h1, h2, h3, h4, h5, h6 { color: var(--text); font-weight: 600; line-height: 1.3; margin: 2em auto .5em; }
+h1 { font-size: 2.125rem; font-weight: 700; line-height: 1.2; letter-spacing: -.021em; margin-bottom: .6em; }
+h2 { font-size: 1.5rem; letter-spacing: -.017em; margin-top: 2.2em; }
+h3 { font-size: 1.25rem; letter-spacing: -.012em; }
+h4 { font-size: 1.0625rem; }
+h5, h6 { font-size: 1rem; color: var(--muted); }
+h1 + h2, h2 + h3, h3 + h4 { margin-top: 1em; }
+strong { font-weight: 600; }
+a { color: inherit; text-decoration: underline; text-decoration-color: var(--link-line); text-decoration-thickness: 1px; text-underline-offset: .2em; transition: text-decoration-color .15s; }
+a:hover { text-decoration-color: currentColor; }
+ul, ol { padding-left: 1.6em; }
+li { margin: .25em 0; padding-left: .15em; }
+li > ul, li > ol { margin: .25em 0 0; }
+li > p { margin-bottom: .5em; }
+li::marker { color: var(--muted); }
+.task-list-item { list-style: none; margin-left: -1.45em; }
+.task-list-item input {
+  appearance: none; -webkit-appearance: none; width: 1em; height: 1em; margin: 0 .55em 0 0; vertical-align: -.15em;
+  border: 1.5px solid var(--faint); border-radius: 3px; background: transparent;
+}
+.task-list-item input:checked {
+  border-color: transparent; background: var(--check) no-repeat center / 80%
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+.task-list-item:has(> input:checked, > p:first-child > input:checked) { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--faint); }
+blockquote { margin-left: auto; margin-right: auto; padding: .1em 0 .1em 1.1em; border-left: 3px solid var(--rule-strong); color: var(--muted); }
+blockquote > :last-child { margin-bottom: 0; }
+hr { height: 1px; border: 0; background: var(--rule-strong); margin: 2.5em auto; }
+img { max-width: 100%; height: auto; border-radius: 4px; }
+code, kbd, samp, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace; }
+code { font-size: .85em; padding: .15em .35em; border-radius: 4px; background: var(--code-bg); }
+pre { font-size: .85em; line-height: 1.6; padding: 1em 1.25em; background: var(--surface); border-radius: 6px; overflow-x: auto; }
+pre code { font-size: inherit; padding: 0; background: none; border-radius: 0; }
+.table-scroll { max-width: 100%; overflow-x: auto; margin: 1em 0; }
+main > .table-scroll {
+  width: max-content; min-width: min(720px, 100%); max-width: min(1240px, 100%);
+  margin: 1.5em auto 2em;
+}
+table { border-collapse: collapse; font-size: .9rem; line-height: 1.55; }
+th, td {
+  padding: .55em .9em; text-align: left; vertical-align: top;
+  border-bottom: 1px solid var(--rule); overflow-wrap: normal; word-break: normal;
+}
+th { white-space: nowrap; font-weight: 600; color: var(--muted); background: var(--surface); border-bottom-color: var(--rule-strong); }
+th:first-child, td:first-child { padding-left: .75em; }
+td { min-width: 4.5rem; max-width: 32rem; }
+td a { white-space: nowrap; }
+tbody tr:last-child td { border-bottom: 0; }
+@media (max-width: 640px) {
+  body { padding: 2rem 1.25rem 4rem; font-size: 15.5px; }
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.3rem; }
+  h3 { font-size: 1.125rem; }
+  main > .table-scroll { margin-left: -1.25rem; margin-right: -1.25rem; max-width: calc(100% + 2.5rem); min-width: 0; width: auto; padding: 0 1.25rem; }
+  td { min-width: 8rem; }
+}
+@media print { body { padding: 0; } .table-scroll { overflow: visible; } }
+</style></head><body><main><h1>Chi compra parti elettroniche usate per navi e barche</h1>
+<h2>Analisi dei buyer del mercato secondario — Novarium Marine, 14 ottobre 2026</h2>
+<p>Fonti: ricerca di mercato 12/10 (47 fornitori + 14 categorie), lotti SVC1/SHM1 14/10 (147 candidati verificati), DB BO live, evidenze web (Shipeq, <a href="http://Marine-Electronics.eu">Marine-Electronics.eu</a>, MEAS Marine, Aurora Marine, Sperry Marine, guida EOL Tokyo Keiki TG-8000).</p>
+<hr>
+<h2>1. Sintesi</h2>
+<p>Il mercato del ricambio elettronico navale usato/ricondizionato esiste perché <strong>l'OEM abbandona le linee molto prima che le navi smettano di navigare</strong>. Una nave dura 25-30 anni; l'elettronica di plancia viene dichiarata obsoleta dopo 10-15. In quel gap si apre il mercato secondario.</p>
+<p><strong>Chi compra, in ordine di importanza commerciale:</strong></p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Segmento</th>
+<th>Perché compra usato</th>
+<th>Frequenza</th>
+<th>Valore per Novarium</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Ship manager / armatori</strong> (uffici tecnici flotte)</td>
+<td>EOL, costo (-60-75% vs retrofit), lead time</td>
+<td><strong>Ricorrente</strong></td>
+<td>⭐⭐⭐ Cliente core</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Cantieri riparazione/refit</strong></td>
+<td>Commesse dry-dock, urgenza, EOL</td>
+<td>Episodica ma ticket alto</td>
+<td>⭐⭐⭐ Già in DB (306)</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Service center elettronica</strong></td>
+<td>Stock per contratti manutenzione (GMDSS SBM), doppio ruolo</td>
+<td>Ricorrente</td>
+<td>⭐⭐⭐ Cliente + canale</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Dealer/trader regionali</strong></td>
+<td>Rivendita</td>
+<td>Ricorrente</td>
+<td>⭐⭐ Volume, margine basso</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Flotte pesca / workboat / traghetti</strong></td>
+<td>Tonnage datato, price-sensitive</td>
+<td>Ricorrente</td>
+<td>⭐⭐ Segmento da attivare</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>Yacht/superyacht service</strong></td>
+<td>Refit apparati legacy su unità 30m+</td>
+<td>Episodica</td>
+<td>⭐ Nicchia</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h2>2. Perché il mercato esiste — i 4 driver della domanda</h2>
+<h3>Driver 1: EOL (End of Life) — il motore principale</h3>
+<ul>
+<li><strong>Tokyo Keiki TG-8000</strong>: fuori produzione, <strong>~8.000 navi ancora in servizio</strong> con questo gyro. Finestra 5-15 anni prima del retrofit forzato. (fonte: guida EOL 2026)</li>
+<li><strong>Sperry NAVIGAT X MK1/MK2</strong>: discontinuati, &quot;spare part availability not guaranteed&quot; (brochure ufficiale Sperry).</li>
+<li><strong>Sperry VisionMaster/VoyageMaster</strong> (brand già coperto da Novarium): fasi di supporto A/B/C documentate, linee sostituite → domanda secondario in crescita.</li>
+<li><strong>Kongsberg K-Chief 500/600, RMP201-8</strong>: solo surplus, lead time OEM infiniti.</li>
+</ul>
+<h3>Driver 2: Costo — il ricondizionato costa il 25-40% del retrofit</h3>
+<p>Un master compass ricondizionato = <strong>25-40% del costo di un retrofit completo</strong> (fonte: guida TG-8000). Fornitori dichiarano 40-60% sotto prezzo OEM (Aurora). Su nave a fine vita, l'upgrade completo non si giustifica.</p>
+<h3>Driver 3: Urgenza — nave ferma = soldi bruciati</h3>
+<p>Lead time ricondizionato: <strong>1-3 settimane vs 12+ settimane</strong> per piattaforma nuova. Stock vicino agli aeroporti = consegna next-day possibile (<a href="http://Marine-Electronics.eu">Marine-Electronics.eu</a>). Off-hire + port fees &gt;&gt; prezzo del ricambio.</p>
+<h3>Driver 4: Consumabili a sostituzione programmata</h3>
+<ul>
+<li><strong>Magnetron radar</strong>: vita 2.000-5.000 ore → sostituzione obbligatoria ricorrente</li>
+<li><strong>Gyrosphere</strong> (Standard 22, Navigat X, CMZ-700/900, TG-8000): sostituzione ogni 4-5 anni</li>
+<li><strong>Batterie EPIRB/SART + HRU</strong>: consumabili con scadenza legale</li>
+<li>Questi sono <strong>fatturato ricorrente garantito</strong>, non episodico.</li>
+</ul>
+<hr>
+<h2>3. I segmenti di buyer in dettaglio</h2>
+<h3>3.1 Ship manager / armatori — IL CLIENTE CORE ⭐</h3>
+<ul>
+<li><strong>Chi</strong>: uffici tecnici / technical superintendent di armatori e società di gestione (acquisti centralizzati per flotte di terzi).</li>
+<li><strong>Cosa compra</strong>: consumabili (magnetron, gyrosphere), PCB/schede, unità complete ricondizionate (radar, ECDIS, gyro), moduli automazione EOL.</li>
+<li><strong>Come compra</strong>: RFQ multivendor (esattamente il modello Novarium Medical), valuta prezzo + garanzia + lead time + documentazione (bench test report, calibration).</li>
+<li><strong>Comportamento documentato</strong>: flotte con più navi dello stesso tipo creano <strong>spare pool di flotta</strong> (comprano stock per N navi uguali); navi a 3-5 anni dalla demolizione comprano SOLO usato; buyer cita &quot;Bangladesh-priced without Singapore/Dubai markup&quot; = caccia al prezzo diretto dalla fonte.</li>
+<li><strong>Evidenza nostra</strong>: 84 candidati verificati (SHM1, 14/10): Maersk, MSC, Hapag-Lloyd, Thenamaris, Danaos, Odfjell, Stena, Oldendorff, Euronav... Contatti diretti purchasing già raccolti.</li>
+<li><strong>Frequenza</strong>: ricorrente, prevedibile (manutenzione programmata + guasti).</li>
+</ul>
+<h3>3.2 Cantieri riparazione/refit — TICKET ALTO, URGENTE ⭐</h3>
+<ul>
+<li><strong>Chi</strong>: cantieri con bacino per navi commerciali e refit superyacht (ufficio acquisti proprio).</li>
+<li><strong>Cosa compra</strong>: tutto ciò che serve per la job list di dock: apparati completi, schede, antenne, consolle. Spesso EOL/urgente.</li>
+<li><strong>Come compra</strong>: RFQ a più venditori quando la nave è in bacino; paga di più per la velocità.</li>
+<li><strong>Limite</strong>: episodico (solo quando hanno nave in dock); a volte subappaltano l'elettronica ai service center (che comprano loro).</li>
+<li><strong>Evidenza nostra</strong>: 306 già in DB (tag cantiere_riparazione/refit_yacht).</li>
+<li><strong>Frequenza</strong>: a progetto, ma ticket medio più alto.</li>
+</ul>
+<h3>3.3 Service center elettronica — CLIENTE + CANALE ⭐</h3>
+<ul>
+<li><strong>Chi</strong>: aziende di assistenza nav&amp;comm (agenti OEM, GMDSS SBM, indipendenti).</li>
+<li><strong>Cosa compra</strong>: stock per contratti di manutenzione (Shore-Based Maintenance GMDSS), ricambi per riparazioni su commissione, eccedenze da rivendere.</li>
+<li><strong>Doppio ruolo documentato</strong>: 18/63 nel nostro registro comprano E vendono stock usato. Aage Hempel dichiara 2M ricambi a stock; Mackay $16-18M.</li>
+<li><strong>Valore strategico</strong>: se li agganci, diventano anche <strong>canale di vendita</strong> (rivendono i tuoi ricambi ai loro clienti finali).</li>
+<li><strong>Evidenza nostra</strong>: 63 candidati verificati (SVC1, 14/10).</li>
+<li><strong>Frequenza</strong>: ricorrente.</li>
+</ul>
+<h3>3.4 Dealer/trader regionali — VOLUME A MARGINE BASSO</h3>
+<ul>
+<li><strong>Chi</strong>: rivenditori regionali, chandler tecnici, trader B2B (es. i &quot;regional dealers&quot; a cui MEAS vende esplicitamente).</li>
+<li><strong>Cosa compra</strong>: stock per rivendita, lotti.</li>
+<li><strong>Come compra</strong>: prezzo-driven, veloce, senza fronzoli.</li>
+<li><strong>Valore</strong>: fanno volume e svuotano magazzino; margine più basso. Utili come sfogo, non come focus.</li>
+</ul>
+<h3>3.5 Flotte pesca / workboat / traghetti — SEGMENTO DA ATTIVARE</h3>
+<ul>
+<li><strong>Chi</strong>: operatori di pescherecci d'altura (Vigo, Mazara), rimorchiatori, traghetti con tonnage datato.</li>
+<li><strong>Cosa compra</strong>: ecoscandagli/sonar (Furuno FCV, Koden, Simrad ES), radar, ricambi per apparati legacy di flotte standardizzate (traghetti: stessa plancia su N navi).</li>
+<li><strong>Nota</strong>: i traghetti/ro-pax sono già nel segmento armatori (SHM1: Grimaldi, GNV, Baleària, Attica, Stena, DFDS, Tallink, Viking...). La pesca pura resta da ricercare (era nel registro perso del 12/10).</li>
+<li><strong>Frequenza</strong>: ricorrente, molto price-sensitive.</li>
+</ul>
+<h3>3.6 Yacht/superyacht service — NICCHIA</h3>
+<ul>
+<li>Mercato usato più piccolo (budget alti, preferenza per il nuovo), ma esiste su refit di apparati nav/com legacy su unità 30m+ (cantieri refit yacht: 42 già in DB).</li>
+</ul>
+<hr>
+<h2>4. Cosa comprano — le categorie ad alta rotazione</h2>
+<p>Dalla ricerca 12/10, confermate dalle fonti di oggi:</p>
+<ol>
+<li><strong>Magnetron</strong> X/S-band (e2v/Teledyne, NJRC) — il ricambio a più alta rotazione in assoluto</li>
+<li><strong>Gyrosphere + master compass</strong> (TG-8000, Standard 22, Navigat X, CMZ) — EOL documentato su 8.000+ navi</li>
+<li><strong>Schede/PCB</strong> (Sperry VisionMaster, Furuno, JRC, KH) — cuore del ricondizionato</li>
+<li><strong>Radar completi/antenne</strong> (Furuno FAR-2117/2127/2228BB/3000, JRC JMA, Koden)</li>
+<li><strong>ECDIS e consolle</strong> (JRC JAN-701B/2000, Furuno FMD-3200/FEA-2807, Transas 4000)</li>
+<li><strong>Automazione Kongsberg EOL</strong> (RMP201-8, K-Chief) — alto margine, solo surplus</li>
+<li><strong>Monitor Hatteland, PSU, AIS, VDR, GMDSS consumabili</strong></li>
+<li><strong>Trasduttori Airmar + sonar pesca</strong> (brand già Novarium)</li>
+</ol>
+<hr>
+<h2>5. Dove comprano — i canali</h2>
+<ol>
+<li><strong>RFQ diretta a venditori specializzati</strong> (il nostro modello): il buyer manda richiesta a 3-5 vendor, sceglie su prezzo/garanzia/lead time.</li>
+<li><strong>Marketplace B2B</strong>: ShipServ (43.000 fornitori, 260+ armatori), <a href="http://ShipParts.com">ShipParts.com</a>, Shipeq (usato da demolizione). → Presenza su ShipServ = flusso lead passivo da valutare.</li>
+<li><strong>Reti di relazione</strong>: i superintendent comprano da chi conoscono; la fiducia (test report, garanzia) è la barriera — e il nostro differenziatore.</li>
+</ol>
+<hr>
+<h2>6. Mappatura sul nostro DB (14/10)</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Segmento buyer</th>
+<th>Copertura attuale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ship manager / armatori</td>
+<td>84 candidati verificati (da importare)</td>
+</tr>
+<tr>
+<td>Cantieri refit</td>
+<td>306 in DB + 42 refit yacht</td>
+</tr>
+<tr>
+<td>Service center</td>
+<td>63 candidati verificati (da importare)</td>
+</tr>
+<tr>
+<td>Dealer/trader</td>
+<td>parzialmente nei 120 fornitori (doppio ruolo)</td>
+</tr>
+<tr>
+<td>Pesca</td>
+<td>da ricercare (registro 12/10 perso nel wipe)</td>
+</tr>
+<tr>
+<td>Yacht service</td>
+<td>42 cantieri refit yacht in DB + 7 nel registro service</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h2>7. Implicazioni strategiche per Novarium</h2>
+<ol>
+<li><strong>Priorità commerciale</strong>: ① armatori/ship manager (ricorrente, core) ② cantieri refit (ticket alto) ③ service center (cliente + canale). La ricerca di oggi copre esattamente questi tre.</li>
+<li><strong>Prodotto</strong>: entrare dalle nicchie alto margine/alta rotazione (magnetron e2v, gyrosphere, PCB ricondizionate, Kongsberg EOL) — non magazzino generalista. I consumabili (magnetron/gyrosphere) sono l'entry-point: creano relazione ricorrente.</li>
+<li><strong>Posizionamento</strong>: &quot;ricondizionato testato con garanzia&quot; — i buyer temono l'usato cieco asiatico; bench test + garanzia 30gg+ + documentazione = differenziatore contro Alang/Chattogram.</li>
+<li><strong>Prezzo</strong>: i buyer confrontano col prezzo Bangladesh; il nostro margine sta in velocità EU, garanzia, documentazione, nessun rischio dogana/qualità.</li>
+<li><strong>Canale</strong>: sito + RFQ dirette ai 147 candidati; valutare presenza ShipServ come lead source passiva.</li>
+<li><strong>Tag segmento nel DB</strong>: già operativo — permette campagne mirate per tipo di buyer (es. offerta magnetron → armatori; offerta consolle EOL → cantieri in dock season).</li>
+</ol>
+</main></body></html>

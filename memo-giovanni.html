@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Memo per Giovanni — stato lavori e richieste</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #fff; --text: #37352f; --muted: #787774; --faint: #9b9a97;
+  --rule: rgba(55, 53, 47, .09); --rule-strong: rgba(55, 53, 47, .16);
+  --surface: #f7f6f3; --code-bg: rgba(135, 131, 120, .15);
+  --link-line: rgba(55, 53, 47, .35); --check: #787774;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #191919; --text: rgba(255, 255, 255, .86); --muted: rgba(255, 255, 255, .55); --faint: rgba(255, 255, 255, .4);
+    --rule: rgba(255, 255, 255, .08); --rule-strong: rgba(255, 255, 255, .14);
+    --surface: #202020; --code-bg: rgba(255, 255, 255, .08);
+    --link-line: rgba(255, 255, 255, .35); --check: rgba(255, 255, 255, .32);
+  }
+}
+* { box-sizing: border-box; }
+html { background: var(--bg); -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; padding: 4.5rem 3rem 6rem; color: var(--text); background: var(--bg);
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+}
+main > * { max-width: 720px; margin-left: auto; margin-right: auto; }
+main > :first-child { margin-top: 0; }
+p, ul, ol, blockquote, pre, dl { margin-top: 0; margin-bottom: 1em; }
+p, li, blockquote, dd { overflow-wrap: break-word; }
+h1, h2, h3, h4, h5, h6 { color: var(--text); font-weight: 600; line-height: 1.3; margin: 2em auto .5em; }
+h1 { font-size: 2.125rem; font-weight: 700; line-height: 1.2; letter-spacing: -.021em; margin-bottom: .6em; }
+h2 { font-size: 1.5rem; letter-spacing: -.017em; margin-top: 2.2em; }
+h3 { font-size: 1.25rem; letter-spacing: -.012em; }
+h4 { font-size: 1.0625rem; }
+h5, h6 { font-size: 1rem; color: var(--muted); }
+h1 + h2, h2 + h3, h3 + h4 { margin-top: 1em; }
+strong { font-weight: 600; }
+a { color: inherit; text-decoration: underline; text-decoration-color: var(--link-line); text-decoration-thickness: 1px; text-underline-offset: .2em; transition: text-decoration-color .15s; }
+a:hover { text-decoration-color: currentColor; }
+ul, ol { padding-left: 1.6em; }
+li { margin: .25em 0; padding-left: .15em; }
+li > ul, li > ol { margin: .25em 0 0; }
+li > p { margin-bottom: .5em; }
+li::marker { color: var(--muted); }
+.task-list-item { list-style: none; margin-left: -1.45em; }
+.task-list-item input {
+  appearance: none; -webkit-appearance: none; width: 1em; height: 1em; margin: 0 .55em 0 0; vertical-align: -.15em;
+  border: 1.5px solid var(--faint); border-radius: 3px; background: transparent;
+}
+.task-list-item input:checked {
+  border-color: transparent; background: var(--check) no-repeat center / 80%
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+.task-list-item:has(> input:checked, > p:first-child > input:checked) { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--faint); }
+blockquote { margin-left: auto; margin-right: auto; padding: .1em 0 .1em 1.1em; border-left: 3px solid var(--rule-strong); color: var(--muted); }
+blockquote > :last-child { margin-bottom: 0; }
+hr { height: 1px; border: 0; background: var(--rule-strong); margin: 2.5em auto; }
+img { max-width: 100%; height: auto; border-radius: 4px; }
+code, kbd, samp, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace; }
+code { font-size: .85em; padding: .15em .35em; border-radius: 4px; background: var(--code-bg); }
+pre { font-size: .85em; line-height: 1.6; padding: 1em 1.25em; background: var(--surface); border-radius: 6px; overflow-x: auto; }
+pre code { font-size: inherit; padding: 0; background: none; border-radius: 0; }
+.table-scroll { max-width: 100%; overflow-x: auto; margin: 1em 0; }
+main > .table-scroll {
+  width: max-content; min-width: min(720px, 100%); max-width: min(1240px, 100%);
+  margin: 1.5em auto 2em;
+}
+table { border-collapse: collapse; font-size: .9rem; line-height: 1.55; }
+th, td {
+  padding: .55em .9em; text-align: left; vertical-align: top;
+  border-bottom: 1px solid var(--rule); overflow-wrap: normal; word-break: normal;
+}
+th { white-space: nowrap; font-weight: 600; color: var(--muted); background: var(--surface); border-bottom-color: var(--rule-strong); }
+th:first-child, td:first-child { padding-left: .75em; }
+td { min-width: 4.5rem; max-width: 32rem; }
+td a { white-space: nowrap; }
+tbody tr:last-child td { border-bottom: 0; }
+@media (max-width: 640px) {
+  body { padding: 2rem 1.25rem 4rem; font-size: 15.5px; }
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.3rem; }
+  h3 { font-size: 1.125rem; }
+  main > .table-scroll { margin-left: -1.25rem; margin-right: -1.25rem; max-width: calc(100% + 2.5rem); min-width: 0; width: auto; padding: 0 1.25rem; }
+  td { min-width: 8rem; }
+}
+@media print { body { padding: 0; } .table-scroll { overflow: visible; } }
+</style></head><body><main><h1>Memo per Giovanni — stato lavori e richieste</h1>
+<p><strong>Data:</strong> 10 ottobre 2026
+<strong>Da:</strong> Vittorio (con Letta, l'assistente AI che ha analizzato repo BO, sito e SEO)
+<strong>Premessa:</strong> tutta l'analisi è stata fatta in <strong>sola lettura</strong>. Nessuna modifica è stata fatta ai repo, al DB o alla produzione. Ogni azione sui repo attende il tuo GO. I documenti di dettaglio citati sono in <code>~/Documents/novarium-business/</code> e <code>~/Documents/novarium-seo/</code>.</p>
+<hr>
+<h2>1. SICUREZZA — chiave Supabase <code>service_role</code> tracciata in git (priorità)</h2>
+<p><strong>Problema:</strong> il file <code>website.prod.env</code> è tracciato in git (dal merge <code>8202b930</code>) e contiene:</p>
+<ul>
+<li><code>SUPABASE_URL</code></li>
+<li><code>SUPABASE_SERVICE_ROLE_KEY</code> — la chiave <strong>service_role bypassa tutte le Row Level Security</strong>: chi la possiede ha accesso totale al database di produzione.</li>
+</ul>
+<p>Lo stesso file è tracciato anche nei due clone satellite (<code>novarium-backoffice-nwd</code> e <code>novarium-backoffice-delete-product-client-group</code>). Chiunque abbia accesso in lettura al repo — su GitHub o in locale — ha la chiave master del DB.</p>
+<p><strong>Piano di remediation in 5 passi:</strong></p>
+<ol>
+<li><strong>Rotazione della chiave</strong> dalla dashboard Supabase → la vecchia chiave si invalida istantaneamente. Subito dopo vanno aggiornati gli env (prod + locali) per non interrompere il sito. <em>(Questo passo lo fate tu/Vittorio: non ho accesso alla dashboard.)</em></li>
+<li><strong>Aggiornamento env + redeploy</strong> via <code>ops/deploy-bo-prod.sh</code> e verifica che tutto funzioni.</li>
+<li><strong>Verifica accessi:</strong> chi ha accesso al repo GitHub; controllo dei log Supabase per uso anomalo della chiave.</li>
+<li><strong>Pulizia git (la faccio io, col tuo GO):</strong> rimozione del file dal tracking + aggiunta di <code>*.prod.env</code> al <code>.gitignore</code> + scansione dell'intera history con gitleaks per intercettare altri segreti.</li>
+<li><em>(Opzionale)</em> <strong>Purge della history</strong> con git filter-repo + force push, se vuoi eliminare la chiave anche dallo storico.</li>
+</ol>
+<p><strong>Richieste per te:</strong></p>
+<ul>
+<li>✅ GO per il passo 4 (pulizia git da parte mia)</li>
+<li>❓ Chi usa oggi la service_role in produzione (sito web? altri servizi?) — per sapere cosa aggiornare subito dopo la rotazione</li>
+<li>❓ La chiave è di tipo legacy JWT? Se sì, ruotarla invalida anche l'anon key → va aggiornata anche quella negli env</li>
+<li>❓ OK a procedere con rotazione (passo 1) appena pronti, coordinandoci sugli env?</li>
+</ul>
+<hr>
+<h2>2. Allineamento documentazione BO (proposta pronta per la tua review)</h2>
+<p>I documenti del BO sono fermi a febbraio 2026 e in parte <strong>falsi rispetto al codice</strong>:</p>
+<ul>
+<li>Il README dichiara &quot;Attualmente non c'è autenticazione (planned)&quot; in <strong>4 sezioni diverse</strong> (inclusa &quot;Handover TODO (Giovanni)&quot; che elenca l'auth come da fare) — ma JWT+ruoli sono implementati e in produzione</li>
+<li><code>03_DECISIONS_FROZEN.md</code> vieta inbox materializzata e parser automatico — <strong>entrambi in produzione</strong></li>
+<li>6 link rotti dal README verso file inesistenti; 3 file vuoti-trappola in <code>docs/02_PROJECT/</code></li>
+<li>La sezione &quot;Deployment plan&quot; del README descrive ancora target cloud ipotetici (Cloud Run/ECS) mentre il sistema è live con Docker Compose</li>
+</ul>
+<p>📄 <strong>Proposta completa con testi prima/dopo pronti da incollare:</strong> <code>~/Documents/novarium-business/proposta-allineamento-docs.md</code> — 5 interventi + 1 opzionale, effort ~½ giornata.</p>
+<p><strong>Richiesta:</strong> review della proposta + GO. L'applicazione (solo file <code>.md</code>, zero codice) la faccio io, oppure ti giro i testi.</p>
+<hr>
+<h2>3. Flusso lead sito nuovo ↔ BackOffice (da collegare prima del go-live)</h2>
+<p><strong>Oggi funziona tutto (verificato nel DB il 10/10):</strong> il sito live invia ogni giorno richieste reali al BO — <strong>126 website request negli ultimi 30 giorni</strong> (~4/giorno), trasformate in RFQ <code>WEB-*</code> dal tuo modulo <code>website-requests</code> (endpoint pubblico, idempotenza, anti-duplicati).</p>
+<p><strong>Il rischio è al go-live:</strong> nel repo del sito nuovo il flusso &quot;richiesta prodotti&quot; è ancora un <strong>mock</strong> (<code>src/lib/api/request.ts</code> → <code>submitRequestDraft()</code>: 800ms finti, console.log, referenceId finto <code>NOV-*</code>, con TODO nel codice). Se il sito nuovo va online così, <strong>le richieste smettono di arrivare</strong>. Il collegamento è già predisposto: nginx instrada <code>/api/</code> → <code>backend:3000</code> e il payload del form è in formato pre-RFQ.</p>
+<p><strong>Richiesta:</strong> collegare <code>submitRequestDraft()</code> al <code>POST /api/website-requests</code> prima del go-live, con un test end-to-end (form → RFQ in BO). È il punto business più critico del cutover.</p>
+<hr>
+<h2>4. Specifiche SEO per il sito <a href="http://novarium.net">novarium.net</a> (pronte per implementazione)</h2>
+<p>Dai dati Google Search Console (6 mesi) emergono due problemi strutturali:</p>
+<ol>
+<li><strong>~10.300 pagine prodotto (sonde) quasi invisibili su Google</strong> (~1% degli URL ottiene impression) → 📄 <code>~/Documents/novarium-seo/spec-fix-indicizzazione-sonde.md</code> — navigazione crawlable server-side, hub categoria/macchina, breadcrumb, criteri di accettazione e verifica GSC a 2/4/8 settimane.</li>
+<li><strong>Il 42% del traffico Parts (357 click/6 mesi) poggia su URL legacy</strong> <code>/vendita/marca/</code> che fanno 301 verso pagine noindex → 📄 <code>~/Documents/novarium-seo/spec-redirect-parts-legacy.md</code> — mappe redirect legacy→hub indicizzabili (versionate in git + script di rigenerazione), da attivare lo stesso giorno del cutover; incluso un <strong>fix tampone</strong> sulla piattaforma attuale se il go-live slitta oltre 4 settimane.</li>
+</ol>
+<p><strong>Richiesta:</strong> valutazione di fattibilità tecnica e stima tempi, così pianifichiamo con Vittorio.</p>
+<hr>
+<h2>5. Domande dal database (accesso in sola lettura, 10/10)</h2>
+<p>Ho letto il DB Supabase condiviso (solo SELECT, autorizzato da Vittorio). Due cose da chiarire:</p>
+<ol>
+<li><strong>Classificazione division già fatta?</strong> Clienti: 22.761 MEDICAL / 108 MARINE / 1 null. Fornitori: 2.429 MEDICAL / 36 MARINE. Ma <code>docs/marine/activation.md</code> indica la riclassificazione aziende come attività <strong>differita</strong>. Chi/come l'ha eseguita? E le guard cross-division (<code>prisma/manual/marine-division-guards.sql</code>) sono ancora da attivare?</li>
+<li><strong><a href="http://novarium-marine.com">novarium-marine.com</a></strong> risponde correttamente, ma dalla configurazione nginx il vhost punta a un servizio non presente nel compose di produzione. Come è deployato il sito Marine?</li>
+</ol>
+<p><em>(Contesto: la divisione Marine sta crescendo bene — prodotti Marine 1.260, erano 586 il 21 settembre.)</em></p>
+<hr>
+<h2>6. Altri P0 tecnici dalla gap analysis</h2>
+<p>Dettaglio completo in <code>~/Documents/novarium-business/gap-analysis-bo.md</code> (20 punti P0/P1/P2 + checklist sicurezza produzione). I più urgenti:</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Punto</th>
+<th>Rischio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P0-2</td>
+<td>Backup worker probabilmente <strong>non attivo</strong> in prod (<code>DB_BACKUP_WORKER_ENABLED</code> assente da <code>prod.env.example</code>)</td>
+<td>Nessun backup DB</td>
+</tr>
+<tr>
+<td>P0-3</td>
+<td><code>prisma migrate deploy</code> <strong>non nel flusso di deploy</strong> (146 migrazioni applicate manualmente)</td>
+<td>Drift schema/prod</td>
+</tr>
+<tr>
+<td>P0-4</td>
+<td><strong>Zero alerting</strong> + endpoint <code>/api/monitoring</code> pubblico</td>
+<td>Guasti scoperti dagli utenti</td>
+</tr>
+<tr>
+<td>P0-5</td>
+<td>Log in <code>/tmp</code> dei container</td>
+<td>Persi a ogni restart</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h2>Cosa serve da te, in sintesi</h2>
+<ol>
+<li><strong>GO + risposte</strong> sulla pulizia git Supabase (sezione 1) — urgente</li>
+<li><strong>Collegamento lead sito nuovo → BO</strong> prima del go-live (sezione 3) — bloccante per il cutover</li>
+<li><strong>Review</strong> proposta docs (sezione 2) — ½ giornata</li>
+<li><strong>Fattibilità + stima</strong> spec SEO (sezione 4)</li>
+<li><strong>Risposte</strong> sulle due domande DB (sezione 5)</li>
+</ol>
+<p>Per qualsiasi dettaglio tecnico, i report completi sono nelle due cartelle <code>novarium-business/</code> e <code>novarium-seo/</code> sul Mac di Vittorio — oppure chiedi direttamente a me (Letta) tramite Vittorio.</p>
+</main></body></html>

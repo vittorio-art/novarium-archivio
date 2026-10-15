@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proposta: acquisizione e pubblicazione immagini prodotto sul sito</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #fff; --text: #37352f; --muted: #787774; --faint: #9b9a97;
+  --rule: rgba(55, 53, 47, .09); --rule-strong: rgba(55, 53, 47, .16);
+  --surface: #f7f6f3; --code-bg: rgba(135, 131, 120, .15);
+  --link-line: rgba(55, 53, 47, .35); --check: #787774;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #191919; --text: rgba(255, 255, 255, .86); --muted: rgba(255, 255, 255, .55); --faint: rgba(255, 255, 255, .4);
+    --rule: rgba(255, 255, 255, .08); --rule-strong: rgba(255, 255, 255, .14);
+    --surface: #202020; --code-bg: rgba(255, 255, 255, .08);
+    --link-line: rgba(255, 255, 255, .35); --check: rgba(255, 255, 255, .32);
+  }
+}
+* { box-sizing: border-box; }
+html { background: var(--bg); -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; padding: 4.5rem 3rem 6rem; color: var(--text); background: var(--bg);
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+}
+main > * { max-width: 720px; margin-left: auto; margin-right: auto; }
+main > :first-child { margin-top: 0; }
+p, ul, ol, blockquote, pre, dl { margin-top: 0; margin-bottom: 1em; }
+p, li, blockquote, dd { overflow-wrap: break-word; }
+h1, h2, h3, h4, h5, h6 { color: var(--text); font-weight: 600; line-height: 1.3; margin: 2em auto .5em; }
+h1 { font-size: 2.125rem; font-weight: 700; line-height: 1.2; letter-spacing: -.021em; margin-bottom: .6em; }
+h2 { font-size: 1.5rem; letter-spacing: -.017em; margin-top: 2.2em; }
+h3 { font-size: 1.25rem; letter-spacing: -.012em; }
+h4 { font-size: 1.0625rem; }
+h5, h6 { font-size: 1rem; color: var(--muted); }
+h1 + h2, h2 + h3, h3 + h4 { margin-top: 1em; }
+strong { font-weight: 600; }
+a { color: inherit; text-decoration: underline; text-decoration-color: var(--link-line); text-decoration-thickness: 1px; text-underline-offset: .2em; transition: text-decoration-color .15s; }
+a:hover { text-decoration-color: currentColor; }
+ul, ol { padding-left: 1.6em; }
+li { margin: .25em 0; padding-left: .15em; }
+li > ul, li > ol { margin: .25em 0 0; }
+li > p { margin-bottom: .5em; }
+li::marker { color: var(--muted); }
+.task-list-item { list-style: none; margin-left: -1.45em; }
+.task-list-item input {
+  appearance: none; -webkit-appearance: none; width: 1em; height: 1em; margin: 0 .55em 0 0; vertical-align: -.15em;
+  border: 1.5px solid var(--faint); border-radius: 3px; background: transparent;
+}
+.task-list-item input:checked {
+  border-color: transparent; background: var(--check) no-repeat center / 80%
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+.task-list-item:has(> input:checked, > p:first-child > input:checked) { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--faint); }
+blockquote { margin-left: auto; margin-right: auto; padding: .1em 0 .1em 1.1em; border-left: 3px solid var(--rule-strong); color: var(--muted); }
+blockquote > :last-child { margin-bottom: 0; }
+hr { height: 1px; border: 0; background: var(--rule-strong); margin: 2.5em auto; }
+img { max-width: 100%; height: auto; border-radius: 4px; }
+code, kbd, samp, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace; }
+code { font-size: .85em; padding: .15em .35em; border-radius: 4px; background: var(--code-bg); }
+pre { font-size: .85em; line-height: 1.6; padding: 1em 1.25em; background: var(--surface); border-radius: 6px; overflow-x: auto; }
+pre code { font-size: inherit; padding: 0; background: none; border-radius: 0; }
+.table-scroll { max-width: 100%; overflow-x: auto; margin: 1em 0; }
+main > .table-scroll {
+  width: max-content; min-width: min(720px, 100%); max-width: min(1240px, 100%);
+  margin: 1.5em auto 2em;
+}
+table { border-collapse: collapse; font-size: .9rem; line-height: 1.55; }
+th, td {
+  padding: .55em .9em; text-align: left; vertical-align: top;
+  border-bottom: 1px solid var(--rule); overflow-wrap: normal; word-break: normal;
+}
+th { white-space: nowrap; font-weight: 600; color: var(--muted); background: var(--surface); border-bottom-color: var(--rule-strong); }
+th:first-child, td:first-child { padding-left: .75em; }
+td { min-width: 4.5rem; max-width: 32rem; }
+td a { white-space: nowrap; }
+tbody tr:last-child td { border-bottom: 0; }
+@media (max-width: 640px) {
+  body { padding: 2rem 1.25rem 4rem; font-size: 15.5px; }
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.3rem; }
+  h3 { font-size: 1.125rem; }
+  main > .table-scroll { margin-left: -1.25rem; margin-right: -1.25rem; max-width: calc(100% + 2.5rem); min-width: 0; width: auto; padding: 0 1.25rem; }
+  td { min-width: 8rem; }
+}
+@media print { body { padding: 0; } .table-scroll { overflow: visible; } }
+</style></head><body><main><h1>Proposta: acquisizione e pubblicazione immagini prodotto sul sito</h1>
+<p><strong>Data:</strong> 10 ottobre 2026 · <strong>Autore:</strong> Letta (per Vittorio) · <strong>Stato:</strong> proposta, nessuna modifica al codice
+<strong>Principio guida (Vittorio):</strong> il sistema resta semi-automatico per evitare pasticci; l'automazione arriva per gradi.</p>
+<hr>
+<h2>1. Come funziona oggi la pipeline (verificato nel codice)</h2>
+<p>Il BO ha già una pipeline di acquisizione <strong>completa e ben fatta</strong> fino all'approvazione:</p>
+<ol>
+<li><strong>Coda</strong> — <code>ProductImageSearchQueueItem</code>: un record per prodotto, stati <code>QUEUED → SEARCHING → REVIEW_READY → DONE | FAILED</code>. Priorità automatica: una CTE SQL sull'albero categorie esclude sospesi/placeholder/&quot;repair&quot;/manuali e ordina per <strong>RFQ degli ultimi 24 mesi</strong> + ordini + offerte (i prodotti commercialmente rilevanti vanno prima).</li>
+<li><strong>Ricerca</strong> — worker a polling ogni 60s (<code>product-image-candidates.service.ts</code>): cerca via <strong>SerpAPI</strong> (Google Immagini), scarica i file, filtra watermark e non-pertinenti via <strong>OpenAI gpt-4o-mini</strong>, deduplica per URL, crea fino a 5 candidati <code>PENDING</code> con <code>matchConfidence</code> (HIGH/MEDIUM/LOW).</li>
+<li><strong>Approvazione umana</strong> — UI <code>ProductImageCandidatesPage</code> (+ bottone &quot;aggiungi alla coda&quot; sulla pagina prodotto): <code>POST /:id/approve</code> crea in transazione il <strong>Document</strong> finale collegato al prodotto e marca il candidato <code>APPROVED</code> (con revisore e data; idempotente); <code>reject</code> con motivazione.</li>
+</ol>
+<p><strong>Dove si ferma:</strong> l'immagine approvata diventa un <code>Document</code> nello <strong>storage privato del BO</strong> (S3-compatibile). Il sito <strong>non la vede</strong>.</p>
+<h2>2. Perché il sito non mostra le immagini (verificato nel codice sito)</h2>
+<ul>
+<li>Il sito legge le immagini solo da <code>src/lib/catalog/images.ts</code> → <code>getProductImages(productId)</code>, che oggi restituisce <strong>sempre placeholder</strong> (&quot;<em>Placeholder-first product image strategy … the storage bucket is private. Until a vetted image pipeline exists</em>&quot;).</li>
+<li>Il commento nel codice dice già tutto: <strong>&quot;When real images are wired up, this is the only function that needs to change.&quot;</strong> La galleria (<code>product-gallery.tsx</code>) è pronta; il mapper già passa <code>images</code> a ogni prodotto.</li>
+<li>Manca quindi un solo anello: <strong>portare gli URL pubblici delle immagini approvate nel percorso di lettura del sito</strong>.</li>
+</ul>
+<h2>3. Cosa manca per pubblicare (l'anello mancante)</h2>
+<ol>
+<li><strong>Storage pubblico</strong> — bucket Supabase Storage <strong>pubblico</strong> separato (o CDN davanti al bucket esistente). Le immagini BO restano private; solo le <strong>approvate</strong> vengono copiate nel bucket pubblico.</li>
+<li><strong>Tabella leggibile dal sito</strong> — nuova tabella <code>ProductPublicImage</code> (o campo su vista pubblica) nel DB condiviso: <code>productId, publicUrl, altText, sortOrder, sourceCandidateId</code>. Il sito la legge come già fa per il catalogo (sola lettura, stessa connessione).</li>
+<li><strong>Hook di pubblicazione</strong> — nel flusso <code>approve</code> esistente: dopo la creazione del Document, copia file nel bucket pubblico + scrive riga in <code>ProductPublicImage</code>. Un solo punto di modifica, transazionale, idempotente. Unpublish = delete riga (il Document BO resta).</li>
+<li><strong>Modifica sito (1 funzione)</strong> — <code>getProductImages()</code> legge <code>ProductPublicImage</code> invece dei placeholder. Come da commento nel codice: unica funzione da cambiare. Fallback a placeholder se nessuna riga.</li>
+<li><strong>Formato immagini</strong> — in copia: resize lato worker (max ~1200px, JPEG/WebP q80), nome file SEO-friendly (<code>{brand}-{code}-{type}.{ext}</code>), <code>altText</code> generato da brand+codice+nome tipo.</li>
+</ol>
+<p>Effetto collaterale positivo: <strong>nessuna migrazione retroattiva</strong> — le immagini già approvate si pubblicano con un job di backfill che riusa lo stesso hook (copia Document → bucket pubblico → riga tabella).</p>
+<h2>4. Automazione graduale (rispettando il &quot;semi-auto per evitare casini&quot;)</h2>
+<p>Oggi: l'umano approva tutto. Proposta in 3 gradini, ognuno attivato solo dopo misura:</p>
+<ol>
+<li><strong>Gradino 0 (ora)</strong>: tutto manuale. Si comincia a <strong>tracciare</strong> l'esito delle review per <code>matchConfidence</code> e dominio sorgente (tasso approvazione per fascia) — serve come baseline.</li>
+<li><strong>Gradino 1 — pre-selezione</strong>: l'operatore vede i candidati <code>HIGH</code> da <strong>dominio produttore ufficiale</strong> pre-selezionati (un click per approvare quelli buoni della pagina). Umano sempre nel loop, ma 5 min/giorno invece di 20.</li>
+<li><strong>Gradino 2 — auto-approva stretto</strong>: solo se <code>matchConfidence=HIGH</code> <strong>E</strong> dominio in allowlist produttori <strong>E</strong> match esatto brand+codice nella pagina sorgente <strong>E</strong> almeno 2 candidati coerenti tra loro. Tutto il resto resta in review. Prima 2 settimane in <strong>shadow mode</strong> (simula e misura: precision target ≥98%).</li>
+</ol>
+<p>Regole trasversali da mantenere: mai sovrascrivere un'immagine approvata manualmente; deduplica per URL; reject con motivazione (alimenta la baseline).</p>
+<h2>5. Beneficio SEO (concreto, non teorico)</h2>
+<ul>
+<li><strong><a href="http://Schema.org">Schema.org</a></strong>: le schede prodotto avranno <code>Product.image</code> popolato → rich snippet più efficaci (già previsto dalla spec indicizzazione).</li>
+<li><strong>Google Immagini</strong>: in una nicchia di ricambi, i tecnici cercano <em>la parte</em> per codice anche per immagini; foto reali con nome file <code>{brand}-{codice}</code> sono traffico qualificato gratis.</li>
+<li><strong>CTR organico</strong>: snippet con thumbnail convertono meglio dei risultati di testo puro.</li>
+<li><strong>Priorità guidata dai dati</strong>: la coda è già ordinata per RFQ-24m; incrociando con i dati GSC (impression per pagina prodotto) si può dare la priorità ai prodotti che <strong>Google già mostra senza immagine</strong> — massimo impatto per immagine pubblicata. (Letta ha questi dati e può fornire la lista.)</li>
+</ul>
+<h2>6. Piano per fasi e effort</h2>
+<ul>
+<li><strong>Fase 0</strong> — Baseline: tracciamento esiti review per fascia confidenza/dominio (piccola modifica su review endpoints) · 0,5–1 gg</li>
+<li><strong>Fase 1</strong> — Bucket pubblico + tabella <code>ProductPublicImage</code> + hook su approve + backfill immagini già approvate · 2–3 gg</li>
+<li><strong>Fase 2</strong> — Modifica <code>getProductImages()</code> sul sito + test su staging/test3 · 0,5–1 gg</li>
+<li><strong>Fase 3</strong> — Pilota pubblicazione: 30 prodotti × 3 gruppi (imaging/ultrasound/sonde) — la selezione esiste già · 1 gg</li>
+<li><strong>Fase 4</strong> — Pre-selezione review (gradino 1) + misura · 1–2 gg</li>
+<li><strong>Fase 5</strong> — Auto-approva stretto in shadow mode → attivazione se ≥98% precision · 2–3 gg</li>
+</ul>
+<p><strong>Totale: ~7–11 gg</strong> di lavoro dev, in fasi indipendenti (valore già dalla Fase 3).</p>
+<h2>7. Rischi e contromisure</h2>
+<ul>
+<li><strong>Immagine sbagliata pubblicata</strong> (danno fiducia &gt; beneficio) → auto-approva solo nel gradino 2 con criteri stretti; unpublish = 1 riga; report settimanale pubblicate.</li>
+<li><strong>Diritti sulle immagini</strong> (foto dei produttori) → preferire fonti produttore/distributore ufficiale (già tracciato <code>sourceDomain</code>); valutare nota &quot;immagine a scopo identificativo&quot; sul sito.</li>
+<li><strong>Peso pagina / LCP</strong> → resize+q80 in copia, lazy load (la galleria è già componente client).</li>
+<li><strong>Deriva qualità nel tempo</strong> → baseline continua: tasso approvazione per dominio; alert se cala.</li>
+</ul>
+<h2>8. Cosa serve per partire</h2>
+<ol>
+<li>Decisione su storage (bucket pubblico Supabase nuovo vs CDN sul bucket esistente) — Giovanni</li>
+<li>GO alle Fasi 0–3 (valore immediato) — Giovanni implementa, Vittorio valida</li>
+<li>Lista priorità GSC da Letta (prodotti con impression e senza immagine) — pronta quando serve</li>
+</ol>
+<hr>
+<p><em>Fonti verificate nel codice: <code>product-image-candidates.service.ts</code>, schema Prisma (modelli <code>ProductImageCandidate</code>, <code>ProductImageSearchQueueItem</code>, <code>Document</code>), <code>ProductImageCandidatesPage.tsx</code>, <code>Novarium_Website/src/lib/catalog/images.ts</code> + <code>mappers.ts</code> + <code>product-gallery.tsx</code>, sezione pipeline immagini di <code>proposta-pesi-misure.md</code>.</em></p>
+</main></body></html>

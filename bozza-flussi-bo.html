@@ -1,0 +1,657 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bozza — Mappa dei Flussi Operativi del BackOffice Novarium</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #fff; --text: #37352f; --muted: #787774; --faint: #9b9a97;
+  --rule: rgba(55, 53, 47, .09); --rule-strong: rgba(55, 53, 47, .16);
+  --surface: #f7f6f3; --code-bg: rgba(135, 131, 120, .15);
+  --link-line: rgba(55, 53, 47, .35); --check: #787774;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #191919; --text: rgba(255, 255, 255, .86); --muted: rgba(255, 255, 255, .55); --faint: rgba(255, 255, 255, .4);
+    --rule: rgba(255, 255, 255, .08); --rule-strong: rgba(255, 255, 255, .14);
+    --surface: #202020; --code-bg: rgba(255, 255, 255, .08);
+    --link-line: rgba(255, 255, 255, .35); --check: rgba(255, 255, 255, .32);
+  }
+}
+* { box-sizing: border-box; }
+html { background: var(--bg); -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; padding: 4.5rem 3rem 6rem; color: var(--text); background: var(--bg);
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+}
+main > * { max-width: 720px; margin-left: auto; margin-right: auto; }
+main > :first-child { margin-top: 0; }
+p, ul, ol, blockquote, pre, dl { margin-top: 0; margin-bottom: 1em; }
+p, li, blockquote, dd { overflow-wrap: break-word; }
+h1, h2, h3, h4, h5, h6 { color: var(--text); font-weight: 600; line-height: 1.3; margin: 2em auto .5em; }
+h1 { font-size: 2.125rem; font-weight: 700; line-height: 1.2; letter-spacing: -.021em; margin-bottom: .6em; }
+h2 { font-size: 1.5rem; letter-spacing: -.017em; margin-top: 2.2em; }
+h3 { font-size: 1.25rem; letter-spacing: -.012em; }
+h4 { font-size: 1.0625rem; }
+h5, h6 { font-size: 1rem; color: var(--muted); }
+h1 + h2, h2 + h3, h3 + h4 { margin-top: 1em; }
+strong { font-weight: 600; }
+a { color: inherit; text-decoration: underline; text-decoration-color: var(--link-line); text-decoration-thickness: 1px; text-underline-offset: .2em; transition: text-decoration-color .15s; }
+a:hover { text-decoration-color: currentColor; }
+ul, ol { padding-left: 1.6em; }
+li { margin: .25em 0; padding-left: .15em; }
+li > ul, li > ol { margin: .25em 0 0; }
+li > p { margin-bottom: .5em; }
+li::marker { color: var(--muted); }
+.task-list-item { list-style: none; margin-left: -1.45em; }
+.task-list-item input {
+  appearance: none; -webkit-appearance: none; width: 1em; height: 1em; margin: 0 .55em 0 0; vertical-align: -.15em;
+  border: 1.5px solid var(--faint); border-radius: 3px; background: transparent;
+}
+.task-list-item input:checked {
+  border-color: transparent; background: var(--check) no-repeat center / 80%
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+.task-list-item:has(> input:checked, > p:first-child > input:checked) { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--faint); }
+blockquote { margin-left: auto; margin-right: auto; padding: .1em 0 .1em 1.1em; border-left: 3px solid var(--rule-strong); color: var(--muted); }
+blockquote > :last-child { margin-bottom: 0; }
+hr { height: 1px; border: 0; background: var(--rule-strong); margin: 2.5em auto; }
+img { max-width: 100%; height: auto; border-radius: 4px; }
+code, kbd, samp, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace; }
+code { font-size: .85em; padding: .15em .35em; border-radius: 4px; background: var(--code-bg); }
+pre { font-size: .85em; line-height: 1.6; padding: 1em 1.25em; background: var(--surface); border-radius: 6px; overflow-x: auto; }
+pre code { font-size: inherit; padding: 0; background: none; border-radius: 0; }
+.table-scroll { max-width: 100%; overflow-x: auto; margin: 1em 0; }
+main > .table-scroll {
+  width: max-content; min-width: min(720px, 100%); max-width: min(1240px, 100%);
+  margin: 1.5em auto 2em;
+}
+table { border-collapse: collapse; font-size: .9rem; line-height: 1.55; }
+th, td {
+  padding: .55em .9em; text-align: left; vertical-align: top;
+  border-bottom: 1px solid var(--rule); overflow-wrap: normal; word-break: normal;
+}
+th { white-space: nowrap; font-weight: 600; color: var(--muted); background: var(--surface); border-bottom-color: var(--rule-strong); }
+th:first-child, td:first-child { padding-left: .75em; }
+td { min-width: 4.5rem; max-width: 32rem; }
+td a { white-space: nowrap; }
+tbody tr:last-child td { border-bottom: 0; }
+@media (max-width: 640px) {
+  body { padding: 2rem 1.25rem 4rem; font-size: 15.5px; }
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.3rem; }
+  h3 { font-size: 1.125rem; }
+  main > .table-scroll { margin-left: -1.25rem; margin-right: -1.25rem; max-width: calc(100% + 2.5rem); min-width: 0; width: auto; padding: 0 1.25rem; }
+  td { min-width: 8rem; }
+}
+@media print { body { padding: 0; } .table-scroll { overflow: visible; } }
+</style></head><body><main><h1>Bozza — Mappa dei Flussi Operativi del BackOffice Novarium</h1>
+<blockquote>
+<p>Documento di analisi <strong>read-only</strong> prodotto il 2026-10-10 dal repo
+<code>Novarium/novarium-backoffice-clean</code> (branch <code>main</code>, ultimo commit <code>18333715</code>).
+Fonti: README, MERGE_LOG, docs/ (01_ARCHITECTURE, 02_PROJECT, decisions, handoff, runbooks, parser, integrations, marine),
+<code>src/backend/prisma/schema.prisma</code> (~60 modelli), moduli NestJS (~60), pagine React (~87 route).</p>
+</blockquote>
+<hr>
+<h2>1. Panoramica BO</h2>
+<p><strong>Scopo.</strong> Il BackOffice (BO) Novarium è il centro operativo interno di Novarium, azienda che commercia <strong>parti di ricambio per imaging medicale e ultrasound</strong> (con una nuova divisione <strong>Marine</strong> in attivazione). Non è un CRM, non è un ERP, non è un client email: è un sistema <strong>RFQ-centrico, event-driven, audit-first</strong> che gestisce richieste di quotazione &quot;reali, sporche, incomplete&quot; (dati parziali, workflow non lineari, correzioni continue).</p>
+<p><strong>Reengineering.</strong> Green-field: l'MVP doveva replicare fedelmente il comportamento operativo del legacy <strong>&quot;Biferno&quot;</strong> (MySQL), senza nuove regole di business e senza riuso di codice legacy. Il legacy resta attivo in sola lettura come riferimento e rete di sicurezza. Import legacy MySQL → Postgres opzionale e idempotente (campi <code>legacySource</code>/<code>legacyId</code>).</p>
+<p><strong>Stack.</strong></p>
+<ul>
+<li>Frontend: React + TypeScript + Vite (SPA interna), ~87 route.</li>
+<li>Backend: Node.js + NestJS (REST), ~60 moduli; porta 3000.</li>
+<li>DB: PostgreSQL + Prisma (Supabase in produzione; storage S3-compatible per i documenti).</li>
+<li>Deploy prod: Docker Compose (<code>docker-compose.prod.yml</code>, <code>ops/deploy-bo-prod.sh</code>, nginx; host <code>bo.novarium.net</code>, sito pubblico <code>test3.novarium.net</code>).</li>
+</ul>
+<p><strong>Principi architetturali congelati.</strong></p>
+<ul>
+<li><em>State = f(Event[])</em>: lo stato è derivato, non persistito; ogni modifica = nuovo evento append-only (mai update distruttivi; &quot;Modify = amend event&quot;; soft-delete via <code>deletedAt</code>).</li>
+<li>Timeline RFQ &quot;sacra&quot;; fallback su testo se payload mancante; nessun wizard rigido; nessuna validazione bloccante invasiva.</li>
+<li>Idempotenza su token (<code>TokenActionLog</code>), eventi (<code>idempotencyKey</code> unique) e import legacy.</li>
+<li>Decisione umana sempre finale: programma/AI propongono, l'umano conferma; ogni override è esplicito e tracciato.</li>
+</ul>
+<p><strong>Stato del reengineering (al 2026-10):</strong> il sistema è <strong>molto oltre l'MVP</strong> documentato. I docs di progetto (<code>02_PROJECT</code>) sono fermi a feb-2026 (Phase 5), ma il codice include ormai: autenticazione BO (JWT + ruoli), portali client/supplier con account, Inbox materializzata + parser AI (entrambi in origine &quot;congelati&quot;, poi implementati), WhatsApp (Kapso), marketing campaign, proforma invoice, SEO stats, stock serializzato, divisione Marine, reports. Vedi §5 per il disallineamento docs↔codice.</p>
+<hr>
+<h2>2. Modello di dominio</h2>
+<p>Dallo schema Prisma (<code>src/backend/prisma/schema.prisma</code>) e da <code>docs/decisions/Specifiche Funzionali.md</code>.</p>
+<h3>2.1 Entità core commerciali</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Entità</th>
+<th>Ruolo</th>
+<th>Note chiave</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Group</strong></td>
+<td>Gruppo aziendale cliente (più sedi/unità)</td>
+<td>Non decide né invia richieste; applica <strong>esclusioni fornitori</strong> (<code>GroupSupplierExclusion</code>), termini commerciali (valuta, <code>PaymentTerm</code>, garanzia, trasporto). Deve avere ≥1 Client <code>canPlaceOrders</code></td>
+</tr>
+<tr>
+<td><strong>Client</strong></td>
+<td>Unità operativa del Group (sede)</td>
+<td>Flag <code>canPlaceOrders</code> (solo qui, mai sul Group), <code>suspended</code>; campi persona/contatto, indirizzo, <code>businessUnit</code> (IMAGING/ULTRASOUND/DENTAL/LAB/OTHER), flag marketing/privacy, <code>awaitRequestEnabled</code>, <code>portalAccountId</code></td>
+</tr>
+<tr>
+<td><strong>Supplier</strong></td>
+<td>Fornitore</td>
+<td><code>flagEmail</code> (= legacy <code>email_enabled</code>: se NO è invisibile ai request suppliers), <code>canOrder</code>, <code>suspended</code>, brand/categoria, <code>supplierGroupId</code>, capability, onboarding, scoring</td>
+</tr>
+<tr>
+<td><strong>SupplierGroup</strong></td>
+<td>Gruppo societario fornitore</td>
+<td>Termini commerciali default (valuta, pagamento, garanzia, <code>defaultSaleType</code>, trasporto)</td>
+</tr>
+<tr>
+<td><strong>Contact</strong></td>
+<td>Persona, <strong>email unica globale</strong></td>
+<td>Collegabile a N Client e N Supplier (thread condivisi, storico unico); tabelle ponte <code>ClientContact</code>, <code>SupplierContact</code>, preferred contacts (cc/dear/sort), <code>RfqContact</code> (destinatari per RFQ)</td>
+</tr>
+<tr>
+<td><strong>Product</strong></td>
+<td>Parte/articolo</td>
+<td><code>code</code> unique, <code>name</code>, brand, <code>category</code>, <code>legacyCategoryCode</code> → <code>LegacyCategory</code> (albero multilingua con <code>division</code> MEDICAL/MARINE), <code>machineModels</code>, <code>probeType</code>/<code>probeFrequency</code> (sonde ultrasound), dimensioni/peso, flag <code>suspended</code>, <code>isPlaceholder</code></td>
+</tr>
+<tr>
+<td><strong>RFQ</strong></td>
+<td><strong>Oggetto centrale</strong></td>
+<td>groupId+clientId (intestatario <code>canPlaceOrders</code> = billing), productId, quantità, <code>status</code> OPEN/CLOSED, <code>saleType</code>, <code>hasOrder</code>, <code>suspended</code>, <code>csOpen</code>+<code>csPinnedNote</code>, <code>deliveredAt</code>, <code>nonCompliance*</code>, <code>lastClientPrice/Currency</code>, <code>exchangeOwnerType/SupplierId</code>, <code>mailSubject/Dear/Cc</code></td>
+</tr>
+<tr>
+<td><strong>SupplierRequest</strong></td>
+<td>Una per (RFQ × fornitore contattato)</td>
+<td>Unique(rfqId,supplierId); <code>status</code> sent/replied/item_na/no_reply; ultima risposta denormalizzata (tipo, prezzo, lead time, valuta, <code>repliedAt</code>); link a Contact e SupplierGroup</td>
+</tr>
+<tr>
+<td><strong>Event</strong></td>
+<td><strong>Audit trail append-only</strong></td>
+<td><code>origin</code> client/supplier/BO/system, <code>code</code> (azione canonica), <code>type</code>, <code>payload</code> JSON, <code>actorId</code>, <code>traceId/correlationId/causationId</code>, <code>version</code>, <code>idempotencyKey</code> unique, FK nullable verso RFQ/SupplierRequest/Client/Supplier/Contact, <code>includeInDisc</code> (Discussions), soft-delete <code>deletedAt</code></td>
+</tr>
+<tr>
+<td><strong>ActionItem</strong></td>
+<td>Lavoro umano su evento</td>
+<td><code>status</code> CHECK/DO/DONE, 1:1 con Event, opzionale su RFQ</td>
+</tr>
+<tr>
+<td><strong>Reminder</strong></td>
+<td>Promemoria operativo</td>
+<td><code>dueDate</code>, <code>initials</code>, status open/expired/done; collegabile a RFQ/Client/Supplier/Product/Ticket; owner/creator/assignee (User), <code>chainKey</code>, <code>autoCloseOn</code></td>
+</tr>
+<tr>
+<td><strong>Token</strong></td>
+<td>Link pubblico per fornitore/cliente</td>
+<td><code>token</code> stringa unique, <code>kind</code> supplier/client, <code>action</code> offer/item_na/message/confirm, legato a RFQ (+SupplierRequest/Client); <strong>non scade</strong>; multi-click → 1 solo evento (<code>TokenActionLog</code> unique su tokenId+actionType+payloadHash)</td>
+</tr>
+<tr>
+<td><strong>TokenSession / TokenSessionItem</strong></td>
+<td>Portale multi-prodotto</td>
+<td>Sessione draft/submitted con N item RFQ (per rispondere a più RFQ in un'unica pagina fornitore/cliente)</td>
+</tr>
+</tbody>
+</table></div>
+<h3>2.2 Comunicazioni e pipeline inbound/outbound</h3>
+<ul>
+<li><strong>MasterMessage</strong>: email in ingresso (da IMAP poller) con subject, from/to/cc, body, allegati meta.</li>
+<li><strong>InboxItem</strong>: inbox materializzata; <code>bucket</code>, <code>sourceType</code>, link a MasterMessage/Event/RFQ, <code>confidence</code>, <code>intent</code>, <code>needsFix</code>+<code>fixReason</code>, claim/resolve per operatore, item &quot;personal&quot;.</li>
+<li><strong>ParseRun / ParseSuggestion</strong>: esecuzioni del parser (deterministico prima, AI dopo) e suggerimenti applicabili.</li>
+<li><strong>MessageModel</strong>: modelli di messaggio per scenario (<code>scenarioKey</code>, testi EN/IT, blocchi includibili: prodotto, offerta, CTA, allegati, termini…).</li>
+<li><strong>Template / MailTemplate</strong>: template rapidi (<code>messageType</code>: client_message, client_offer, supplier_message, quotation_request, discussion, user).</li>
+<li><strong>ScheduledClientMessage</strong>: invii programmati/differiti (stati PENDING…SENT/FAILED/CANCELLED), anche da campagne.</li>
+<li><strong>OutboxMessage</strong>: coda email in uscita con stati consegna completi (PENDING→SENT→DELIVERED/BOUNCED…), <code>smtpMessageId</code>, retry; alimentata da webhook SendGrid.</li>
+<li><strong>MarketingCampaign</strong> (+Recipient, +Batch): campagne batch a clienti/fornitori (audience, lingua, tono AI, batchSize/interval).</li>
+<li><strong>Attachment / Document</strong>: allegati inbox e documenti S3 (bucket/objectKey, collegati a RFQ/Product/MasterMessage/InternalNote).</li>
+<li><strong>PublicMessageAttachmentLink / PublicDiscussionReplyToken</strong>: link pubblici revocabili per allegati e risposta a discussioni.</li>
+</ul>
+<h3>2.3 Stock, catalogo, pricing</h3>
+<ul>
+<li><strong>StockItem / StockMovement</strong>: magazzino <strong>serializzato</strong> (compliance medicale): ogni pezzo tracciato (serial, location, sellable, <code>fingerprint</code> unique); movimenti IN/OUT/ADJUST con valore, valuta, RFQ ed Event collegati.</li>
+<li><strong>PaymentTerm</strong>, <strong>CountryZone</strong> (tariffe spedizione), <strong>CountryNote</strong> (regole import per paese), <strong>EurUsdRateChange</strong> (cambio EUR/USD, audit append-only, fonte MANUAL/AUTO).</li>
+<li><strong>LegacyCategory</strong> (albero categorie legacy multilingua, <code>division</code>), <strong>LegacyUMachineModel</strong> (catalogo macchine ultrasound legacy), <strong>ProbeType/ProbeFrequency</strong>, <strong>EquipmentType</strong> + <strong>MarineMachine</strong> (catalogo Marine, molti-a-molti).</li>
+<li><strong>SupplierCapability</strong> (categoria+brand per fornitore), <strong>SupplierCapabilityScore</strong> (punteggi periodici: responsiveness, usefulness, commercial, opsQuality, rank), <strong>SupplierOnboarding</strong>.</li>
+<li><strong>ProductImageCandidate / ProductImageSearchQueueItem</strong>: ricerca/review immagini prodotto con diritti d'uso.</li>
+<li><strong>SeoTrackedProduct / SeoRankSnapshot / WebsiteRedirect</strong>: SEO del sito pubblico.</li>
+<li><strong>ProductDupliExcept / ProductDescriptionCasingException</strong>: esclusioni deduplica e normalizzazione casing descrizioni.</li>
+</ul>
+<h3>2.4 Utenti e collaboration</h3>
+<ul>
+<li><strong>User</strong> (operatori BO; ruolo default OPERATOR, <code>canViewReports</code>), <strong>UserSettings</strong> (preferenze inbox/RFQ/reminder per operatore).</li>
+<li><strong>PortalAccount</strong>: credenziali portale pubblico (clienti/fornitori) con reset password.</li>
+<li><strong>InternalNote</strong> (su client/supplier/product), <strong>InternalMessage</strong> (+Recipient; audience DIRECT/NOV/NOV_GC — chat interna), <strong>ReminderForwarding</strong> (delega reminder tra utenti).</li>
+<li><strong>Ticket</strong> (+Tag): ticket interni con priorità.</li>
+<li><strong>RfqOperatorPresence</strong>: chi sta guardando una RFQ (heartbeat, TTL 120s); <strong>OperatorInboxItemState</strong>: lettura inbox per operatore.</li>
+</ul>
+<h3>2.5 Relazioni principali</h3>
+<pre><code>Group 1─N Client 1─N RFQ N─1 Product
+RFQ 1─N SupplierRequest N─1 Supplier (unique rfq+supplier)
+RFQ 1─N Event ; SupplierRequest 1─N Event ; Event 1─0..1 ActionItem
+RFQ N─N RFQ (RfqLink) ; RFQ 1─N Token / TokenSessionItem
+Group N─N Supplier (GroupSupplierExclusion)
+Product 1─N StockItem 1─N StockMovement
+MasterMessage 1─N InboxItem 1─N ParseSuggestion
+</code></pre>
+<hr>
+<h2>3. Flussi operativi</h2>
+<p>Per ciascun flusso: obiettivo, attori, passi, moduli/file, stato.</p>
+<h3>3.1 Ciclo di vita RFQ (core)</h3>
+<ul>
+<li><strong>Obiettivo</strong>: gestire end-to-end una richiesta di quotazione dal cliente fino a offerta, ordine, consegna.</li>
+<li><strong>Attori</strong>: operatore BO; cliente (via token/portale/sito); fornitore (via token/email/WhatsApp).</li>
+<li><strong>Passi</strong>: creazione RFQ (manuale, da evento inbox <code>from-event/:eventId</code>, da inbox item, da sito web) → dati base (prodotto, quantità, <strong>macchina obbligatoria</strong>, default legacy &quot;Various&quot;) → intestazione a Client <code>canPlaceOrders</code> del Group → note interne, contatti destinatari (<code>RfqContact</code>) → azioni: send-message-client/supplier, prepare-quote, send-offer, insert-received-*, confirm client/supplier, create-order, mark-delivered, proforma, item NA, suspend/reactivate, expire, close → marker operativi CS/TODO/NB → link tra RFQ correlate (bidirezionale, <code>RfqLink</code>) → multi-prodotto (<code>multiprod</code>, <code>manage-products</code>).</li>
+<li><strong>Moduli/file</strong>: <code>modules/rfq</code> (controller ~100 endpoint; <code>rfq.service.ts</code> ~24k righe — file centrale), pagine <code>RfqListPage</code>, <code>RfqDetailPage</code>, <code>SendQuotePage</code>, <code>SendRequestPage</code>, <code>SendItemNaPage</code>, <code>Confirm*</code>, <code>ProformaPage</code>, <code>EditRequestFeaturesPage</code>, ecc.</li>
+<li><strong>Stato</strong>: <strong>implementato e stabile</strong> (core MVP completato; handoff: &quot;RFQ core: funzionante&quot;).</li>
+</ul>
+<h3>3.2 Request Suppliers (RFQ verso fornitori)</h3>
+<ul>
+<li><strong>Obiettivo</strong>: selezionare e contattare i fornitori giusti per una RFQ.</li>
+<li><strong>Attori</strong>: operatore BO (decide); sistema (propone).</li>
+<li><strong>Regole hard</strong> (da Specifiche): ranking suggerimenti 1) Categoria+Brand 2) Categoria 3) Altri; esclusioni solo a livello <strong>Group</strong>; fornitori esclusi ma match Categoria+Brand → visibili, non preselezionati, <strong>override esplicito e tracciato</strong>; <code>email_enabled=NO</code> → invisibile; <code>Contact</code> obbligatorio per invio.</li>
+<li><strong>Passi</strong>: <code>GET /rfq/:id/supplier-suggestions</code> e <code>/supplier-recommendations</code> → selezione/override → <code>POST /rfq/:id/request-suppliers</code> → crea 1 <code>SupplierRequest</code> per fornitore → invio email con token link (o WhatsApp) → evento in timeline.</li>
+<li><strong>Moduli/file</strong>: <code>modules/rfq</code> (suggestions, <code>supplier-outbound-recipients.ts</code>), <code>modules/supplier-requests</code>, <code>modules/suppliers</code> (capability, <code>by-machine</code>, OEM), pagina <code>SendRequestPage</code>.</li>
+<li><strong>Stato</strong>: <strong>implementato</strong>; scoring/capability avanzati in evoluzione (commit recenti su supplier capability/OEM).</li>
+</ul>
+<h3>3.3 Risposte fornitori (reply, offerte, item NA)</h3>
+<ul>
+<li><strong>Obiettivo</strong>: registrare e lavorare le risposte dei fornitori.</li>
+<li><strong>Attori</strong>: fornitore (token page, email, WhatsApp); operatore (valuta).</li>
+<li><strong>Passi</strong>: risposta via token page (<code>/t/supplier/:token</code> o sessione multi-item) → evento + aggiornamento <code>SupplierRequest.status</code> e campi lastReply* → ActionItem CHECK in Action List → operatore valuta offerta; amend successivi = nuovi eventi (<code>SUPPLIER_OFFER_AMENDED</code>); inserimento manuale possibile (<code>insert-received-supplier-offer</code>).</li>
+<li><strong>Moduli/file</strong>: <code>modules/tokens</code>, <code>modules/token-sessions</code>, <code>modules/supplier-requests</code> (<code>:id/reply</code>, <code>:id/na-note</code>), pagine <code>SupplierTokenPage</code>, <code>SupplierMultiSessionPage</code>, <code>InsertReceivedSupplierOfferPage</code>.</li>
+<li><strong>Stato</strong>: <strong>implementato</strong> (idempotenza multi-click via <code>TokenActionLog</code>).</li>
+</ul>
+<h3>3.4 Offerta al cliente e ordine</h3>
+<ul>
+<li><strong>Obiettivo</strong>: preparare e inviare l'offerta al cliente, gestire conferma e ordine.</li>
+<li><strong>Passi</strong>: <code>prepare-quote</code> (bozza con prezzo, condizione, garanzia, delivery, trasporto, pagamento, IVA) → <code>send-offer</code> (email con product card + offer card + CTA token; subject grammar legacy <code>NVM - Offer to Novarium Client</code>) → conferma cliente via token (<code>confirm</code>) o manuale (<code>confirm-client</code>) → <code>create-order</code> → <code>confirm-supplier</code> (ordine al fornitore) → <code>client/supplier-order-reception-confirmed</code> → <code>mark-delivered</code> (aggancia stock-out) → eventuale <code>regress-to-order-pending</code>; <code>saleType</code> e <code>lastClientPrice</code> denormalizzati su RFQ.</li>
+<li><strong>Moduli/file</strong>: <code>modules/rfq</code> (<code>outbound-compose.ts</code>, <code>offer-*.ts</code>, <code>reply-quote.ts</code>), pagine <code>SendQuotePage</code>, <code>ConfirmClientPage</code>, <code>ConfirmSupplierPage</code>.</li>
+<li><strong>Stato</strong>: <strong>implementato</strong>; parity mail con legacy regolata dal contratto congelato <code>docs/ASK1-MAIL-PARITY-CONTRACT.md</code> (CTA footer <code>CLICK TO REPLY</code>/<code>DOWNLOAD ATTACHMENTS</code>, product card probe/part/imaging, subject grammar).</li>
+</ul>
+<h3>3.5 Proforma Invoice e documenti</h3>
+<ul>
+<li><strong>Obiettivo</strong>: generare PI/proforma e PDF collegati alla RFQ.</li>
+<li><strong>Passi</strong>: candidati proforma → <code>POST /rfq/:id/proforma</code> (+ evento <code>PROFORMA_CREATED</code>) → PDF (<code>offer-pdf</code>, <code>proforma-pdf</code>); documenti su storage S3 (<code>Documents</code>).</li>
+<li><strong>Moduli/file</strong>: <code>modules/rfq/proforma-*.ts</code>, <code>proforma-invoices.controller.ts</code>, <code>modules/documents</code>; pagine <code>ProformaPage</code>, <code>ProformaInvoicesPage</code>, <code>DocumentsPage</code>.</li>
+<li><strong>Stato</strong>: <strong>implementato</strong> (era fuori scope MVP, rientrato dopo).</li>
+</ul>
+<h3>3.6 Stock serializzato</h3>
+<ul>
+<li><strong>Obiettivo</strong>: tracciare ogni pezzo a magazzino (compliance medicale), non quantità aggregate.</li>
+<li><strong>Passi</strong>: stock-in (serial, warehouseValue/sellValue, note) / stock-out (selezione seriale) — anche da RFQ (<code>stock-in</code>, <code>stock-out</code>) → <code>StockMovement</code> con Event collegato.</li>
+<li><strong>Moduli/file</strong>: <code>modules/stock</code>, pagina <code>StockPage</code>.</li>
+<li><strong>Stato</strong>: <strong>implementato base</strong> (era fuori scope MVP; &quot;Stock base&quot; tra i moduli completi).</li>
+</ul>
+<h3>3.7 Inbox, Master List e Action List (triade operativa)</h3>
+<ul>
+<li><strong>Obiettivo</strong>: tre viste distinte — <strong>Master List</strong> (verità: tutto ciò che arriva), <strong>Action List</strong> (lavoro umano CHECK/DO/DONE), oggetti operativi (RFQ/Order/Follow-up). Un elemento sta in una sola vista.</li>
+<li><strong>Passi</strong>: email in ingresso via <strong>IMAP poller</strong> (<code>poll-inbox.ts</code> standalone, <code>modules/imap</code>) → <code>MasterMessage</code> → <code>InboxItem</code> (bucket, claim/resolve/unresolve per operatore, needsFix) → azioni: <code>create-rfq</code>, <code>link-rfq</code>, <code>insert-discussion</code>, estrazione candidati prodotto → messaggi non legati a RFQ → <strong>Discussions</strong> (<code>includeInDisc</code>) visibili su schede Client/Supplier.</li>
+<li><strong>Moduli/file</strong>: <code>modules/inbox</code>, <code>modules/master-list</code>, <code>modules/master-messages</code>, <code>modules/action-list</code>, <code>modules/discussions</code>, <code>modules/disc</code>; pagine <code>InboxPage</code>, <code>MasterListPage</code>, <code>MasterMailListPage</code>, <code>ActionListPage</code>, <code>CreateRfqFromInboxPage</code>, <code>Discussion*Page</code>.</li>
+<li><strong>Stato</strong>: <strong>implementato</strong> (l'Inbox materializzata era inizialmente congelata, poi introdotta in phase5/roadmap e cresciuta).</li>
+</ul>
+<h3>3.8 Parser AI delle email</h3>
+<ul>
+<li><strong>Obiettivo</strong>: classificare le email in ingresso e proporre azioni (crea RFQ, collega, item NA…); <strong>mai decisioni finali</strong>.</li>
+<li><strong>Regole</strong> (<code>docs/parser/PARSER_SPEC.md</code>): deterministico prima, AI dopo; &quot;always materialize&quot; (niente DRAFT nel routing v2); fallback prodotto &quot;Various Parts&quot;; <code>needsFix</code> = richiede correzione umana, non è un errore; ogni materializzazione → evento (<code>INBOX_RFQ_CREATED</code>).</li>
+<li><strong>Trigger</strong>: <code>POST /parser/run/:masterMessageId</code>, IMAP poller dopo ingest; <strong>gap noto</strong>: nessun trigger automatico da RFQ/cron — se il poller non gira, i messaggi restano non parsati.</li>
+<li><strong>Moduli/file</strong>: <code>modules/parser</code> (config, dispatch, reparse/preview/apply), <code>product-candidate-extractor.ts</code>, pagine <code>FixParsedSupplierEventPage</code>, <code>ReparsedRfqPage</code>.</li>
+<li><strong>Stato</strong>: <strong>implementato</strong> con gap documentati (trigger, dispatch).</li>
+</ul>
+<h3>3.9 Token portal e portali pubblici</h3>
+<ul>
+<li><strong>Obiettivo</strong>: interazioni controllate senza login via link token; portali con account per clienti/fornitori.</li>
+<li><strong>Passi</strong>: pagine pubbliche <code>/t/supplier/:token</code> (offer/item_na/message), <code>/t/client/:token</code> (message/confirm), <code>/t/session/:token</code> (multi-prodotto draft→submit), <code>/t/supplier-capabilities/:token</code> (form capability); allegati scaricabili via token; <strong>token non scadono</strong>, multi-click idempotente. Portali <code>/portal/client|supplier/login</code> con <code>PortalAccount</code> + reset password; invio reset da scheda client/supplier.</li>
+<li><strong>Moduli/file</strong>: <code>modules/tokens</code>, <code>modules/token-sessions</code>, <code>src/backend/src/portal-auth</code>, frontend <code>portal-auth</code>, pagine <code>*TokenPage</code>, <code>SupplierCapabilityFormPage</code>.</li>
+<li><strong>Stato</strong>: <strong>implementato</strong>.</li>
+</ul>
+<h3>3.10 Comunicazioni outbound: template, message models, invii programmati, outbox</h3>
+<ul>
+<li><strong>Obiettivo</strong>: email conformi alla parity legacy, inviabili subito o in differita, con tracciatura consegna.</li>
+<li><strong>Passi</strong>: composizione da <strong>MessageModel</strong> (scenari: request supplier, offer client, item NA, MSG client/supplier; blocchi prodotto/offerta/CTA) o <strong>Template</strong> rapidi → invio SMTP (SendGrid) → <code>OutboxMessage</code> con stati consegna (webhook <code>/webhooks/sendgrid</code>) → retry/send-now/cancel; <strong>Scheduled send</strong> (delayed messages, <code>DelayedMessagesPage</code>); retry orchestrato da admin.</li>
+<li><strong>Moduli/file</strong>: <code>modules/message-models</code>, <code>modules/templates</code>, <code>modules/mail-templates</code>, <code>modules/outbox</code>, <code>modules/scheduled-send</code>, <code>src/backend/src/mail</code> (transport, blocco email in locale), pagine <code>MessageModelsPage/Preview</code>, <code>TemplatesPage</code>, <code>MailTemplatesPage</code>, <code>DelayedMessagesPage</code>.</li>
+<li><strong>Stato</strong>: <strong>implementato</strong>; parity contract ASK1 congelato ma con &quot;current code gaps&quot; elencati (lavoro AGENT 1A/1B).</li>
+</ul>
+<h3>3.11 WhatsApp (Kapso)</h3>
+<ul>
+<li><strong>Obiettivo</strong>: canale WhatsApp manuale verso clienti/fornitori + ricezione in Inbox.</li>
+<li><strong>Passi</strong>: webhook inbound (HMAC) → persistenza/dedup → match per telefono internazionale → notifica Inbox → associazione manuale a client/supplier/RFQ, move/link/insert-discussion → invio manuale testo/PDF/immagini (finestra 24h).</li>
+<li><strong>Stato</strong>: <strong>parziale / in rollout controllato</strong> — implementazione completa in locale (branch <code>codex/whatsapp-local</code>), <strong>revert selettivo in produzione</strong> (<code>922014fa</code>); <code>whatsapp:enabled=false</code> condiviso; invio locale solo verso numero test; deploy solo su istruzione esplicita (<code>docs/integrations/kapso-whatsapp.txt</code>).</li>
+<li><strong>Moduli/file</strong>: <code>modules/whatsapp</code>, pagina <code>WhatsAppPage</code>, <code>EditWhatsAppConversationPage</code>.</li>
+</ul>
+<h3>3.12 Anagrafiche: Clienti, Fornitori, Gruppi, Prodotti</h3>
+<ul>
+<li><strong>Obiettivo</strong>: gestione master data con deduplica e identità.</li>
+<li><strong>Passi</strong>: ricerca (<code>search</code>, <code>find-by-identity</code>), create/edit, schede full (storico, note interne, discussions, contatti preferiti cc/dear), esclusioni fornitore su Group, <code>recreate-as</code> (client↔supplier), <code>replace-in-rfqs</code>, portal reset; prodotti: duplicates management, casing exceptions, immagini candidate, macchine compatibili, categorie legacy, probe types/frequencies.</li>
+<li><strong>Moduli/file</strong>: <code>modules/clients</code>, <code>modules/suppliers</code> (+<code>supplier-groups</code>, <code>supplier-scoring</code>), <code>src/backend/src/groups</code>, <code>modules/products</code>, <code>modules/categories</code>, <code>modules/compatible-machines</code>; pagine <code>ClientFullPage</code>, <code>SupplierFullPage</code>, <code>GroupsPage</code>, <code>ProductFullPage</code>, <code>DuplicateProductsPage</code>, ecc.</li>
+<li><strong>Stato</strong>: <strong>implementato</strong> (le &quot;schede estese&quot; erano fuori MVP, poi rientrate).</li>
+</ul>
+<h3>3.13 Marketing campaign e follow-up (Await Request)</h3>
+<ul>
+<li><strong>Obiettivo</strong>: campagne email a batch verso clienti/fornitori; follow-up automatico dopo richiesta cliente genuina.</li>
+<li><strong>Passi</strong>: composer campagna (anche AI: generate/improve/translate) → recipients (da ricerca) → batch preparati/inviati a intervalli → stati per recipient; <strong>Await Request</strong>: enable/disable/schedula/send-now per cliente (<code>awaitRequestEnabled</code>, <code>lastClientRequestAt</code>), bulk.</li>
+<li><strong>Moduli/file</strong>: <code>modules/marketing-campaigns</code>, <code>modules/await-requests</code>; pagine <code>MarketingCampaigns*Page</code>.</li>
+<li><strong>Stato</strong>: <strong>implementato</strong> (post-MVP).</li>
+</ul>
+<h3>3.14 Exchange (client/supplier exchange)</h3>
+<ul>
+<li><strong>Obiettivo</strong>: gestire RFQ di scambio/permuta intestate a fornitore-owner.</li>
+<li><strong>Passi</strong>: <code>create-client-exchange</code> / <code>create-supplier-exchange</code> da RFQ; <code>exchangeOwnerType/SupplierId</code> su RFQ.</li>
+<li><strong>Moduli/file</strong>: <code>modules/rfq/supplier-exchange.ts</code>; pagine <code>CreateClientExchangePage</code>, <code>CreateSupplierExchangePage</code>.</li>
+<li><strong>Stato</strong>: <strong>implementato</strong> (era &quot;stock ed exchange&quot; fuori MVP).</li>
+</ul>
+<h3>3.15 Non compliance, CS, TODO, NB, Reminder, Ticket</h3>
+<ul>
+<li><strong>Obiettivo</strong>: marker operativi e memoria di lavoro.</li>
+<li><strong>Passi</strong>: CS open/close con pinned note; TODO/NB set/clear; reminder su RFQ/Client/Supplier/Product/Ticket con owner/assignee, forwarding tra utenti, auto-close; non-compliance con tipo/data; ticket interni con tag e priorità; internal messages (chat NOV/NOV_GC/diretta).</li>
+<li><strong>Moduli/file</strong>: <code>modules/reminders</code>, <code>modules/tickets</code>, <code>modules/internal-messages</code>, <code>modules/internal-notes</code>, <code>rfq/non-compliance.controller.ts</code>; pagine <code>CsPage</code> (vista <code>/?view=cs</code>), <code>TodoPage</code>, <code>NonCompliancePage</code>, <code>TicketsPage</code>.</li>
+<li><strong>Stato</strong>: <strong>implementato</strong>; CS/NB segnalati &quot;da sistemare/coerenti&quot; nel handoff di feb-2026, poi consolidati.</li>
+</ul>
+<h3>3.16 Import legacy (MySQL &quot;Biferno&quot; → Postgres)</h3>
+<ul>
+<li><strong>Obiettivo</strong>: migrare/verificare i dati storici in modo idempotente.</li>
+<li><strong>Passi</strong>: dump MySQL (<code>novarium-db_*.sql</code>, gitignored) → MySQL legacy in Docker (<code>docker-compose.legacy.yml</code>) → import (<code>legacy/importer.ts</code>, tabelle <code>aziende</code>, <code>users</code>, <code>prodotti</code>, <code>categorie</code>, <code>cli</code>, <code>for</code> — escaping necessario per <code>for</code>) → chiavi <code>legacySource/legacyId</code> → modalità <code>demo</code> (limiti) / <code>full</code> → fallback &quot;Legacy Unassigned&quot; (Group) e &quot;Various&quot; (macchina) → runbook ETL (reset/extract/import/validate/golden-check orari Europe/Rome) → <code>legacy-sync-v1</code> (overwrite selettivo, dry-run) → numerosi script di backfill (<code>src/backend/scripts/backfill-*.ts</code>).</li>
+<li><strong>Moduli/file</strong>: <code>src/backend/src/legacy</code>, <code>src/backend/scripts</code>, <code>docs/runbooks/etl-legacy-to-postgres.md</code>, <code>legacy-sync-v1.md</code>, <code>docs/migrations/2026-02-21_2y_legacy_migration.md</code>.</li>
+<li><strong>Stato</strong>: <strong>implementato e usato</strong>; migrazione full e validazione dati ancora tra i TODO di handover.</li>
+</ul>
+<h3>3.17 Integrazione sito web pubblico</h3>
+<ul>
+<li><strong>Obiettivo</strong>: il sito è interfaccia esterna; <strong>non decide mai</strong> — tutta la logica è nel BO.</li>
+<li><strong>Passi</strong>: richieste dal sito (<code>public/website-requests</code> → candidati cliente, review su RFQ), chat assist pubblica (<code>public/website-chat</code>), discussioni pubbliche con reply token, redirect SEO, statistiche ranking Google.</li>
+<li><strong>Moduli/file</strong>: <code>modules/website-requests</code>, <code>modules/website-chat</code>, <code>modules/public-discussions</code>, <code>modules/public-message-attachments</code>, <code>modules/seo-stats</code>; pagine <code>SeoStatsPage</code>, <code>TokenAttachmentsPage</code>.</li>
+<li><strong>Stato</strong>: <strong>implementato</strong> (deploy: sito servito dallo stesso compose, host <code>test3.novarium.net</code>).</li>
+</ul>
+<h3>3.18 Amministrazione, auth, report, sistema</h3>
+<ul>
+<li><strong>Auth BO</strong>: JWT + ruoli (<code>backoffice-auth</code>: guard globale, <code>@Public</code>, <code>@Roles</code>, <code>RequireAuth</code>, accesso reports separato). Login page; utenti gestiti in <code>modules/users</code>.</li>
+<li><strong>Admin</strong>: config comunicazioni/SMTP, retry invii falliti, env/status, inline image blacklist, system admin, DB backup (<code>DatabaseBackupPage</code>), monitoring (<code>SystemMonitoringPage</code>, <code>SystemHealthPage</code>), health DB.</li>
+<li><strong>Reports</strong>: <code>orders-confirm-supplier-date</code> (+export), accesso con <code>canViewReports</code>; cambio EUR/USD (Sole24Ore scheduler, audit <code>EurUsdRateChange</code>, <code>ExchangeRatePage</code>).</li>
+<li><strong>Marine</strong>: catalogo macchine/tipi equipment, divisioni Medical/Marine (migrazione additiva applicata set-2026 su Supabase; guard rigidi cross-division <strong>differiti</strong> in <code>prisma/manual/marine-division-guards.sql</code>).</li>
+<li><strong>Copilot RFQ</strong>: <code>copilot-chat.ts</code> (contesto RFQ, draft, improve) — assistente AI sulla RFQ.</li>
+<li><strong>Stato</strong>: <strong>implementato</strong> (auth e CICD erano in quarantena a feb-2026; auth poi integrata).</li>
+</ul>
+<hr>
+<h2>4. Integrazioni esterne</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Integrazione</th>
+<th>Tipo</th>
+<th>Dove</th>
+<th>Stato</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SendGrid</strong></td>
+<td>SMTP outbound + webhook eventi consegna (<code>/webhooks/sendgrid</code>)</td>
+<td><code>modules/outbox</code>, <code>src/backend/src/mail</code>, admin SMTP</td>
+<td>Attivo (prod env <code>SMTP_*</code>)</td>
+</tr>
+<tr>
+<td><strong>IMAP</strong> (mailbox inbound)</td>
+<td>Poller standalone <code>poll-inbox.ts</code> + <code>modules/imap</code> (<code>ops/poll-inbox.sh</code>)</td>
+<td>ingest <code>MasterMessage</code> → parser</td>
+<td>Attivo</td>
+</tr>
+<tr>
+<td><strong>Kapso (WhatsApp Business)</strong></td>
+<td>Webhook inbound (HMAC, quick tunnel cloudflared in locale) + API send</td>
+<td><code>modules/whatsapp</code></td>
+<td>Solo locale; prod in pausa (rollout revertito)</td>
+</tr>
+<tr>
+<td><strong>MySQL legacy &quot;Biferno&quot;</strong></td>
+<td>Import dump + sync selettivo</td>
+<td><code>src/backend/src/legacy</code>, scripts</td>
+<td>Attivo on-demand (Docker locale)</td>
+</tr>
+<tr>
+<td><strong>Supabase</strong></td>
+<td>Postgres gestito + S3-compatible storage documenti</td>
+<td><code>DATABASE_URL</code>/<code>DIRECT_URL</code>, <code>S3_DOCUMENTS_*</code></td>
+<td>Attivo (prod)</td>
+</tr>
+<tr>
+<td><strong>Sito pubblico Novarium</strong></td>
+<td>Website requests/chat, token pages, redirect SEO</td>
+<td>moduli <code>website-*</code>, <code>public-*</code></td>
+<td>Attivo (<code>test3.novarium.net</code>)</td>
+</tr>
+<tr>
+<td><strong>Sole24Ore (cambio EUR/USD)</strong></td>
+<td>Scheduler lettura tasso</td>
+<td><code>modules/currency</code></td>
+<td>Attivo</td>
+</tr>
+<tr>
+<td><strong>AI/LLM</strong> (parser, copilot, marketing AI, product candidates)</td>
+<td>Chiamate AI interne</td>
+<td><code>modules/parser</code>, <code>rfq/copilot-chat.ts</code>, <code>marketing-campaigns/ai/*</code></td>
+<td>Attivo; config via parser config</td>
+</tr>
+<tr>
+<td><strong>Cloudflare Tunnel</strong></td>
+<td>Expose dev UI + webhook WhatsApp locale</td>
+<td>dev tooling</td>
+<td>Dev-only</td>
+</tr>
+<tr>
+<td><strong>Airtable</strong> (progetto SP — Strategic Platform)</td>
+<td>Buffer discovery clienti/fornitori/prodotti <strong>fuori dal BO</strong></td>
+<td>doc <code>docs/decisions/Modulo SP</code></td>
+<td>Concept/esterno al repo BO</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h2>5. Stato del progetto e TODO aperti</h2>
+<h3>5.1 Stato (da git + docs)</h3>
+<ul>
+<li>Branch <code>main</code> pulito (solo <code>.local-runtime/</code> untracked). Ultimi lavori (ott-2026): layout prodotto, supplier templates, WhatsApp, capability supplier/OEM, report ordini, filtri RFQ.</li>
+<li><strong>MERGE_LOG (feb-2026)</strong>: integrate 7 fasi (wiring, backend-services, validation-dtos, frontend-types, ui-quality, tests, phase5/roadmap con 13 conflitti risolti). In quarantena allora: auth, email-full, cicd — <strong>auth poi implementata</strong> (<code>backoffice-auth</code>); email e CI/CD parzialmente rientrati.</li>
+<li><strong>02_PROJECT/01_CURRENT_STATE</strong> (feb-2026): RFQ CRUD, timeline, Client/ProductFullPage, Stock base completi; in corso Group persistence, Supplier flow completo, History unificata — tutti poi consolidati nel codice.</li>
+<li>Roadmap Phase 5 (hardening): tutta completata (P0/P1/P2).</li>
+<li>Evolution plan: Fase 1 (stabilizzazione) fatta; Fase 2 (history unificata, inbox derivata) superata — inbox <strong>materializzata</strong>; Fase 3 (parser AI, snapshot, projection) — parser fatto, snapshot/projection ancora no.</li>
+</ul>
+<h3>5.2 TODO aperti (da README handover, handoff, roadmap)</h3>
+<ol>
+<li><strong>Migrazione legacy full + validazione dati</strong> (handover Giovanni; ETL runbook pronto).</li>
+<li><strong>CI/CD pipeline</strong> (build/test/migrate/deploy) — branch <code>phase4/cicd</code> mai integrato.</li>
+<li><strong>Logging/monitoring/alerting operativo</strong> + runbook incidenti (parzialmente coperto da SystemMonitoring/health).</li>
+<li><strong>Validazione flussi operativi UI e criteri di accettazione MVP</strong> (Vittorio).</li>
+<li><strong>Idempotency globale</strong> sulle azioni critiche (send offer/request) — presente su token/eventi, non globale.</li>
+<li><strong>Snapshot RFQ, projection endpoint, materialized views, ottimizzazione tabella Event</strong> (rischio noto: crescita Event, ricostruzione stato costosa).</li>
+<li><strong>WhatsApp</strong>: rollout produzione solo su istruzione esplicita; allineare branch locale/main.</li>
+<li><strong>Parser</strong>: gap trigger (no cron/webhook/RFQ); dispatch config.</li>
+<li><strong>ASK1 mail parity</strong>: chiudere i &quot;current code gaps&quot; (subject grammar, product card, VAT, CTA footer) tra AGENT 1A/1B.</li>
+<li><strong>Marine</strong>: classificazione aziende Medical/Marine e attivazione guard cross-division (script manuale differito).</li>
+<li><strong>Policy/ruoli authz su BO e token portal</strong> (ruoli esistono; hardening da verificare).</li>
+<li>Da DECISIONS_FROZEN/docs: <strong>nessuna state machine RFQ, niente Time Engine</strong> — restano congelati.</li>
+</ol>
+<h3>5.3 Buchi / disallineamenti nella documentazione</h3>
+<ul>
+<li><strong>README</strong>: &quot;Attualmente non c'è autenticazione (planned)&quot; → <strong>obsoleto</strong>: esiste <code>backoffice-auth</code> con JWT/ruoli e RequireAuth su tutte le route BO.</li>
+<li><strong>02_PROJECT</strong>: i file duplicati <code>CURRENT_STATE.md</code>, <code>ROADMAP.md</code>, <code>DECISIONS_FROZEN.md</code> nella stessa cartella sono <strong>vuoti (0 righe)</strong>; valgono solo <code>01_/02_/03_*</code>.</li>
+<li><strong>DECISIONS_FROZEN</strong> dichiara &quot;No Inbox materializzata, No Parser automatico ora&quot; → entrambi <strong>implementati</strong> (InboxItem, parser module): decisioni riaperte di fatto, doc mai aggiornato.</li>
+<li><strong>docs/02_PROJECT e 03_AI_SYSTEM</strong> fermi a feb-2026; ~8 mesi di evoluzione (WhatsApp, marketing, portali, proforma, SEO, Marine, tickets) <strong>non riflessi</strong> nei documenti di stato/roadmap.</li>
+<li><code>docs/architecture.md</code>, <code>docs/data-model.md</code>, <code>docs/api.md</code>, <code>docs/user-manual.md</code> citati dal README <strong>non esistono più</strong> nella root docs (sostituiti da <code>01_ARCHITECTURE/</code>, <code>decisions/user-manual.md</code>, ecc.) → README con riferimenti rotti.</li>
+<li>Nessun doc unico dei flussi (questo file colma il gap); la conoscenza operativa è sparsa tra handoff, ASK1, PARSER_SPEC e codice.</li>
+</ul>
+<hr>
+<h2>6. Glossario dei termini di business Novarium</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Termine</th>
+<th>Significato</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>RFQ</strong></td>
+<td>Request For Quotation — richiesta di offerta; oggetto centrale del BO</td>
+</tr>
+<tr>
+<td><strong>Biferno</strong></td>
+<td>Nome del BO legacy (MySQL) da replicare</td>
+</tr>
+<tr>
+<td><strong>Group</strong></td>
+<td>Gruppo aziendale di clienti (più sedi); sede delle esclusioni fornitori</td>
+</tr>
+<tr>
+<td><strong>Client</strong></td>
+<td>Sede/unità operativa di un Group; unica entità con <code>canPlaceOrders</code></td>
+</tr>
+<tr>
+<td><strong>can_place_orders</strong></td>
+<td>Flag: solo il Client con questo flag può essere intestatario (billing) di una RFQ</td>
+</tr>
+<tr>
+<td><strong>Supplier / SupplierGroup</strong></td>
+<td>Fornitore / gruppo societario fornitore con termini commerciali default</td>
+</tr>
+<tr>
+<td><strong>Contact</strong></td>
+<td>Persona con email unica globale, collegabile a clienti e fornitori</td>
+</tr>
+<tr>
+<td><strong>SupplierRequest (SR)</strong></td>
+<td>Richiesta inviata a un fornitore per una RFQ (stati: sent/replied/item_na/no_reply)</td>
+</tr>
+<tr>
+<td><strong>item NA</strong></td>
+<td>&quot;Item Not Available&quot; — il fornitore dichiara il ricambio non disponibile; esiste anche come messaggio standalone al cliente (con sospensione RFQ)</td>
+</tr>
+<tr>
+<td><strong>Event / Timeline</strong></td>
+<td>Evento append-only (origine client/supplier/BO/system); la Timeline RFQ è la storia completa e &quot;sacra&quot; della richiesta</td>
+</tr>
+<tr>
+<td><strong>Discussions</strong></td>
+<td>Eventi/email non collegati a RFQ, visibili nelle schede Client/Supplier (<code>includeInDisc</code>)</td>
+</tr>
+<tr>
+<td><strong>Master List</strong></td>
+<td>Inbox di verità: tutto ciò che arriva (non una lista di lavoro)</td>
+</tr>
+<tr>
+<td><strong>Action List / ActionItem</strong></td>
+<td>Lavoro umano: voci CHECK (capire) / DO (eseguire) / DONE</td>
+</tr>
+<tr>
+<td><strong>CS</strong></td>
+<td>Marker operativo su RFQ (aperto/chiuso, nota pinned) — &quot;customer service&quot;/contesto aperto legacy</td>
+</tr>
+<tr>
+<td><strong>TODO / NB</strong></td>
+<td>Flag operativi su RFQ: TODO = da fare; NB = Nota Bene (nota evidenziata)</td>
+</tr>
+<tr>
+<td><strong>Reminder</strong></td>
+<td>Promemoria (data, iniziali, open/done) collegabile a RFQ/Client/Supplier/Product/Ticket</td>
+</tr>
+<tr>
+<td><strong>Token / Token page</strong></td>
+<td>Link pubblico non scadente per fornitore (<code>/t/supplier/...</code>: offer/item_na/message) o cliente (<code>/t/client/...</code>: message/confirm); multi-click idempotente</td>
+</tr>
+<tr>
+<td><strong>Token Session</strong></td>
+<td>Pagina multi-prodotto (draft → submit) per rispondere a più RFQ insieme</td>
+</tr>
+<tr>
+<td><strong>Portal / PortalAccount</strong></td>
+<td>Portale pubblico con login per clienti/fornitori</td>
+</tr>
+<tr>
+<td><strong>MessageModel</strong></td>
+<td>Modello di messaggio per scenario (testi EN/IT + blocchi prodotto/offerta/CTA)</td>
+</tr>
+<tr>
+<td><strong>Template / MailTemplate</strong></td>
+<td>Testi rapidi predefiniti per messaggi outbound</td>
+</tr>
+<tr>
+<td><strong>NVM</strong></td>
+<td>Sigla Novarium nelle subject grammar email (es. <code>{ref} - NVM - Offer to Novarium Client - ...</code>)</td>
+</tr>
+<tr>
+<td><strong>Product card (probe/part/imaging)</strong></td>
+<td>Tassonomia schede prodotto nelle email: sonda ultrasound (con Description), parte ultrasound, parte imaging</td>
+</tr>
+<tr>
+<td><strong>Machine / &quot;Various&quot;</strong></td>
+<td>Macchina (modello apparecchiatura) associata alla RFQ; obbligatoria, fallback legacy &quot;Various&quot;</td>
+</tr>
+<tr>
+<td><strong>Legacy Unassigned</strong></td>
+<td>Group di fallback quando il gruppo legacy è vuoto</td>
+</tr>
+<tr>
+<td><strong>legacySource / legacyId</strong></td>
+<td>Chiavi di provenienza per import idempotente dal legacy</td>
+</tr>
+<tr>
+<td><strong>Exchange</strong></td>
+<td>RFQ di scambio/permuta con fornitore owner (<code>exchangeOwner*</code>)</td>
+</tr>
+<tr>
+<td><strong>Sale type</strong></td>
+<td>Tipo vendita legacy (campo <code>saleType</code> su RFQ/SupplierGroup)</td>
+</tr>
+<tr>
+<td><strong>Proforma (PI)</strong></td>
+<td>Proforma Invoice generata dalla RFQ</td>
+</tr>
+<tr>
+<td><strong>Stock serializzato</strong></td>
+<td>Magazzino per singolo pezzo/seriale (compliance medicale)</td>
+</tr>
+<tr>
+<td><strong>Capability / Scoring fornitore</strong></td>
+<td>Capacità per categoria+brand e punteggi periodici di affidabilità del fornitore</td>
+</tr>
+<tr>
+<td><strong>Await Request</strong></td>
+<td>Follow-up programmato dopo una richiesta genuina del cliente</td>
+</tr>
+<tr>
+<td><strong>InboxItem / bucket / needsFix</strong></td>
+<td>Inbox materializzata; <code>needsFix</code> = richiede correzione umana (non errore parser)</td>
+</tr>
+<tr>
+<td><strong>Parser (deterministico → AI)</strong></td>
+<td>Classifica email in ingresso e propone azioni; &quot;always materialize&quot;; fallback prodotto &quot;Various Parts&quot;</td>
+</tr>
+<tr>
+<td><strong>Business Unit / Division</strong></td>
+<td>IMAGING/ULTRASOUND/DENTAL/LAB/OTHER; divisione prodotto MEDICAL/MARINE via categoria legacy</td>
+</tr>
+<tr>
+<td><strong>Marine</strong></td>
+<td>Nuova divisione nautica (macchine Marine, equipment types)</td>
+</tr>
+<tr>
+<td><strong>SP (Strategic Platform)</strong></td>
+<td>Progetto esterno: discovery 24/7 di clienti/fornitori/prodotti con staging su Airtable (fuori dal BO)</td>
+</tr>
+<tr>
+<td><strong>Kapso</strong></td>
+<td>Provider WhatsApp Business usato per il canale WhatsApp</td>
+</tr>
+<tr>
+<td><strong>CS / EZ / VMD</strong></td>
+<td>Sigle operative interne (es. reminder first-order call &quot;EZ+VMD&quot;, invio &quot;send-as-ez&quot;)</td>
+</tr>
+<tr>
+<td><strong>Override</strong></td>
+<td>Deroga esplicita e tracciata (es. includere un fornitore escluso dal Group)</td>
+</tr>
+<tr>
+<td><strong>Amend</strong></td>
+<td>Modifica come nuovo evento (mai update distruttivo)</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<p><em>Fine documento. Generato da analisi read-only; nessun file del repo è stato modificato.</em></p>
+</main></body></html>

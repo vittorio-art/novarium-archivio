@@ -1,0 +1,609 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proposta di miglioramento del Parser email — verso maggiore automazione</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #fff; --text: #37352f; --muted: #787774; --faint: #9b9a97;
+  --rule: rgba(55, 53, 47, .09); --rule-strong: rgba(55, 53, 47, .16);
+  --surface: #f7f6f3; --code-bg: rgba(135, 131, 120, .15);
+  --link-line: rgba(55, 53, 47, .35); --check: #787774;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #191919; --text: rgba(255, 255, 255, .86); --muted: rgba(255, 255, 255, .55); --faint: rgba(255, 255, 255, .4);
+    --rule: rgba(255, 255, 255, .08); --rule-strong: rgba(255, 255, 255, .14);
+    --surface: #202020; --code-bg: rgba(255, 255, 255, .08);
+    --link-line: rgba(255, 255, 255, .35); --check: rgba(255, 255, 255, .32);
+  }
+}
+* { box-sizing: border-box; }
+html { background: var(--bg); -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; padding: 4.5rem 3rem 6rem; color: var(--text); background: var(--bg);
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+}
+main > * { max-width: 720px; margin-left: auto; margin-right: auto; }
+main > :first-child { margin-top: 0; }
+p, ul, ol, blockquote, pre, dl { margin-top: 0; margin-bottom: 1em; }
+p, li, blockquote, dd { overflow-wrap: break-word; }
+h1, h2, h3, h4, h5, h6 { color: var(--text); font-weight: 600; line-height: 1.3; margin: 2em auto .5em; }
+h1 { font-size: 2.125rem; font-weight: 700; line-height: 1.2; letter-spacing: -.021em; margin-bottom: .6em; }
+h2 { font-size: 1.5rem; letter-spacing: -.017em; margin-top: 2.2em; }
+h3 { font-size: 1.25rem; letter-spacing: -.012em; }
+h4 { font-size: 1.0625rem; }
+h5, h6 { font-size: 1rem; color: var(--muted); }
+h1 + h2, h2 + h3, h3 + h4 { margin-top: 1em; }
+strong { font-weight: 600; }
+a { color: inherit; text-decoration: underline; text-decoration-color: var(--link-line); text-decoration-thickness: 1px; text-underline-offset: .2em; transition: text-decoration-color .15s; }
+a:hover { text-decoration-color: currentColor; }
+ul, ol { padding-left: 1.6em; }
+li { margin: .25em 0; padding-left: .15em; }
+li > ul, li > ol { margin: .25em 0 0; }
+li > p { margin-bottom: .5em; }
+li::marker { color: var(--muted); }
+.task-list-item { list-style: none; margin-left: -1.45em; }
+.task-list-item input {
+  appearance: none; -webkit-appearance: none; width: 1em; height: 1em; margin: 0 .55em 0 0; vertical-align: -.15em;
+  border: 1.5px solid var(--faint); border-radius: 3px; background: transparent;
+}
+.task-list-item input:checked {
+  border-color: transparent; background: var(--check) no-repeat center / 80%
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+.task-list-item:has(> input:checked, > p:first-child > input:checked) { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--faint); }
+blockquote { margin-left: auto; margin-right: auto; padding: .1em 0 .1em 1.1em; border-left: 3px solid var(--rule-strong); color: var(--muted); }
+blockquote > :last-child { margin-bottom: 0; }
+hr { height: 1px; border: 0; background: var(--rule-strong); margin: 2.5em auto; }
+img { max-width: 100%; height: auto; border-radius: 4px; }
+code, kbd, samp, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace; }
+code { font-size: .85em; padding: .15em .35em; border-radius: 4px; background: var(--code-bg); }
+pre { font-size: .85em; line-height: 1.6; padding: 1em 1.25em; background: var(--surface); border-radius: 6px; overflow-x: auto; }
+pre code { font-size: inherit; padding: 0; background: none; border-radius: 0; }
+.table-scroll { max-width: 100%; overflow-x: auto; margin: 1em 0; }
+main > .table-scroll {
+  width: max-content; min-width: min(720px, 100%); max-width: min(1240px, 100%);
+  margin: 1.5em auto 2em;
+}
+table { border-collapse: collapse; font-size: .9rem; line-height: 1.55; }
+th, td {
+  padding: .55em .9em; text-align: left; vertical-align: top;
+  border-bottom: 1px solid var(--rule); overflow-wrap: normal; word-break: normal;
+}
+th { white-space: nowrap; font-weight: 600; color: var(--muted); background: var(--surface); border-bottom-color: var(--rule-strong); }
+th:first-child, td:first-child { padding-left: .75em; }
+td { min-width: 4.5rem; max-width: 32rem; }
+td a { white-space: nowrap; }
+tbody tr:last-child td { border-bottom: 0; }
+@media (max-width: 640px) {
+  body { padding: 2rem 1.25rem 4rem; font-size: 15.5px; }
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.3rem; }
+  h3 { font-size: 1.125rem; }
+  main > .table-scroll { margin-left: -1.25rem; margin-right: -1.25rem; max-width: calc(100% + 2.5rem); min-width: 0; width: auto; padding: 0 1.25rem; }
+  td { min-width: 8rem; }
+}
+@media print { body { padding: 0; } .table-scroll { overflow: visible; } }
+</style></head><body><main><h1>Proposta di miglioramento del Parser email — verso maggiore automazione</h1>
+<blockquote>
+<p>Documento di proposta basato su analisi diretta del codice (repo <code>novarium-backoffice-clean</code>, ottobre 2026). <strong>Principio guida: non rompere ciò che funziona.</strong> Ogni modifica proposta è incrementale, dietro feature flag, e misurata prima dell'attivazione. Fonti: <code>docs/parser/PARSER_SPEC.md</code>, <code>src/backend/src/modules/parser/</code>, <code>prisma/schema.prisma</code>, <code>bozza-flussi-bo.md</code> §3.8.</p>
+</blockquote>
+<hr>
+<h2>1. Come funziona oggi</h2>
+<h3>1.1 La pipeline in sintesi</h3>
+<p>Il parser è un <strong>classificatore che propone, non un sistema che decide</strong> (regola congelata in PARSER_SPEC §23). La pipeline reale è:</p>
+<pre><code>Email in ingresso (IMAP poller o POST /parser/run/:id manuale)
+  → Dispatch per mittente (ParserDispatchService, 16+ regole per-cliente)
+  → Parser specializzato DETERMINISTICO (DirectMed, Althea, GE, Philips, …)
+     oppure ramo &quot;standard&quot;:
+       1. Match deterministico R0–R6 (header In-Reply-To, ref RFQ-&lt;id&gt;,
+          legacy ref in subject/body, email fornitore/cliente nota)
+       2. Se nessun match → AI (OpenAI) o heuristic fallback
+       3. Arricchimento: product evidence (regex), catalog grounding
+       4. Routing v2 → bucket (NEW_RFQ, RFQ_THREAD, DISCUSSION, …)
+       5. Materializzazione immediata (InboxItem + eventuali entità)
+</code></pre>
+<p>Due anime convivono: il ramo <strong>v1/legacy</strong> (<code>parser.service.ts</code> + <code>deterministic-matcher.ts</code> + <code>deterministic-apply.ts</code>, ~200k righe di logica e test) e la pipeline <strong>v2</strong> (<code>v2/</code>, stadi P0→P6) per le nuove RFQ standard. Il campo <code>parserVersion</code> nel risultato distingue i due percorsi.</p>
+<h3>1.2 Cosa è già automatico</h3>
+<p>&lt;div class=&quot;table-scroll&quot;&gt;</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Azione</th>
+<th>Automatica?</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Classificazione bucket</td>
+<td>✅ Sempre</td>
+<td>Routing v2, sempre materializzato</td>
+</tr>
+<tr>
+<td>Creazione RFQ da nuova richiesta cliente</td>
+<td>✅ Sì</td>
+<td>Se <code>intent=create_rfq</code> + client email + confidence ≥ 0.65 + nessun guard attivo</td>
+</tr>
+<tr>
+<td>Creazione client/prodotto placeholder</td>
+<td>✅ Sì</td>
+<td>Con <code>needsFix=true</code></td>
+</tr>
+<tr>
+<td>Collegamento email a thread RFQ</td>
+<td>✅ Sì</td>
+<td>Con anchor forte (In-Reply-To, RFQ-id, legacy ref) + confidence ≥ 0.85</td>
+</tr>
+<tr>
+<td>Parser deterministici per-cliente (DirectMed, Althea, GE F/IT, Philips, Probo, Imagex, TQMS, FeniceMed, Poliedra, HCE, Magna, APR)</td>
+<td>✅ Sì</td>
+<td>Estrazione strutturata senza LLM</td>
+</tr>
+<tr>
+<td>Blocco bounce/MAILER-DAEMON</td>
+<td>✅ Sì</td>
+<td><code>system-email-guard</code></td>
+</tr>
+<tr>
+<td>Split multi-prodotto free-text</td>
+<td>⚠️ Dietro flag</td>
+<td><code>PARSER_FREE_SCAN_MULTI_PRODUCT</code> default <strong>ON</strong> (dal 15/10, PR #42 — opt-out via env)</td>
+</tr>
+</tbody>
+</table></div>
+<p>&lt;/div&gt;</p>
+<h3>1.3 Cosa è semiautomatico (intervento umano)</h3>
+<p>&lt;div class=&quot;table-scroll&quot;&gt;</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Punto</th>
+<th>Come funziona</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Offerte fornitore / item NA</strong></td>
+<td>Il parser collega l'email al thread e crea una <code>ParseSuggestion</code> (<code>apply_offer</code> / <code>apply_item_na</code> / <code>link_rfq</code>). L'operatore deve <strong>cliccare &quot;applica&quot;</strong> (<code>inbox.service.applySuggestion</code>). Nessun auto-apply.</td>
+</tr>
+<tr>
+<td><strong>needsFix</strong></td>
+<td>Ogni NEW_RFQ con confidence &lt; 0.85, prodotto non identificato (→ &quot;Various Parts&quot;), client/prodotto placeholder richiede correzione manuale. In pratica <strong>quasi tutte le NEW_RFQ richiedono review</strong> (<code>needsReview=true</code> sempre).</td>
+</tr>
+<tr>
+<td><strong>DISCUSSION / UNRECOGNIZED</strong></td>
+<td>L'operatore decide manualmente: crea RFQ, collega a RFQ esistente, archivia.</td>
+</tr>
+<tr>
+<td><strong>DRAFT</strong></td>
+<td>Path legacy con conferma esplicita (<code>CONFIRMED</code>/<code>REJECTED</code> su <code>reviewStatus</code>).</td>
+</tr>
+</tbody>
+</table></div>
+<p>&lt;/div&gt;</p>
+<h3>1.4 Le soglie oggi</h3>
+<p>&lt;div class=&quot;table-scroll&quot;&gt;</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Soglia</th>
+<th>Default</th>
+<th>Env</th>
+<th>Uso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PARSE_CONFIDENCE_HIGH</code></td>
+<td>0.85</td>
+<td>✅</td>
+<td>Auto-routing RFQ_THREAD; sotto → <code>fixReason: low_parser_confidence</code></td>
+</tr>
+<tr>
+<td><code>PARSE_CONFIDENCE_LOW</code></td>
+<td>0.65</td>
+<td>✅</td>
+<td>Ammissione NEW_RFQ</td>
+</tr>
+<tr>
+<td><code>GROUNDING_STRONG_SCORE</code></td>
+<td>0.5</td>
+<td>❌ hardcoded</td>
+<td>Qualità match catalogo</td>
+</tr>
+</tbody>
+</table></div>
+<p>&lt;/div&gt;</p>
+<p><strong>Limite strutturale: la confidence è UN numero per l'intera email.</strong> Non esiste una confidence per campo (cliente, prodotto, offerta, intent) — anche se il terreno esiste già: <code>rfqMatch.confidence</code> (thread), <code>groundingContext.topProductCandidates[].score</code> (prodotto), <code>machineDecision.confidence</code> (macchina).</p>
+<h3>1.5 Il ruolo dell'AI oggi</h3>
+<ul>
+<li>Provider: <strong>OpenAI</strong> (default <code>gpt-4o-mini</code>), Anthropic selezionabile ma <strong>non implementato</strong> (cade su heuristic), OFF = heuristic regex.</li>
+<li>Il LLM viene invocato <strong>solo se il deterministico non produce nulla</strong> e solo sui rami configurati <code>p3Variant=LLM</code> (default per il parser &quot;standard&quot;).</li>
+<li>System prompt <strong>statico, zero esempi</strong> (few-shot assenti), temperature 0.1, output JSON validato con zod.</li>
+<li>Esiste già una modalità &quot;minimal no-thread&quot; (<code>PARSER_MINIMAL_NO_THREAD_LLM</code>, default OFF): prompt ristretto in cui il LLM decide <strong>solo</strong> intent + lista prodotti richiesti — niente client, supplier, offer. È la risposta architetturale già avviata al problema &quot;l'AI si confondeva&quot;: <strong>meno decisioni al LLM, più al deterministico</strong>.</li>
+</ul>
+<hr>
+<h2>2. Dove l'AI &quot;si confondeva&quot; — evidenze dal codice</h2>
+<p>Il codice racconta la storia dei fallimenti passati: quasi ogni guardia, denylist e parser specializzato è la cicatrice di un caso in cui l'AI (o l'estrazione ingenua) sbagliava. In ordine di evidenza:</p>
+<h3>2.1 Mittenti strutturati → 16 parser deterministici al posto del LLM</h3>
+<p>Il sintomo più macroscopico: per i flussi importanti e ricorrenti (GE France/Italia, Philips Italia/NL, DirectMed, Althea, Probo, Imagex, TQMS, FeniceMed, Poliedra, HCE, Magna Meditech, APR) il LLM è stato <strong>sostituito</strong> da estrattori deterministici dedicati (<code>p3Variant=DETERMINISTIC</code> forzato). L'LLM non riusciva a interpretare in modo affidabile i formati strutturati di questi mittenti (portali, HTML form, RDO numerate). <strong>Questo lavoro non va toccato: è il patrimonio di stabilità attuale.</strong></p>
+<h3>2.2 Thread e forward scambiati per nuove richieste</h3>
+<p>Un reply o un forward su una RFQ esistente veniva letto dall'AI come <code>create_rfq</code>. Risposte nel codice:</p>
+<ul>
+<li>Regola d'oro nei golden test P0-3: <em>&quot;RFQ thread beats AI create_rfq&quot;</em> — un <code>rfqMatch</code> deterministico forte <strong>sovrascrive</strong> l'intent dell'AI.</li>
+<li><code>stripQuotedReply</code> + soglia <code>FRESH_BODY_MIN_LENGTH=20</code>: il corpo quotato non conta come contenuto fresco.</li>
+<li>Guard rail <code>legacy_ref_not_resolved</code> / <code>legacy_ref_ambiguous</code>: se c'è un ref legacy che non si risolve, NEW_RFQ è <strong>bloccato</strong> (cade in DISCUSSION) anche se l'AI dice <code>create_rfq</code>.</li>
+</ul>
+<h3>2.3 Firme, disclaimer e footer → falsi codici prodotto</h3>
+<p>L'estrazione di codici prodotto pescava token da firme e footer (telefoni, P.IVA, CAP, indirizzi). Cicatrici:</p>
+<ul>
+<li><code>email-body-cleaner.ts</code>: pipeline dedicata a rimuovere quote, disclaimer (EN+IT, inclusi footer GE/DHL/Coupa), firme RFC 3676 e firme senza separatore (contact-marker based, es. caso &quot;SIRIH&quot;).</li>
+<li><code>product-evidence.ts</code>: denylist estese — telefoni, VAT/P.IVA, CAP italiani ed europei, date, anni, URL, token SMTP/RFC (<code>RFC822</code>, <code>SMTP</code>, <code>MIME</code>… dai bounce), suffissi societari (<code>SRL</code>, <code>GMBH</code>…), keyword legali GDPR.</li>
+</ul>
+<h3>2.4 Email multi-prodotto</h3>
+<p>Un'email con 2+ part number veniva collassata su un solo prodotto (o su &quot;Various Parts&quot;). Cicatrici:</p>
+<ul>
+<li>Il system prompt principale ora chiede esplicitamente un array <code>products[]</code>.</li>
+<li>Rilevatore T8 (<code>t8-multi-product-request.ts</code>) per casi strutturati.</li>
+<li>Fallback free-scan (<code>PARSER_FREE_SCAN_MULTI_PRODUCT</code>, <strong>default OFF</strong>, opt-in): splitta in RFQ sorelle solo se ogni candidato mappa <strong>in modo non ambiguo</strong> a un prodotto DB. Il test cita un caso reale (<code>EP399000CE + UST-5550</code>).</li>
+<li>Il prompt &quot;minimal&quot; ribadisce: <em>&quot;Multi-product emails MUST produce one entry per part&quot;</em>.</li>
+</ul>
+<h3>2.5 Bounce e mail di sistema</h3>
+<p>I bounce MAILER-DAEMON contengono il testo commerciale originale embedded → l'AI leggeva &quot;richiesta preventivo&quot; nel corpo del bounce e creava RFQ fantasma. Risposta: <code>system-email-guard.ts</code> + blocco NEW_RFQ in routing (P3) + denylist token SMTP in product-evidence.</p>
+<h3>2.6 Link a portali illeggibili (DirectMed)</h3>
+<p>Email che rimandano a un portale esterno: se il fetch fallisce, l'AI inventava o collassava. Risposta: parser dedicato + guard <code>linked_rfq_content_unreadable</code> che blocca NEW_RFQ e instrada a UNRECOGNIZED per review manuale.</p>
+<h3>2.7 Dettagli fini ma costosi</h3>
+<ul>
+<li><strong>Valuta</strong>: il prompt deve dire esplicitamente <em>&quot;Do NOT assume EUR&quot;</em> e l'interfaccia traccia <code>currencySource: explicit | default</code> — l'AI inventava la valuta.</li>
+<li><strong>Lingue miste IT/EN</strong>: heuristic e prompt gestiscono entrambe; i casi di confusione residua finiscono in DISCUSSION (fail-safe).</li>
+<li><strong>Confidence gonfiata</strong>: la heuristic assegna 0.68–0.72 (appena sopra LOW=0.65) a qualunque email con keyword o allegato — il sistema compensa tenendo <code>needsReview=true</code> sempre.</li>
+</ul>
+<p><strong>Pattern generale</strong>: l'AI sbagliava quando le si chiedevano <strong>troppe decisioni insieme</strong> (classificare + identificare cliente + estrarre prodotti multipli + capire thread + valutare prezzi) su input rumorosi (firme, quote, forward, formati strutturati). Il sistema attuale funziona bene perché ha <strong>ridotto il perimetro decisionale dell'AI</strong> e l'ha circondata di guard rails deterministiche. La proposta segue esattamente questa direzione.</p>
+<hr>
+<h2>3. Proposta di miglioramento incrementale</h2>
+<p>Cinque fasi, ciascuna <strong>indipendente, dietro feature flag, e misurabile</strong>. Nessuna tocca i parser deterministici per-cliente né le guard rails esistenti.</p>
+<h3>Fase 0 — Strumentazione degli esiti (fondazione di tutto)</h3>
+<p><strong>Problema</strong>: oggi <code>ParseSuggestion</code> ha solo <code>applied: boolean</code>. Un suggerimento rifiutato o corretto a mano <strong>non lascia traccia riutilizzabile</strong>: non sappiamo <em>perché</em> l'operatore non ha applicato, né <em>cosa</em> ha corretto. Senza questo dato, ogni &quot;apprendimento&quot; è impossibile.</p>
+<p><strong>Cosa fare</strong>:</p>
+<ol>
+<li>Estendere <code>ParseSuggestion</code> con: <code>outcome</code> (<code>accepted | rejected | modified | expired</code>), <code>rejectedReason</code> (scelta da lista breve), <code>correctedPayload</code> (JSON, il payload come applicato davvero dopo le correzioni), <code>outcomeAt</code>, <code>outcomeByUserId</code>.</li>
+<li>UI inbox: accanto ad &quot;Applica&quot;, bottoni <strong>&quot;Rifiuta&quot;</strong> (con motivo rapido) e <strong>&quot;Applica con modifiche&quot;</strong> (salva il diff in <code>correctedPayload</code>).</li>
+<li>Analogamente, sugli InboxItem con <code>needsFix</code>: quando l'operatore corregge (es. cambia prodotto da &quot;Various Parts&quot; a uno specifico), registrare l'evento di correzione in timeline con payload strutturato (campo, prima, dopo).</li>
+<li>Sfruttare il path già esistente <code>reviewStatus: CONFIRMED | REJECTED</code> (oggi usato solo per DRAFT) come vocabolario comune.</li>
+</ol>
+<p><strong>Rischio</strong>: bassissimo — solo scrittura aggiuntiva, nessun cambio di comportamento.</p>
+<h3>Fase 1 — Confidence per-campo</h3>
+<p><strong>Problema</strong>: una confidence unica per email non permette automazione selettiva. Un'email può avere thread match certissimo (0.95) ma prodotto dubbio, o intent chiaro ma cliente nuovo.</p>
+<p><strong>Cosa fare</strong> — comporre una <strong>confidence strutturata</strong> usando pezzi che esistono già:</p>
+<p>&lt;div class=&quot;table-scroll&quot;&gt;</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Fonte confidence (già presente)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Thread/RFQ match</td>
+<td><code>rfqMatch.confidence</code> + <code>threadLinkBasis</code></td>
+</tr>
+<tr>
+<td>Prodotto</td>
+<td><code>groundingContext.topProductCandidates[].score</code> + <code>matchType</code> (<code>exact_code</code> &gt; <code>normalized_code</code> &gt; <code>brand_code</code> &gt; …)</td>
+</tr>
+<tr>
+<td>Macchina</td>
+<td><code>machineDecision.confidence</code> (strong/weak)</td>
+</tr>
+<tr>
+<td>Intent/bucket</td>
+<td><code>parseResult.confidence</code> (LLM o regole)</td>
+</tr>
+<tr>
+<td>Cliente</td>
+<td>match deterministico su Contact (binario: matched/new)</td>
+</tr>
+<tr>
+<td>Offerta</td>
+<td>presenza prezzo + <code>currencySource</code> (explicit &gt; default) + <code>hadUnmappableConditionText</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>&lt;/div&gt;</p>
+<p>Persistere questa struttura in <code>ParseRun.result</code> e <code>InboxItem.parseSummary</code> (campo nuovo, nessuna migrazione distruttiva). <strong>Nessun cambio di routing in questa fase</strong>: solo osservabilità. Serve a Fase 2 e alle metriche (§4).</p>
+<h3>Fase 2 — Auto-apply selettivo delle suggestion sopra soglia</h3>
+<p><strong>Problema</strong>: oggi ogni offerta fornitore richiede un click manuale anche quando è perfettamente ancorata (RFQ-id esplicito, fornitore noto, prezzo+valuta espliciti). È il maggior volume di lavoro semiautomatico residuo.</p>
+<p><strong>Cosa fare</strong> — auto-apply di <code>ParseSuggestion</code> solo quando <strong>tutte</strong> queste condizioni (AND):</p>
+<ul>
+<li>anchor thread forte: <code>threadLinkBasis ∈ {rfq_id_ref, rfc_in_reply_to}</code> oppure <code>supplierRequestId != null</code> (come già richiesto da <code>hasStrongRfqThreadAnchor</code>);</li>
+<li>confidence per-campo sopra soglia alta: <code>rfqMatch.confidence ≥ PARSE_CONFIDENCE_HIGH</code> <strong>e</strong> offerta con prezzo presente + <code>currencySource=explicit</code> + nessun <code>hadUnmappableConditionText</code>;</li>
+<li><code>actionType ∈ {apply_offer, apply_item_na}</code> — <code>link_rfq</code> e <code>create_rfq</code> restano manuali in questa fase;</li>
+<li>nessun guard attivo (legacy/linked/system) e nessun <code>fixReason</code> critico.</li>
+</ul>
+<p>Regole di sicurezza:</p>
+<ul>
+<li>L'auto-apply <strong>non rimuove <code>needsReview</code></strong>: l'item resta in coda review con flag <code>auto_applied</code>, la review diventa <strong>post-apply</strong> (&quot;conferma che va bene&quot;) invece che pre-apply. Coerente con la regola §23 della spec: nessun side-effect irreversibile senza review — l'applicazione di un'offerta è correggibile, e la review resta obbligatoria.</li>
+<li>Rollout in <strong>shadow mode</strong> per 2–4 settimane: il sistema <em>simula</em> l'auto-apply (scrive <code>wouldAutoApply=true</code> nel ParseRun) senza applicare. Si confronta con l'esito reale degli operatori. Attivazione solo se la simulazione concorda con gli operatori ≥ target (es. 97%).</li>
+<li>Feature flag dedicato (stile <code>PARSER_FREE_SCAN_MULTI_PRODUCT</code>): <code>PARSER_AUTO_APPLY_HIGH_CONFIDENCE</code>, default OFF, opt-in.</li>
+</ul>
+<h3>Fase 3 — Eval set e few-shot dai casi reali corretti</h3>
+<p><strong>Problema</strong>: il system prompt è statico e senza esempi. Ogni miglioria al prompt oggi è un salto nel buio (nessun benchmark).</p>
+<p><strong>Cosa fare</strong>:</p>
+<ol>
+<li><strong>Eval set versionato</strong>: job (anche manuale/script) che legge gli esiti di Fase 0 (suggestion accettate/rifiutate/modificate, fix corretti) e costruisce un dataset JSON versionato in repo: <code>email (anonimizzata) → output atteso corretto dall'operatore</code>. Target iniziale: 100–200 casi, pesati per tipo (multi-prodotto, thread ambigui, bounce, lingue miste).</li>
+<li><strong>Harness di valutazione</strong>: script che esegue il parser (o solo lo step LLM) sull'eval set e misura accuracy per campo. Diventa il gate oggettivo per <strong>qualsiasi</strong> modifica futura a prompt, modello o soglie — e risponde alla domanda &quot;il cambiamento migliora o peggiora?&quot;.</li>
+<li><strong>Few-shot dinamico</strong>: estendere <code>parser-ai.prompt-builder.ts</code> per iniettare 2–3 esempi pertinenti nel prompt, selezionati per similarità (stesso dominio mittente, stesso pattern: multi-prodotto, forward, ecc.) dai casi corretti. Solo nel ramo LLM &quot;standard&quot;; i parser deterministici restano invariati.</li>
+<li>Estendere i golden test con i casi reali più critici emersi dagli esiti (i rifiuti sono oro: sono i casi dove il sistema sbaglia ancora).</li>
+</ol>
+<h3>Fase 4 — Multi-prodotto: da flag sperimentale a comportamento affidabile</h3>
+<blockquote>
+<p><strong>✅ Validazione retroattiva su dati reali (15/10, query su 12 mesi di produzione):</strong></p>
+<ul>
+<li>196 email in cui il parser aveva rilevato 2+ prodotti. Nei <strong>102 casi in cui TUTTI i codici matchano in modo univoco il catalogo</strong> (esattamente 1 prodotto per codice), il team ha aperto 2+ RFQ sorelle nel <strong>96% dei casi osservati</strong> (73/76 con esito verificabile) → la regola stretta riproduce il comportamento umano.</li>
+<li>Le 3 eccezioni (4%): codici consecutivi/varianti dello stesso articolo (es. <code>00-900695-01</code> + <code>00-900696-01</code>) — il motivo per cui <code>needsReview</code> resta ON anche dopo l'attivazione.</li>
+<li>Sui collassi &quot;Various Parts&quot; (campione 400): solo ~2-3% contiene 2+ codici esatti non rilevati → il free-scan recupera poco (~50 casi/anno); il grosso dei Various Parts è un problema diverso (prodotto singolo non matchato = gap di grounding, fuori scope qui).</li>
+<li><strong>Conclusione: precisione storica 96%</strong> — <s>shadow mode breve</s> <strong>ATTIVATO 15/10 (PR #42)</strong>: decisione Vittorio — niente shadow, diretto con review post + opt-out env. Metrica da guardare: conteggio <code>free_scan_multi_product</code>/settimana + esiti review (target ≥96% conferme).</li>
+</ul>
+</blockquote>
+<p><strong>Problema</strong>: <code>PARSER_FREE_SCAN_MULTI_PRODUCT</code> è OFF di default; il LLM supporta <code>products[]</code> ma lo split è consentito solo in condizioni molto strette.</p>
+<p><strong>Cosa fare</strong>:</p>
+<ol>
+<li>Misurare sull'eval set (Fase 3) l'accuracy del multi-prodotto: quante email con 2+ part number vengono splittate correttamente, quanti split errati.</li>
+<li>Attivare il free-scan <strong>in produzione in shadow mode</strong> (riusa la stessa infrastruttura di Fase 2): loggare &quot;avrebbe splittato in N RFQ&quot; senza farlo, confrontare con le correzioni manuali.</li>
+<li>Graduare l'attivazione: prima solo quando tutti i candidati hanno match DB <code>exact_code</code> non ambiguo (già implementato), poi — solo se le metriche lo giustificano — estendere ai casi con grounding forte.</li>
+<li>Arricchire il few-shot (Fase 3) con esempi multi-prodotto reali corretti dagli operatori, così il LLM impara il formato &quot;una riga per part number&quot; tipico dei clienti Novarium.</li>
+</ol>
+<h3>(Trasversale, opzionale) — Trigger automatico</h3>
+<p>Gap noto (PARSER_SPEC §3.2/§22, priorità alta): il parser gira solo via poller IMAP o invocazione manuale. Se il poller è fermo, le email restano non parsate. Proposta minima e a basso rischio: health-check sul poller + auto-parse backlog con rate limit (niente nuove logiche di parsing, solo scheduling). Indipendente dalle Fasi 0–4.</p>
+<hr>
+<h3>(Trasversale, regola business) — Guard rail <code>client_cannot_order</code>: mai creare RFQ sotto cliente che non può ordinare ✅ IMPLEMENTATO (15/10, <a href="https://github.com/vittorio-art/novarium-backoffice/pull/43">PR #43</a>)</h3>
+<p><strong>Regola (Vittorio, 15/10): il parser non deve mai creare una RFQ intestata a un cliente con <code>canPlaceOrders = false</code> (né <code>suspended = true</code>).</strong> Nessuna eccezione automatica: se non c'è un destinatario valido, l'email va in review manuale.</p>
+<p><strong>Stato attuale — il gap verificato nel codice:</strong></p>
+<ul>
+<li><code>resolveCanOrderClient()</code> (<code>parser/placeholder-factory.ts</code>) già gestisce il caso felice: se il richiedente ha <code>canPlaceOrders = false</code>, cerca un altro cliente dello stesso gruppo con <code>canPlaceOrders = true</code> + <code>suspended = false</code> e gli intesta la RFQ (reviewReason <code>requester_redirected_to_can_order</code>). <strong>Ma se nel gruppo nessun cliente può ordinare, la funzione restituisce comunque il richiedente non abilitato &quot;per non bloccare la creazione&quot; → la RFQ sporca viene creata.</strong> È il ramo da eliminare.</li>
+<li>Caso tipico che colpisce il gap: mittente sconosciuto associato via dominio a un gruppo esistente → il placeholder nasce con <code>canPlaceOrders = false</code> → se il gruppo non ha clienti abilitati, la RFQ finisce sotto il placeholder non abilitato.</li>
+<li>La creazione manuale da inbox UI invece <strong>già blocca</strong> (<code>inbox.service.ts</code>: errore &quot;Selected client cannot place orders&quot;) e a valle esiste il guard <code>rfq.service.ts</code> (&quot;Client not enabled&quot;) — ma entrambi agiscono dopo: la RFQ sporca resta nel DB. Il blocco va spostato a monte, nel parser.</li>
+</ul>
+<p><strong>Cosa fare (3 punti):</strong></p>
+<ol>
+<li><strong><code>placeholder-factory.ts</code></strong> — <code>resolveCanOrderClient</code>: il ramo fallback (nessun can-order nel gruppo) non restituisce più il richiedente non abilitato; segnala invece esito negativo (es. <code>canOrderResolved = false</code> + reviewReason <code>client_cannot_order</code>). Vale anche per <code>suspended = true</code> sul richiedente/destinatario.</li>
+<li><strong><code>routing-v2.ts</code></strong> — aggiungere <code>client_cannot_order</code> ai guard rail che bloccano NEW_RFQ (stesso meccanismo di <code>legacy_ref_not_resolved</code> / <code>mail_system_bounce</code>): bucket → <strong>DISCUSSION</strong>, <code>needsReview = true</code>, motivo visibile all'operatore. Nessuna RFQ, nessun placeholder lato RFQ.</li>
+<li><strong>Review manuale</strong> — l'operatore decide: abilita il cliente agli ordini (<code>canPlaceOrders = true</code>), crea/sposta un cliente can-order nel gruppo e riassegna, oppure archivia. Coerente con &quot;il parser propone, non decide&quot;: qui la proposta è &quot;gestisci tu il cliente&quot;.</li>
+</ol>
+<p><strong>Nota sul redirect esistente (da mantenere):</strong> quando il redirect a sibling can-order avviene, il contatto richiedente resta quello reale (<code>requesterContactId</code>) e la reviewReason <code>requester_redirected_to_can_order</code> resta in traccia — comportamento corretto, non toccare.</p>
+<p><strong>Test:</strong></p>
+<ul>
+<li>Unit su <code>resolveCanOrderClient</code>: (a) richiedente abilitato → as-is; (b) sibling can-order → redirect; (c) nessun can-order nel gruppo → esito negativo, nessun clientId valido.</li>
+<li>Routing: reviewReason <code>client_cannot_order</code> → bucket DISCUSSION, zero eventi di creazione RFQ emessi.</li>
+<li>Regression: i 16 parser deterministici per-cliente e i casi felici (cliente abilitato) invariati.</li>
+</ul>
+<p><strong>Metrica (entra nel report settimanale §4):</strong> conteggio guard <code>client_cannot_order</code> per settimana — quante volte scatta e con quali domini/gruppi, così si vede se serve un'azione sui dati (es. gruppi senza alcun cliente abilitato).</p>
+<p><strong>Rischio:</strong> bassissimo. Nessun cambio sui casi felici; il solo comportamento che cambia è il fallback oggi &quot;sporco&quot;, che diventa review manuale invece di RFQ da pulire.</p>
+<hr>
+<h2>4. Come misurare il miglioramento</h2>
+<p>Tutte le metriche sono calcolabili da tabelle esistenti (<code>ParseRun</code>, <code>ParseSuggestion</code>, <code>InboxItem</code>, <code>Event</code>) + i campi esito di Fase 0. Suggerita una query/report settimanale (anche solo Metabase/SQL), nessuna infrastruttura nuova.</p>
+<h3>4.1 Metriche di automazione (north star: lavoro umano risparmiato)</h3>
+<p>&lt;div class=&quot;table-scroll&quot;&gt;</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Metrica</th>
+<th>Definizione</th>
+<th>Baseline oggi</th>
+<th>Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Tasso auto-apply suggestion</strong></td>
+<td><code>suggestion auto-applicate / suggestion create</code> per <code>actionType</code></td>
+<td>0%</td>
+<td>≥ 60% entro 2 mesi dall'attivazione Fase 2</td>
+</tr>
+<tr>
+<td><strong>Precision auto-apply</strong></td>
+<td><code>auto-apply confermati in review post-apply / auto-apply totali</code></td>
+<td>—</td>
+<td>≥ 97% (sotto → soglia alzata o flag OFF)</td>
+</tr>
+<tr>
+<td><strong>Tasso accettazione suggestion</strong></td>
+<td><code>accepted / (accepted+rejected)</code> per <code>actionType</code> e per <code>selectedParserKey</code></td>
+<td>da misurare (oggi non misurabile: manca il reject esplicito)</td>
+<td>trend crescente</td>
+</tr>
+<tr>
+<td><strong>% email con needsFix</strong></td>
+<td><code>InboxItem needsFix=true / totali</code> per bucket</td>
+<td>da misurare</td>
+<td>trend decrescente</td>
+</tr>
+<tr>
+<td><strong>Tempo medio di ciclo inbox</strong></td>
+<td><code>resolvedAt - createdAt</code> mediano per bucket</td>
+<td>da misurare</td>
+<td>-30% su RFQ_THREAD fornitore</td>
+</tr>
+</tbody>
+</table></div>
+<p>&lt;/div&gt;</p>
+<h3>4.2 Metriche di qualità (guardia contro regressioni)</h3>
+<p>&lt;div class=&quot;table-scroll&quot;&gt;</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Metrica</th>
+<th>Definizione</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tasso rifiuto per <code>actionType</code></td>
+<td><code>rejected / (accepted+rejected)</code> — spike = regressione (prompt, modello, soglia)</td>
+</tr>
+<tr>
+<td>Tasso modifica</td>
+<td><code>modified / totali</code> — cosa gli operatori correggono più spesso (guida le priorità)</td>
+</tr>
+<tr>
+<td>Accuracy per campo sull'eval set</td>
+<td>intent, bucket, cliente, prodotto, offerta — eseguita a ogni cambio prompt/modello/soglia</td>
+</tr>
+<tr>
+<td>Distribuzione confidence per bucket</td>
+<td>rilevare confidence gonfiata (es. heuristic a 0.68 che sbaglia spesso)</td>
+</tr>
+<tr>
+<td>Volume <code>product_defaulted_to_various_parts</code></td>
+<td>quante NEW_RFQ finiscono su Various Parts — proxy della qualità di estrazione prodotto</td>
+</tr>
+</tbody>
+</table></div>
+<p>&lt;/div&gt;</p>
+<h3>4.3 Regola operativa</h3>
+<p><strong>Nessuna soglia viene abbassata e nessun flag viene attivato senza baseline misurata.</strong> Ogni fase produce la baseline della successiva. Le soglie HIGH/LOW attuali (0.85/0.65) restano invariate finché le metriche per-campo (Fase 1) non mostrano dove stringere/allargare con sicurezza.</p>
+<hr>
+<h2>5. Effort stimato e confini</h2>
+<h3>5.1 Macro-fasi</h3>
+<p>&lt;div class=&quot;table-scroll&quot;&gt;</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Fase</th>
+<th>Contenuto</th>
+<th>Effort stimato*</th>
+<th>Dipendenze</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>0. Strumentazione esiti</strong></td>
+<td>Migrazione schema (campi esito), endpoint + UI rifiuta/modifica, eventi correzione</td>
+<td>4–6 gg</td>
+<td>Nessuna</td>
+</tr>
+<tr>
+<td><strong>1. Confidence per-campo</strong></td>
+<td>Composizione struttura, persistenza in parseSummary/result, report base</td>
+<td>3–5 gg</td>
+<td>Nessuna (parallela a Fase 0)</td>
+</tr>
+<tr>
+<td><strong>2. Auto-apply selettivo</strong></td>
+<td>Shadow mode + confronto, poi auto-apply flaggato, review post-apply UI</td>
+<td>6–9 gg</td>
+<td>Fasi 0 + 1 (servono esiti e confidence)</td>
+</tr>
+<tr>
+<td><strong>3. Eval set + few-shot</strong></td>
+<td>Estrazione dataset da esiti, harness valutazione, few-shot dinamico nel prompt builder</td>
+<td>6–10 gg</td>
+<td>Fase 0 (servono correzioni reali)</td>
+</tr>
+<tr>
+<td><strong>4. Multi-prodotto</strong></td>
+<td>Misura su eval set, shadow mode, attivazione graduale free-scan</td>
+<td>4–6 gg</td>
+<td>Fasi 2–3</td>
+</tr>
+<tr>
+<td>(Trasversale) Guard <code>client_cannot_order</code></td>
+<td>Fallback <code>resolveCanOrderClient</code> → guard routing, test, metrica report</td>
+<td>1–2 gg</td>
+<td>Nessuna</td>
+</tr>
+<tr>
+<td>(Trasversale) Trigger/poller</td>
+<td>Health-check + auto-parse backlog</td>
+<td>2–3 gg</td>
+<td>Nessuna</td>
+</tr>
+</tbody>
+</table></div>
+<p>&lt;/div&gt;</p>
+<p>*Giornate sviluppatore senior che conosce il codebase, incluse test. Le fasi 0 e 1 sono parallelizzabili; la sequenza consigliata è 0+1 → 2 → 3 → 4.</p>
+<h3>5.2 Cosa NON toccare (esplicito)</h3>
+<ol>
+<li><strong>I 16 parser deterministici per-cliente</strong> (<code>althea/</code>, <code>directmed/</code>, <code>ge_france/</code>, <code>ge_italia/</code>, <code>philips_*</code>, <code>probomedical/</code>, <code>imagex/</code>, <code>tqms/</code>, <code>fenicemed/</code>, <code>poliedra/</code>, <code>hce/</code>, <code>magna_meditech/</code>, <code>apr/</code>): funzionano, sono coperti da test fitti, sono la ragione per cui &quot;ora funziona molto bene&quot;.</li>
+<li><strong>Le regole deterministiche R0–R6</strong> e la loro precedenza sull'AI (principio &quot;deterministico prima, AI dopo&quot;).</li>
+<li><strong>Le guard rails</strong>: <code>legacyGuard</code>, <code>systemEmailGuard</code>, <code>linkedRfqGuard</code> — bloccano NEW_RFQ nei casi storicamente disastrosi.</li>
+<li><strong>Le soglie HIGH/LOW attuali</strong> finché Fase 1 non fornisce evidenza per ritoccarle.</li>
+<li><strong>&quot;Always materialize&quot;</strong> e il fallback <strong>&quot;Various Parts&quot;</strong>: sono scelte di resilienza convalidate.</li>
+<li><strong>I golden test P0/P1</strong> congelati: vanno solo <em>estesi</em> con nuovi casi reali, mai rilassati.</li>
+<li><strong>La regola suprema</strong> (PARSER_SPEC §23): il parser propone, l'umano conferma. L'auto-apply proposto non la viola: sposta la review da pre-apply a post-apply <strong>solo</strong> per casi sopra soglia alta con anchor forte, mantenendo <code>needsReview=true</code> e tracciando tutto. Qualunque estensione oltre questo perimetro richiede una decisione esplicita del titolare.</li>
+<li><strong><code>heuristicParse</code> come fallback</strong>: resta la rete di sicurezza quando il LLM è down o il provider è OFF.</li>
+</ol>
+<h3>5.3 Rischio principale e mitigazione</h3>
+<p>Il rischio di ogni automazione aggiuntiva è ricadere nel problema originale (&quot;l'AI si confondeva&quot;). La mitigazione è strutturale in questa proposta: <strong>si automatizza solo ciò che è già deterministico-friendly</strong> (anchor forti, campi espliciti), <strong>si misura prima in shadow mode</strong>, e <strong>l'AI riceve meno decisioni, non più</strong> (few-shot mirati su intent/prodotti, coerente con la direzione già presa dal prompt &quot;minimal no-thread&quot;). Il LLM non torna mai a decidere da solo su thread, clienti o formati strutturati dove ha già fallito.</p>
+<hr>
+<h2>Appendice — Riferimenti codice</h2>
+<p>&lt;div class=&quot;table-scroll&quot;&gt;</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Tema</th>
+<th>File</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Spec completa parser</td>
+<td><code>docs/parser/PARSER_SPEC.md</code> (source of truth, aggiornata 2026-05-04)</td>
+</tr>
+<tr>
+<td>Pipeline principale</td>
+<td><code>src/backend/src/modules/parser/parser.service.ts</code></td>
+</tr>
+<tr>
+<td>Dispatch per mittente</td>
+<td><code>parser-dispatch.service.ts</code> (regole + <code>p3Variant</code>)</td>
+</tr>
+<tr>
+<td>Match deterministico R0–R6</td>
+<td><code>deterministic-matcher.ts</code></td>
+</tr>
+<tr>
+<td>Apply/materializzazione</td>
+<td><code>deterministic-apply.ts</code> (incl. suggestion, multi-prodotto, Various Parts)</td>
+</tr>
+<tr>
+<td>Routing bucket + soglie</td>
+<td><code>routing-v2.ts</code></td>
+</tr>
+<tr>
+<td>AI adapter + prompt</td>
+<td><code>parser-ai/</code> (adapter, system-prompt, minimal-*, prompt-builder)</td>
+</tr>
+<tr>
+<td>Pipeline v2 standard</td>
+<td><code>v2/</code> (P0→P6, parser_trace)</td>
+</tr>
+<tr>
+<td>Pulizia corpo email</td>
+<td><code>email-body-cleaner.ts</code></td>
+</tr>
+<tr>
+<td>Evidence prodotto</td>
+<td><code>product-evidence.ts</code></td>
+</tr>
+<tr>
+<td>Modelli DB</td>
+<td><code>prisma/schema.prisma</code>: <code>MasterMessage</code>, <code>InboxItem</code>, <code>ParseRun</code>, <code>ParseSuggestion</code></td>
+</tr>
+<tr>
+<td>Apply suggestion (operatore)</td>
+<td><code>modules/inbox/inbox.service.ts</code> (<code>applySuggestion</code>, confirm/reject DRAFT)</td>
+</tr>
+<tr>
+<td>Env rilevanti</td>
+<td><code>OPENAI_API_KEY/MODEL</code>, <code>PARSE_CONFIDENCE_HIGH/LOW</code>, <code>PARSER_MINIMAL_NO_THREAD_LLM</code>, <code>PARSER_FREE_SCAN_MULTI_PRODUCT</code>, <code>PARSER_MULTI_RFQ_AUTO_LINK</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>&lt;/div&gt;</p>
+<p><em>Documento redatto il 2026-10-10. Aggiornato il 2026-10-15: guard rail <code>client_cannot_order</code> implementato (PR #43, route UNRECOGNIZED come T2); free-scan multi-split default ON (PR #42).</em></p>
+</main></body></html>

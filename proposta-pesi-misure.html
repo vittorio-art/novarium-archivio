@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Novarium BackOffice — Proposta: sistema di aggiornamento PESI e MISURE dei prodotti</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #fff; --text: #37352f; --muted: #787774; --faint: #9b9a97;
+  --rule: rgba(55, 53, 47, .09); --rule-strong: rgba(55, 53, 47, .16);
+  --surface: #f7f6f3; --code-bg: rgba(135, 131, 120, .15);
+  --link-line: rgba(55, 53, 47, .35); --check: #787774;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #191919; --text: rgba(255, 255, 255, .86); --muted: rgba(255, 255, 255, .55); --faint: rgba(255, 255, 255, .4);
+    --rule: rgba(255, 255, 255, .08); --rule-strong: rgba(255, 255, 255, .14);
+    --surface: #202020; --code-bg: rgba(255, 255, 255, .08);
+    --link-line: rgba(255, 255, 255, .35); --check: rgba(255, 255, 255, .32);
+  }
+}
+* { box-sizing: border-box; }
+html { background: var(--bg); -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; padding: 4.5rem 3rem 6rem; color: var(--text); background: var(--bg);
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+}
+main > * { max-width: 720px; margin-left: auto; margin-right: auto; }
+main > :first-child { margin-top: 0; }
+p, ul, ol, blockquote, pre, dl { margin-top: 0; margin-bottom: 1em; }
+p, li, blockquote, dd { overflow-wrap: break-word; }
+h1, h2, h3, h4, h5, h6 { color: var(--text); font-weight: 600; line-height: 1.3; margin: 2em auto .5em; }
+h1 { font-size: 2.125rem; font-weight: 700; line-height: 1.2; letter-spacing: -.021em; margin-bottom: .6em; }
+h2 { font-size: 1.5rem; letter-spacing: -.017em; margin-top: 2.2em; }
+h3 { font-size: 1.25rem; letter-spacing: -.012em; }
+h4 { font-size: 1.0625rem; }
+h5, h6 { font-size: 1rem; color: var(--muted); }
+h1 + h2, h2 + h3, h3 + h4 { margin-top: 1em; }
+strong { font-weight: 600; }
+a { color: inherit; text-decoration: underline; text-decoration-color: var(--link-line); text-decoration-thickness: 1px; text-underline-offset: .2em; transition: text-decoration-color .15s; }
+a:hover { text-decoration-color: currentColor; }
+ul, ol { padding-left: 1.6em; }
+li { margin: .25em 0; padding-left: .15em; }
+li > ul, li > ol { margin: .25em 0 0; }
+li > p { margin-bottom: .5em; }
+li::marker { color: var(--muted); }
+.task-list-item { list-style: none; margin-left: -1.45em; }
+.task-list-item input {
+  appearance: none; -webkit-appearance: none; width: 1em; height: 1em; margin: 0 .55em 0 0; vertical-align: -.15em;
+  border: 1.5px solid var(--faint); border-radius: 3px; background: transparent;
+}
+.task-list-item input:checked {
+  border-color: transparent; background: var(--check) no-repeat center / 80%
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+.task-list-item:has(> input:checked, > p:first-child > input:checked) { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--faint); }
+blockquote { margin-left: auto; margin-right: auto; padding: .1em 0 .1em 1.1em; border-left: 3px solid var(--rule-strong); color: var(--muted); }
+blockquote > :last-child { margin-bottom: 0; }
+hr { height: 1px; border: 0; background: var(--rule-strong); margin: 2.5em auto; }
+img { max-width: 100%; height: auto; border-radius: 4px; }
+code, kbd, samp, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace; }
+code { font-size: .85em; padding: .15em .35em; border-radius: 4px; background: var(--code-bg); }
+pre { font-size: .85em; line-height: 1.6; padding: 1em 1.25em; background: var(--surface); border-radius: 6px; overflow-x: auto; }
+pre code { font-size: inherit; padding: 0; background: none; border-radius: 0; }
+.table-scroll { max-width: 100%; overflow-x: auto; margin: 1em 0; }
+main > .table-scroll {
+  width: max-content; min-width: min(720px, 100%); max-width: min(1240px, 100%);
+  margin: 1.5em auto 2em;
+}
+table { border-collapse: collapse; font-size: .9rem; line-height: 1.55; }
+th, td {
+  padding: .55em .9em; text-align: left; vertical-align: top;
+  border-bottom: 1px solid var(--rule); overflow-wrap: normal; word-break: normal;
+}
+th { white-space: nowrap; font-weight: 600; color: var(--muted); background: var(--surface); border-bottom-color: var(--rule-strong); }
+th:first-child, td:first-child { padding-left: .75em; }
+td { min-width: 4.5rem; max-width: 32rem; }
+td a { white-space: nowrap; }
+tbody tr:last-child td { border-bottom: 0; }
+@media (max-width: 640px) {
+  body { padding: 2rem 1.25rem 4rem; font-size: 15.5px; }
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.3rem; }
+  h3 { font-size: 1.125rem; }
+  main > .table-scroll { margin-left: -1.25rem; margin-right: -1.25rem; max-width: calc(100% + 2.5rem); min-width: 0; width: auto; padding: 0 1.25rem; }
+  td { min-width: 8rem; }
+}
+@media print { body { padding: 0; } .table-scroll { overflow: visible; } }
+</style></head><body><main><h1>Novarium BackOffice — Proposta: sistema di aggiornamento PESI e MISURE dei prodotti</h1>
+<p><em>Proposta — 10 ottobre 2026, a cura di Letta Code per Vittorio.</em>
+<em>Repo analizzato: <code>novarium-backoffice-clean</code>. Analisi 100% read-only: nessun file del repo modificato. Questo documento è l'unico artefatto prodotto.</em></p>
+<h2>Sintesi esecutiva</h2>
+<p>I campi per peso e dimensioni <strong>esistono già</strong> sul prodotto (<code>weightKg</code>, <code>widthCm</code>, <code>heightCm</code>, <code>depthCm</code>) ma sono quasi certamente <strong>vuoti</strong>: si compilano solo a mano, prodotto per prodotto. Il BackOffice ha già in produzione il pattern giusto per risolvere il problema — la pipeline semi-automatica delle <strong>immagini prodotto</strong> (ricerca web → candidati in staging → approvazione umana → applicazione). La proposta è replicare quel pattern, collaudato, per pesi e misure: un operatore non inserisce dati, <strong>approva dati</strong> proposti dal sistema con fonte e confidenza allegati.</p>
+<p>In più c'è un quick win scoperto durante l'analisi: il vecchio gestionale MySQL ha i campi <code>peso</code> e <code>volume</code> sulla tabella prodotti, <strong>mai migrati</strong> nel nuovo sistema. Una prima copertura si può ottenere con un backfill una tantum, prima ancora di accendere la ricerca web.</p>
+<p>Effort complessivo stimato: <strong>~10–14 giornate</strong> di sviluppo, a fasi, con pilota su 100 prodotti prima di scalare sul catalogo (~41k).</p>
+<hr>
+<h2>1. Stato attuale</h2>
+<h3>1.1 Campi esistenti sul prodotto</h3>
+<p>In <code>src/backend/prisma/schema.prisma</code> (righe 551–554), modello <code>Product</code>:</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>weightKg</code></td>
+<td><code>Float?</code></td>
+<td>peso in kg</td>
+</tr>
+<tr>
+<td><code>widthCm</code></td>
+<td><code>Float?</code></td>
+<td>larghezza in cm</td>
+</tr>
+<tr>
+<td><code>heightCm</code></td>
+<td><code>Float?</code></td>
+<td>altezza in cm</td>
+</tr>
+<tr>
+<td><code>depthCm</code></td>
+<td><code>Float?</code></td>
+<td>profondità in cm</td>
+</tr>
+</tbody>
+</table></div>
+<p>Evidenze sul loro ciclo di vita:</p>
+<ul>
+<li><strong>Aggiunti a febbraio 2026</strong> dalla migrazione <code>20260227093032_product_weight_size_fields</code>, che ha <strong>rinominato</strong> colonne precedenti (<code>shippingWeightKg</code>, <code>shippingWcm</code>, <code>shippingHcm</code>, <code>shippingLcm</code>). Quindi c'è già stato un primo tentativo di modellazione (&quot;shipping*&quot;), poi rifattorizzato — primo indizio che il tema è sentito ma non risolto.</li>
+<li><strong>Modificabili solo manualmente</strong>: pagina prodotto del BO (<code>ProductFullPage.tsx</code>, funzione <code>saveProductDims</code> → <code>PATCH /products/:id</code>, toast &quot;Weight and size saved&quot;). Nessun altro modo di popolarli.</li>
+<li><strong>Già consumati dai flussi di vendita</strong>: esposti nel dettaglio RFQ (<code>rfq.service.ts</code> ~riga 8906) e nel tipo TypeScript <code>Product</code> del frontend — quindi il valore di business è già cablato: servono per preventivi di trasporto.</li>
+</ul>
+<h3>1.2 Copertura stimata: quasi nulla</h3>
+<p>Non ho accesso al DB di produzione, ma tre fatti rendono la copertura quasi certamente trascurabile:</p>
+<ol>
+<li>Nessun modulo di arricchimento esiste: in <code>src/backend/src/modules/</code> c'è <code>product-image-candidates</code> (immagini) ma <strong>nulla</strong> per pesi/dimensioni.</li>
+<li>L'unico popolamento possibile oggi è l'inserimento manuale prodotto-per-prodotto su ~41k articoli.</li>
+<li>Il legacy aveva dati ma non sono stati migrati (vedi sotto).</li>
+</ol>
+<h3>1.3 Il tesoro dimenticato: <code>peso</code> e <code>volume</code> nel legacy MySQL</h3>
+<p>La documentazione del vecchio gestionale (<code>docs/IMPORTANTE legacy db info/prodotti.txt</code>, righe 19–20) elenca sulla tabella <code>prodotti</code>:</p>
+<ul>
+<li><code>volume</code> : volume del prodotto</li>
+<li><code>peso</code> : peso del prodotto</li>
+</ul>
+<p><strong>Questi campi non sono mai stati migrati</strong>: l'elenco colonne legacy usato dall'importatore (<code>src/backend/src/legacy/legacySchema.ts</code>, righe 96–117) non include né <code>peso</code> né <code>volume</code>, e l'importer non li mappa. Una query una tantum sul dump legacy (stesso volume <code>legacy_mysql_data</code> usato dall'ETL, vedi <code>docs/runbooks/etl-legacy-to-postgres.md</code>) può dire quanti prodotti hanno un peso storico e con quale unità — materiale primo per il backfill della Fase 0.</p>
+<h3>1.4 Dati di spedizione storici: assenti</h3>
+<p>Nello schema Prisma <strong>non esistono tabelle di spedizioni/coli</strong> (verificato con ricerca su <code>shipment|parcel|collo|cargo|spedizion</code>): il BO gestisce RFQ/proforma ma non registra i dati peso/dim dichiarati ai corrieri. Quindi &quot;imparare dalle spedizioni passate&quot; non è una fonte disponibile in casa — al massimo si possono importare in futuro export dei corrieri come fonte secondaria (fuori scope della prima versione).</p>
+<h3>1.5 Il pattern di riferimento già in produzione: pipeline immagini</h3>
+<p>La pipeline <code>product-image-candidates</code> è il modello da copiare, perché risolve lo stesso identico problema (dato mancante sul prodotto, da cercare sul web, con rischio di falsi match):</p>
+<ul>
+<li><strong>Coda di ricerca</strong> — tabella <code>ProductImageSearchQueueItem</code> (schema righe 1856–1875): un record per prodotto, stati <code>QUEUED | SEARCHING | REVIEW_READY | FAILED | DONE</code>, query testuale, motivo di fallimento, timestamp.</li>
+<li><strong>Candidati in staging</strong> — tabella <code>ProductImageCandidate</code> (righe 1820–1854): URL pagina e dominio sorgente, file su storage, <code>matchConfidence</code> (<code>HIGH|MEDIUM|LOW</code>), <code>status</code> (<code>PENDING|APPROVED|REJECTED</code>), note di revisione, chi ha creato e chi ha revisionato.</li>
+<li><strong>Worker a polling</strong> — <code>product-image-candidates.service.ts</code>: ogni 60 s prende i <code>QUEUED</code>, cerca via <strong>SerpAPI</strong> (Google Immagini), scarica i file, filtra watermark via <strong>OpenAI</strong> (gpt-4o-mini), deduplica per URL, crea fino a 5 candidati <code>PENDING</code>.</li>
+<li><strong>Approvazione umana</strong> — endpoint <code>POST /:id/approve</code>: in transazione crea il <code>Document</code> finale collegato al prodotto e marca il candidato <code>APPROVED</code> con revisore e data; idempotente; <code>POST /:id/reject</code> per lo scarto con motivazione.</li>
+<li><strong>Selezione pilota intelligente</strong> — <code>priorityQueue()</code>: CTE SQL sull'albero categorie legacy, esclude sospesi/placeholder/&quot;repair&quot;/manuali, ordina per <strong>RFQ negli ultimi 24 mesi</strong>, ordini e offerte: i prodotti commercialmente più rilevanti vengono processati per primi. Pilota: 30 prodotti × 3 gruppi (imaging, ultrasound, sonde).</li>
+<li><strong>UI di review</strong> — <code>ProductImageCandidatesPage.tsx</code> + bottone &quot;aggiungi alla coda&quot; sulla pagina prodotto.</li>
+</ul>
+<p>Infrastrutture già disponibili e riusabili per i pesi: <strong>SerpAPI</strong> (<code>SERPAPI_KEY</code>), <strong>OpenAI</strong> (<code>OPENAI_API_KEY</code>, già usato per output JSON strutturato), il modulo <strong>parser-ai</strong> (adapter LLM con validatore di schema), <strong>link-fetch</strong> (fetch di URL con policy domini fidati), <strong>documents/document-storage</strong> (storage S3-compatibile per i PDF datasheet scaricati).</p>
+<hr>
+<h2>2. Design proposto: pipeline &quot;Spec Candidate&quot; (pesi e misure)</h2>
+<p>Copia del pattern immagini, adattato al dato strutturato. Nome di lavoro: modulo <code>product-spec-candidates</code>.</p>
+<h3>2.1 Modello dati (2 tabelle nuove + 4 campi su Product)</h3>
+<p><strong>Tabella coda — <code>ProductSpecSearchQueueItem</code></strong>
+Identica nello spirito a quella immagini: <code>productId</code> (unique), <code>status</code> (<code>QUEUED | SEARCHING | REVIEW_READY | FAILED | DONE</code>), <code>searchQuery</code>, <code>failureReason</code>, <code>requestedByUserId</code>, timestamp <code>requestedAt/startedAt/finishedAt</code>. Indici su <code>(status, requestedAt)</code>.</p>
+<p><strong>Tabella staging — <code>ProductSpecCandidate</code></strong></p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Gruppo</th>
+<th>Campi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Provenienza</td>
+<td><code>productId</code>, <code>sourceType</code> (`MANUFACTURER_DATASHEET</td>
+</tr>
+<tr>
+<td>Dato grezzo</td>
+<td><code>rawWeight</code>, <code>rawWeightUnit</code>, <code>rawDimsText</code> (es. <code>&quot;12.5 x 8 x 4 in&quot;</code>), <code>rawExcerpt</code> (frammento di testo da cui è stato estratto)</td>
+</tr>
+<tr>
+<td>Dato normalizzato</td>
+<td><code>weightKg</code>, <code>widthCm</code>, <code>heightCm</code>, <code>depthCm</code> (già convertiti, stessi campi di Product)</td>
+</tr>
+<tr>
+<td>Qualità</td>
+<td><code>matchConfidence</code> (`HIGH</td>
+</tr>
+<tr>
+<td>Review</td>
+<td><code>status</code> (`PENDING</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Su <code>Product</code></strong> (migrazione piccola): <code>weightSource</code>, <code>dimsSource</code> (<code>MANUAL | AUTO_APPROVED | LEGACY</code>, default null) e <code>specsUpdatedAt</code>. Servono per la regola d'oro: <strong>mai sovrascrivere un dato confermato manualmente</strong>.</p>
+<h3>2.2 La pipeline end-to-end</h3>
+<pre><code>[Selezione]  priority queue (RFQ 24m) o enqueue manuale dalla pagina prodotto
+     ↓
+[Ricerca]    worker a polling (pattern esistente): SerpAPI web search
+             query = brand + codice + &quot;datasheet|weight|dimensions|specifications pdf&quot;
+     ↓
+[Recupero]   download PDF datasheet (→ Documents storage) o fetch pagina via link-fetch;
+             preferenza a domini produttore, poi distributori noti
+     ↓
+[Estrazione] LLM (OpenAI, JSON strutturato validato — stesso approccio parser-ai):
+             {weight, unit, dims LxWxH, unit} + excerpt letterale
+     ↓
+[Validazione] match brand+codice normalizzati; sanity check range per gruppo merceologico;
+              normalizzazione unità → kg / cm
+     ↓
+[Staging]    ProductSpecCandidate PENDING con raw + normalizzato + fonte + confidenza
+     ↓
+[Review]     UI di approvazione (copia di ProductImageCandidatesPage):
+             approva → applica a Product in transazione (solo campi non MANUAL)
+             rifiuta → motivazione obbligatoria (alimenta miglioramento query)
+</code></pre>
+<h3>2.3 Fonti, in ordine di fiducia</h3>
+<ol>
+<li><strong>Legacy MySQL <code>peso</code>/<code>volume</code></strong> (Fase 0, una tantum): dato interno storico, costo zero, copertura da verificare con una query sul dump.</li>
+<li><strong>Datasheet PDF del produttore</strong>: la fonte più affidabile; i PDF vengono salvati in Documents (riuso <code>document-storage</code>), così la prova resta allegata al prodotto.</li>
+<li><strong>Pagine prodotto dei produttori</strong> (GE, Philips, Siemens, Canon… e per il marine: Garmin, Raymarine, Furuno…).</li>
+<li><strong>Distributori specializzati</strong> (es. i portali ricambi imaging già noti a Novarium dai flussi RFQ): confidenza MEDIUM.</li>
+<li><strong>Aggregatori</strong>: solo come ultima risorsa, confidenza LOW, sempre con review attenta.</li>
+</ol>
+<h3>2.4 Normalizzazione unità (il punto dove i sistemi simili muoiono)</h3>
+<ul>
+<li><strong>Canonico</strong>: kg (3 decimali) e cm (1 decimale) — gli stessi campi già su Product. Niente nuove unità a riposo.</li>
+<li>Conversioni in ingresso: <code>g→kg /1000</code>, <code>lb→kg ×0.4536</code>, <code>oz→kg ×0.02835</code>; <code>mm→cm /10</code>, <code>in→cm ×2.54</code>.</li>
+<li>Parsing dimensioni tollerante: <code>&quot;30 x 20 x 15 cm&quot;</code>, <code>&quot;300×200×150 mm&quot;</code>, <code>&quot;12.5 x 8 x 4 in&quot;</code>, <code>&quot;L 300 W 200 H 150&quot;</code>, separatori <code>x|×|X|*</code>, decimali con punto o virgola.</li>
+<li><strong>Il candidato conserva sempre il grezzo</strong> (<code>rawDimsText</code>, <code>rawWeight</code>, <code>rawWeightUnit</code>): l'operatore vede sia il testo originale sia la conversione, e gli errori di parsing sono riconoscibili a colpo d'occhio.</li>
+<li>Convenzione L×W×H dichiarata in UI; se la fonte dà un solo ingombro &quot;shipping dimensions&quot;, <code>matchReason</code> lo segnala.</li>
+<li>Peso: distinzione netto/lordo solo se la fonte la dichiara esplicitamente (altrimenti il candidato resta MEDIUM con nota &quot;unità non dichiarata&quot;), perché per i preventivi trasporto serve il lordo ma i datasheet spesso danno il netto — meglio un candidato segnalato che un dato sbagliato silenzioso.</li>
+</ul>
+<h3>2.5 Regole anti-errore</h3>
+<ol>
+<li><strong>Confidenza per fonte</strong>: datasheet produttore con brand+codice esatti = HIGH; distributore = MEDIUM; aggregatore o match parziale del codice = LOW. Soglia di auto-presentazione: i LOW restano visibili ma in fondo alla coda di review.</li>
+<li><strong>Mai sovrascrivere il manuale</strong>: l'applicazione al Product scrive solo campi con <code>*Source != 'MANUAL'</code>; se un campo è MANUAL, l'approvazione aggiorna solo i campi liberi e lo segnala. Ogni scrittura automatica imposta <code>AUTO_APPROVED</code> + <code>specsUpdatedAt</code>.</li>
+<li><strong>Log di provenienza completo</strong>: ogni candidato porta URL, dominio, excerpt testuale, documento PDF salvato, modello LLM e data — chiunque può risalire al &quot;perché&quot; di ogni numero.</li>
+<li><strong>Sanity check per gruppo merceologico</strong>: range plausibili per categoria (es. sonda ultrasound 0,05–5 kg; coil MRI 5–2000 kg; display marino 0,2–15 kg). Fuori range → candidato creato ma flaggato <code>matchReason=&quot;sanity-check-failed&quot;</code> e confidenza declassata.</li>
+<li><strong>Match obbligatorio brand+codice</strong>: il candidato nasce solo se il codice prodotto (normalizzato: senza spazi/trattini) compare nella pagina/PDF insieme al brand o a un alias del brand. Niente match → niente candidato, la coda va in <code>FAILED</code> con motivo.</li>
+<li><strong>Idempotenza e deduplica</strong>: come per le immagini — stesso URL già visto per quel prodotto → scartato; approve idempotente.</li>
+</ol>
+<hr>
+<h2>3. Perché i tentativi precedenti possono essere falliti (e come evitarlo)</h2>
+<p>Vittorio riferisce: <em>&quot;non sono riuscito a implementarlo&quot;</em>. Dal repo emergono tracce coerenti con queste ipotesi:</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Ipotesi</th>
+<th>Evidenza</th>
+<th>Contromisura nel design</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Si è partiti dallo schema, non dalla pipeline</strong>: create colonne (&quot;shipping*&quot; → poi rinominate) ma mai costruito il sistema che le riempie</td>
+<td>Migrazione di feb. 2026 che rinomina colonne; nessun modulo di enrichment per pesi</td>
+<td>Prima la pipeline (coda → candidati → review), lo schema la segue; il backfill legacy dà subito valore senza web</td>
+</tr>
+<tr>
+<td><strong>Scraping HTML diretto fragile</strong>: i layout cambiano, i selettori si rompono, ogni sito è un caso a sé</td>
+<td>— (pattern assente, ma è la via &quot;ovvia&quot; che si tenta per prima)</td>
+<td>Niente scraping con selettori: SerpAPI per scoprire le fonti + <strong>LLM per l'estrazione</strong> (robusto ai layout, costo ~nullo su gpt-4o-mini) + PDF come fonte primaria</td>
+</tr>
+<tr>
+<td><strong>Unità incoerenti</strong> rendono il dato inutilizzabile per i preventivi (g vs kg, mm vs inch, netto vs lordo)</td>
+<td>4 campi Float &quot;nudi&quot; senza unità di origine né provenienza</td>
+<td>Grezzo+normalizzato nel candidato, conversioni centralizzate e testate, flag &quot;unità non dichiarata&quot;</td>
+</tr>
+<tr>
+<td><strong>Falsi match</strong>: codici ricambio simili tra produttori, pagine che parlano di altri modelli</td>
+<td>La pipeline immagini ha già dovuto risolvere lo stesso problema (confidenza, deduplica, OCR)</td>
+<td>Match brand+codice obbligatorio, confidenza, sanity range, review umana come unica via di scrittura</td>
+</tr>
+<tr>
+<td><strong>Scala prematura</strong>: puntare a 41k prodotti subito = rumore ingestibile e sfiducia nel sistema</td>
+<td>La pipeline immagini insegna: pilota 30×3 prima di tutto</td>
+<td>Pilota 100 prodotti ad alta rotazione (RFQ 24m), misura di accuratezza, poi scala</td>
+</tr>
+</tbody>
+</table></div>
+<p>Principio guida mutuato dalle immagini: <strong>il sistema propone, l'uomo dispone</strong>. Un dato sbagliato approvato è un incidente; un dato sbagliato scritto in automatico è un disastro.</p>
+<hr>
+<h2>4. Piano per fasi</h2>
+<p><strong>Fase 0 — Backfill legacy (quick win, 1–2 gg)</strong>
+Query sul dump MySQL legacy per contare/verificare <code>peso</code> e <code>volume</code>; script una tantum (stile <code>src/backend/scripts/backfill-*.ts</code>, ce ne sono già diversi) che popola <code>weightKg</code> dove manca, con <code>weightSource='LEGACY'</code>; su un campione di 20 prodotti si valida l'unità (kg? grammi? spesso il legacy Biferno usava kg in stringa). Output: report di copertura. <em>Valore immediato senza toccare il web.</em></p>
+<p><strong>Fase 1 — Fondamenta (2–3 gg)</strong>
+Migrazione Prisma (2 tabelle + 3 campi su Product), modulo Nest <code>product-spec-candidates</code> con CRUD candidati/coda, endpoint approve/reject (copia strutturale del controller immagini), applicazione transazionale a Product con regola &quot;mai sopra il MANUAL&quot;.</p>
+<p><strong>Fase 2 — Worker di ricerca ed estrazione (3–4 gg)</strong>
+Poller (pattern <code>onModuleInit</code> + <code>setInterval</code> esistente), query builder (brand+codice+keywords), SerpAPI web search, download PDF in Documents, estrazione LLM con JSON schema validato (riuso approccio <code>parser-ai</code>), normalizzatore unità con test unitari dedicati (g/kg/lb/oz, mm/cm/in, formati LxWxH), match brand+codice, sanity range.</p>
+<p><strong>Fase 3 — UI di review (2 gg)</strong>
+Pagina <code>ProductSpecCandidatesPage</code> (copia di <code>ProductImageCandidatesPage</code>): tabella PENDING con prodotto, valori grezzi vs normalizzati, fonte cliccabile, confidenza, bottoni approva/rifiuta; bottone &quot;cerca pesi/misure&quot; su <code>ProductFullPage</code> accanto al form manuale esistente; badge provenienza (<code>MANUAL|AUTO_APPROVED|LEGACY</code>) vicino ai campi.</p>
+<p><strong>Fase 4 — Pilota 100 prodotti (2–3 gg, di cui molto è attesa + misura)</strong>
+Selezione via <code>priorityQueue</code> (top RFQ 24 mesi, imaging+ultrasound+marine se disponibile), run, <strong>misura</strong>: % candidati trovati, % approvati, % errori di unità/match intercettati, tempo medio di review per candidato (obiettivo: &lt; 30 s). Gate di qualità: se accuratezza approvati ≥ 90% e review &lt; 30 s/candidato → scala; altrimenti si aggiustano query/prompt e si ripete il pilota.</p>
+<p><strong>Fase 5 — Scala</strong>
+Lotti da 500–1.000 prodotti, priorità RFQ; monitoraggio costi SerpAPI/OpenAI per lotto; eventuale auto-apply futuro solo per HIGH dopo mesi di dati (decisione da prendere con i numeri alla mano, non ora).</p>
+<hr>
+<h2>5. Effort stimato</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Fase</th>
+<th>Contenuto</th>
+<th>Effort</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>Backfill legacy <code>peso</code>/<code>volume</code> + report copertura</td>
+<td>1–2 gg</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Schema, migrazione, modulo, approve/reject</td>
+<td>2–3 gg</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Worker ricerca + estrazione LLM + normalizzatore (con test)</td>
+<td>3–4 gg</td>
+</tr>
+<tr>
+<td>3</td>
+<td>UI review + integrazione pagina prodotto</td>
+<td>2 gg</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Pilota 100 prodotti + misura + fix</td>
+<td>2–3 gg</td>
+</tr>
+<tr>
+<td></td>
+<td><strong>Totale</strong></td>
+<td><strong>~10–14 gg</strong> (2–3 settimane)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Costi operativi ricorrenti (ordine di grandezza, da confermare col pilota): SerpAPI ~1 query/prodotto + OpenAI ~1 estrazione/prodotto su modello mini → <strong>pochi euro per migliaio di prodotti</strong>; trascurabile rispetto al costo dell'inserimento manuale. L'infrastruttura (chiavi, storage, poller) esiste già per le immagini.</p>
+<p>Rischi principali: copertura legacy <code>peso</code> bassa (la Fase 0 la misura subito, costo minimo); domini produttore con anti-bot (mitigato da SerpAPI + PDF + review umana); unità legacy ambigua (validata su campione prima del backfill di massa).</p>
+<hr>
+<h2>Appendice — Riferimenti nel codice</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Cosa</th>
+<th>Dove</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Campi peso/dim su Product</td>
+<td><code>src/backend/prisma/schema.prisma:551–554</code></td>
+</tr>
+<tr>
+<td>Migrazione campi (ex shipping*)</td>
+<td><code>src/backend/prisma/migrations/20260227093032_product_weight_size_fields/migration.sql</code></td>
+</tr>
+<tr>
+<td>Modifica manuale in UI</td>
+<td><code>src/frontend/src/pages/ProductFullPage.tsx</code> (<code>saveProductDims</code>)</td>
+</tr>
+<tr>
+<td>Uso in RFQ</td>
+<td><code>src/backend/src/modules/rfq/rfq.service.ts</code> (~8906)</td>
+</tr>
+<tr>
+<td>Pattern staging immagini</td>
+<td><code>schema.prisma:1820–1875</code> + <code>src/backend/src/modules/product-image-candidates/</code></td>
+</tr>
+<tr>
+<td>UI review immagini (template)</td>
+<td><code>src/frontend/src/pages/ProductImageCandidatesPage.tsx</code></td>
+</tr>
+<tr>
+<td>Priority queue / pilota</td>
+<td><code>product-image-candidates.service.ts</code> (<code>priorityQueue</code>, <code>pilotQueue</code>)</td>
+</tr>
+<tr>
+<td>Legacy <code>peso</code>/<code>volume</code> documentati</td>
+<td><code>docs/IMPORTANTE legacy db info/prodotti.txt:19–20</code></td>
+</tr>
+<tr>
+<td>Colonne legacy effettivamente migrate (senza peso)</td>
+<td><code>src/backend/src/legacy/legacySchema.ts:96–117</code></td>
+</tr>
+<tr>
+<td>Infra LLM strutturata</td>
+<td><code>src/backend/src/modules/parser/parser-ai/</code></td>
+</tr>
+<tr>
+<td>Fetch URL con policy domini</td>
+<td><code>src/backend/src/modules/link-fetch/</code></td>
+</tr>
+<tr>
+<td>Storage documenti/PDF</td>
+<td><code>src/backend/src/modules/documents/</code></td>
+</tr>
+</tbody>
+</table></div>
+</main></body></html>

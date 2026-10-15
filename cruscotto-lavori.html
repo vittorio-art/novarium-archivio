@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stato progetti Novarium — quadro riepilogativo</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #fff; --text: #37352f; --muted: #787774; --faint: #9b9a97;
+  --rule: rgba(55, 53, 47, .09); --rule-strong: rgba(55, 53, 47, .16);
+  --surface: #f7f6f3; --code-bg: rgba(135, 131, 120, .15);
+  --link-line: rgba(55, 53, 47, .35); --check: #787774;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #191919; --text: rgba(255, 255, 255, .86); --muted: rgba(255, 255, 255, .55); --faint: rgba(255, 255, 255, .4);
+    --rule: rgba(255, 255, 255, .08); --rule-strong: rgba(255, 255, 255, .14);
+    --surface: #202020; --code-bg: rgba(255, 255, 255, .08);
+    --link-line: rgba(255, 255, 255, .35); --check: rgba(255, 255, 255, .32);
+  }
+}
+* { box-sizing: border-box; }
+html { background: var(--bg); -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; padding: 4.5rem 3rem 6rem; color: var(--text); background: var(--bg);
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+}
+main > * { max-width: 720px; margin-left: auto; margin-right: auto; }
+main > :first-child { margin-top: 0; }
+p, ul, ol, blockquote, pre, dl { margin-top: 0; margin-bottom: 1em; }
+p, li, blockquote, dd { overflow-wrap: break-word; }
+h1, h2, h3, h4, h5, h6 { color: var(--text); font-weight: 600; line-height: 1.3; margin: 2em auto .5em; }
+h1 { font-size: 2.125rem; font-weight: 700; line-height: 1.2; letter-spacing: -.021em; margin-bottom: .6em; }
+h2 { font-size: 1.5rem; letter-spacing: -.017em; margin-top: 2.2em; }
+h3 { font-size: 1.25rem; letter-spacing: -.012em; }
+h4 { font-size: 1.0625rem; }
+h5, h6 { font-size: 1rem; color: var(--muted); }
+h1 + h2, h2 + h3, h3 + h4 { margin-top: 1em; }
+strong { font-weight: 600; }
+a { color: inherit; text-decoration: underline; text-decoration-color: var(--link-line); text-decoration-thickness: 1px; text-underline-offset: .2em; transition: text-decoration-color .15s; }
+a:hover { text-decoration-color: currentColor; }
+ul, ol { padding-left: 1.6em; }
+li { margin: .25em 0; padding-left: .15em; }
+li > ul, li > ol { margin: .25em 0 0; }
+li > p { margin-bottom: .5em; }
+li::marker { color: var(--muted); }
+.task-list-item { list-style: none; margin-left: -1.45em; }
+.task-list-item input {
+  appearance: none; -webkit-appearance: none; width: 1em; height: 1em; margin: 0 .55em 0 0; vertical-align: -.15em;
+  border: 1.5px solid var(--faint); border-radius: 3px; background: transparent;
+}
+.task-list-item input:checked {
+  border-color: transparent; background: var(--check) no-repeat center / 80%
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+.task-list-item:has(> input:checked, > p:first-child > input:checked) { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--faint); }
+blockquote { margin-left: auto; margin-right: auto; padding: .1em 0 .1em 1.1em; border-left: 3px solid var(--rule-strong); color: var(--muted); }
+blockquote > :last-child { margin-bottom: 0; }
+hr { height: 1px; border: 0; background: var(--rule-strong); margin: 2.5em auto; }
+img { max-width: 100%; height: auto; border-radius: 4px; }
+code, kbd, samp, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace; }
+code { font-size: .85em; padding: .15em .35em; border-radius: 4px; background: var(--code-bg); }
+pre { font-size: .85em; line-height: 1.6; padding: 1em 1.25em; background: var(--surface); border-radius: 6px; overflow-x: auto; }
+pre code { font-size: inherit; padding: 0; background: none; border-radius: 0; }
+.table-scroll { max-width: 100%; overflow-x: auto; margin: 1em 0; }
+main > .table-scroll {
+  width: max-content; min-width: min(720px, 100%); max-width: min(1240px, 100%);
+  margin: 1.5em auto 2em;
+}
+table { border-collapse: collapse; font-size: .9rem; line-height: 1.55; }
+th, td {
+  padding: .55em .9em; text-align: left; vertical-align: top;
+  border-bottom: 1px solid var(--rule); overflow-wrap: normal; word-break: normal;
+}
+th { white-space: nowrap; font-weight: 600; color: var(--muted); background: var(--surface); border-bottom-color: var(--rule-strong); }
+th:first-child, td:first-child { padding-left: .75em; }
+td { min-width: 4.5rem; max-width: 32rem; }
+td a { white-space: nowrap; }
+tbody tr:last-child td { border-bottom: 0; }
+@media (max-width: 640px) {
+  body { padding: 2rem 1.25rem 4rem; font-size: 15.5px; }
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.3rem; }
+  h3 { font-size: 1.125rem; }
+  main > .table-scroll { margin-left: -1.25rem; margin-right: -1.25rem; max-width: calc(100% + 2.5rem); min-width: 0; width: auto; padding: 0 1.25rem; }
+  td { min-width: 8rem; }
+}
+@media print { body { padding: 0; } .table-scroll { overflow: visible; } }
+</style></head><body><main><h1>Stato progetti Novarium — quadro riepilogativo</h1>
+<p>Aggiornato: 14 ottobre 2026 · Mantenuto da: Letta (aggiornato a ogni progresso)
+Legenda stati: ✅ fatto · 🔄 in corso · ⏸️ in attesa (di chi) · 🆕 da avviare</p>
+<h2>1. SEO — 🔄 in corso (Onda A idraulica COMPLETA live 15/10 ✅; attesa re-submit sitemap)</h2>
+<ul>
+<li>
+<p>✅ Analisi completate: report-sonde-vs-parts, gsc-analysis, technical-audit</p>
+</li>
+<li>
+<p>✅ Spec pronte: spec-fix-indicizzazione-sonde + spec-redirect-parts-legacy (con fix stopgap e mappe redirect)</p>
+</li>
+<li>
+<p>✅ Benchmark competitor analizzato (13/10): <a href="http://lysis.cc">lysis.cc</a> — pagine sonda distinte con spec+compatibilità = il modello della spec, confermato dal vivo</p>
+</li>
+<li>
+<p>✅ <strong>Primo rilascio Giovanni LIVE (14/10)</strong>: PDP consolidate a una lingua canonica (EN) + sitemap prodotto solo canonica (~158k → ~32k URL) + <code>noindex, follow</code> sulle PDP non-EN — verificato live da Letta</p>
+</li>
+<li>
+<p>✅ <strong><a href="https://chat.letta.com/artifacts/257af3a6-830b-4cb3-968e-76166e26053f.md">Review Letta dei commit (14/10)</a></strong>: direzione corretta, NON annullare. Trovato 1 bug (canonical ibrido EN+slug locale sulle PDP non-EN) + raccomandazione EN come lingua canonica + piano misurazione</p>
+</li>
+<li>
+<p>✅ <strong>Decisioni 14/10 (Vittorio): EN confermato come lingua canonica · ok al fix del bug</strong></p>
+</li>
+<li>
+<p>✅ <strong>Onda A live e verificata (15/10)</strong>: redirect legacy <code>/vendita/prodotto/?pid=N</code>→PDP EN, <code>/vendita/&lt;brand&gt;/</code>→search, <code>/vendita/</code>→categories, apex→www 301, rotta senza ID→404, canonical ibrido RISOLTO — tutto implementato da Giovanni su main (PR #39 chiusa come superata). Nuovi hub SEO in sitemap: ultrasound-brands (45) + machines (40)</p>
+</li>
+<li>
+<p>✅ <strong>ONDA A COMPLETA (15/10)</strong>: fix sitemap (PR #41) mergiata, DEPLOY verificato live (cache HIT), re-submit GSC fatto da Vittorio → <strong>checkpoint T+2 = 29 ott</strong>
+🔵 <strong>Onda B/C in corso</strong>: mergiate su main 15/10 — PR #45 (pagine sonda uniche + Product JSON-LD) e PR #46 (hreflang sitemap) → <strong>live al prossimo deploy</strong>. Resta: mappe redirect legacy (Letta)</p>
+</li>
+<li>
+<p>🔄 Prossime (Onda B/C): hreflang sitemap + Product JSON-LD (Letta) → contenuti pagine sonda (modello lysis) + hub brand/macchine</p>
+</li>
+<li>
+<p>🔗 Collegato: immagini prodotto (progetto 10) = anche leva SEO</p>
+</li>
+</ul>
+<h2>2. DMCA (clone Nuovomedtech) — ⏸️ in attesa di Vittorio</h2>
+<ul>
+<li>
+<p>✅ Dossier completo: clone Guangzhou Nuovomedtech, 12 coppie di prove, 3 bozze di notice pronte (Google, hosting, Alibaba)</p>
+</li>
+<li>
+<p>🆕 Da fare: verifica Wayback Machine (ID prodotti pre-migrazione) — Letta; verifica secondo clone sospetto <a href="http://geprobe.com">geprobe.com</a> — Letta</p>
+</li>
+<li>
+<p>⏸️ Prossimo passo: Vittorio decide se/quando inviare le notice</p>
+</li>
+</ul>
+<h2>3. Docs BO — ⏸️ in attesa di Giovanni</h2>
+<ul>
+<li>
+<p>✅ Proposta: proposta-allineamento-docs (5 interventi: falso claim auth in 4 sezioni README, 6 link rotti, revoche DECISIONS_FROZEN)</p>
+</li>
+<li>
+<p>⏸️ Prossimo passo: Giovanni (struttura repo = decisione tecnica); già incluso in memo-per-giovanni</p>
+</li>
+</ul>
+<h2>4. Supabase (sicurezza) — ⏸️ in attesa di Giovanni ⚠️ P0</h2>
+<ul>
+<li>
+<p>✅ Piano in 5 passi in memo-per-giovanni (chiave service_role in git dal merge 8202b930)</p>
+</li>
+<li>
+<p>⏸️ Prossimo passo: GO di Giovanni + 4 risposte → poi rotazione chiave + cleanup git (Letta fa la parte git)</p>
+</li>
+</ul>
+<h2>5. Parser — 🔄 proposta pronta, review di Vittorio</h2>
+<ul>
+<li>
+<p>✅ proposta-miglioramento-parser: 5 fasi (~25-39 gg) — tracciamento esiti suggestion (oggi il rifiuto è invisibile), confidence per-campo, auto-apply in shadow mode, eval set dai vostri correttivi</p>
+</li>
+<li>
+<p>⏸️ Prossimo passo: Vittorio legge e decide cosa mandare a Giovanni</p>
+</li>
+</ul>
+<h2>6. Marine DB (prodotti/clienti/fornitori) — 🔄 in crescita dati</h2>
+<ul>
+<li>
+<p>✅ Divisione attiva: 1.813 prodotti MARINE (12/10), 593 clienti, 84 fornitori; sito <a href="http://novarium-marine.com">novarium-marine.com</a> live</p>
+</li>
+<li>
+<p>⚠️ Dato dall'analisi: 0 RFQ Marine da settembre — il motore commerciale Marine deve ancora accendersi</p>
+</li>
+<li>
+<p>🔄 Architettura concordata: sub-agent dedicato Marine per i batch di dati</p>
+</li>
+<li>
+<p>⏸️ Prossimo passo: Vittorio manda il primo batch dati Marine → attivo il sub-agente</p>
+</li>
+</ul>
+<h2>7. Analisi 5 anni — ✅ FATTO (10/10)</h2>
+<ul>
+<li>
+<p>✅ analisi-flussi-5-anni: 81.857 RFQ, 5.827 ordini, funnel, top prodotti/brand, concentrazione clienti, fornitori, profili archetipo</p>
+</li>
+<li>
+<p>Insight chiave: domanda non convertita = tubi RX/bobine RM (gap fornitori); DirectMed confermato competitor dai dati (10.650 RFQ / 13 ordini); 2.465 clienti dormienti riattivabili</p>
+</li>
+</ul>
+<h2>8. Arricchimento nuovi fornitori + audit fornitori esistenti — 🆕 da avviare (Letta può partire subito)</h2>
+<ul>
+<li>
+<p>Dati già disponibili dall'analisi 5 anni: tassi di risposta per fornitore (1MAC 98%, LEFA 96%, Dormed 91%, Avante 86% … Hes Bv 39% con 2.858 item_na = catalogo disallineato, X-Ray Parts 34%)</p>
+</li>
+<li>
+<p>🆕 Proposta Letta: report audit fornitori dal DB (resa, disallineamenti, fornitori &quot;spariti&quot;, copertura per brand/categoria) + scheda arricchimento per i nuovi</p>
+</li>
+<li>
+<p>⏸️ Prossimo passo: ok di Vittorio → produco il primo audit</p>
+</li>
+</ul>
+<h2>9. Supplier self-update (reports + bozze mail + pagina aggiornamento dati) — 🔄 in corso lato vostro</h2>
+<ul>
+<li>
+<p>Feature in lavorazione: report + bozze email con link a pagina dove i fornitori aggiornano le loro info direttamente sul sito</p>
+</li>
+<li>
+<p>Nel BO esistono già i moduli supplier-onboarding e token-portal (accesso via token senza login)</p>
+</li>
+<li>
+<p>🆕 Letta può: analizzare il flusso esistente e proporre miglioramenti/test end-to-end quando è pronto</p>
+</li>
+<li>
+<p>⏸️ Prossimo passo: Vittorio dice quando la pagina è testabile</p>
+</li>
+</ul>
+<h2>10. Immagini prodotto → sito — 🔄 proposta pronta, review di Vittorio</h2>
+<ul>
+<li>
+<p>✅ proposta-acquisizione-immagini: pipeline BO già completa fino all'approvazione; manca solo l'anello di pubblicazione (bucket pubblico + tabella ProductPublicImage + hook; ~7-11 gg in 6 fasi) + automazione in 3 gradini rispettando il &quot;semi-auto&quot;</p>
+</li>
+<li>
+<p>⏸️ Prossimo passo: Vittorio legge → Giovanni per la parte tecnica</p>
+</li>
+</ul>
+<h2>11. Pesi e misure prodotti — 🔄 proposta pronta, review di Vittorio</h2>
+<ul>
+<li>
+<p>✅ proposta-pesi-misure: scoperta quick win — peso/volume nel legacy MySQL mai migrati (backfill 1-2 gg), poi pipeline web su modello immagini (~10-14 gg con pilota 100 prodotti)</p>
+</li>
+<li>
+<p>⏸️ Prossimo passo: Vittorio legge → Giovanni per la parte tecnica</p>
+</li>
+</ul>
+<h2>12. Pulizia schede legacy — 🆕 analisi fatta (14/10), in attesa di ok per i lotti</h2>
+<ul>
+<li>
+<p>✅ Analisi DB pubblicata (proposta-pulizia-legacy): 1.291 prodotti LEGACY-PRODUCT-* (469 con RFQ!), 1.654 clienti wasLegacyUnassigned (206 con RFQ), 16 fornitori &quot;Legacy Supplier&quot;, 2 gruppi da verificare a mano</p>
+</li>
+<li>
+<p>⚠️ Verdetto: NON cancellare — hanno storico attaccato. Pulizia = suspended + arricchimento, in 4 lotti</p>
+</li>
+<li>
+<p>Lotto 1: sospendere 10 fornitori &quot;Legacy Supplier&quot; attivi (zero rischio) · Lotto 2: sospendere ~1.450 clienti legacy senza RFQ · Lotto 3: arricchimento prodotti LEGACY-PRODUCT (brand/categoria dal nome — non delete) · Lotto 4: 2 gruppi = aziende vere, verifica manuale</p>
+</li>
+<li>
+<p>⏸️ Prossimo passo: ok di Vittorio → genero CSV Lotto 1+2 per la review</p>
+</li>
+</ul>
+<h2>In attesa di risposta (bloccanti)</h2>
+<ul>
+<li>
+<p>Deploy → <strong>prossimo deploy porta live PR #45+#46</strong>; checkpoint GSC 29 ott (T+2); mappe redirect legacy = ultimo pezzo Onda B</p>
+</li>
+<li>
+<p>Vittorio → review proposte 5/10/11/12; decisione invio notice DMCA; primo batch dati Marine; ok audit fornitori (progetto 8) · <strong>SEO: export GSC per baseline (performance 3 mesi per pagina + breakdown indicizzazione)</strong></p>
+</li>
+</ul>
+</main></body></html>

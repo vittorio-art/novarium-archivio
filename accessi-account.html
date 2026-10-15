@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>🔐 Novarium — Accessi &amp; Account (go-to file)</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #fff; --text: #37352f; --muted: #787774; --faint: #9b9a97;
+  --rule: rgba(55, 53, 47, .09); --rule-strong: rgba(55, 53, 47, .16);
+  --surface: #f7f6f3; --code-bg: rgba(135, 131, 120, .15);
+  --link-line: rgba(55, 53, 47, .35); --check: #787774;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #191919; --text: rgba(255, 255, 255, .86); --muted: rgba(255, 255, 255, .55); --faint: rgba(255, 255, 255, .4);
+    --rule: rgba(255, 255, 255, .08); --rule-strong: rgba(255, 255, 255, .14);
+    --surface: #202020; --code-bg: rgba(255, 255, 255, .08);
+    --link-line: rgba(255, 255, 255, .35); --check: rgba(255, 255, 255, .32);
+  }
+}
+* { box-sizing: border-box; }
+html { background: var(--bg); -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; padding: 4.5rem 3rem 6rem; color: var(--text); background: var(--bg);
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+}
+main > * { max-width: 720px; margin-left: auto; margin-right: auto; }
+main > :first-child { margin-top: 0; }
+p, ul, ol, blockquote, pre, dl { margin-top: 0; margin-bottom: 1em; }
+p, li, blockquote, dd { overflow-wrap: break-word; }
+h1, h2, h3, h4, h5, h6 { color: var(--text); font-weight: 600; line-height: 1.3; margin: 2em auto .5em; }
+h1 { font-size: 2.125rem; font-weight: 700; line-height: 1.2; letter-spacing: -.021em; margin-bottom: .6em; }
+h2 { font-size: 1.5rem; letter-spacing: -.017em; margin-top: 2.2em; }
+h3 { font-size: 1.25rem; letter-spacing: -.012em; }
+h4 { font-size: 1.0625rem; }
+h5, h6 { font-size: 1rem; color: var(--muted); }
+h1 + h2, h2 + h3, h3 + h4 { margin-top: 1em; }
+strong { font-weight: 600; }
+a { color: inherit; text-decoration: underline; text-decoration-color: var(--link-line); text-decoration-thickness: 1px; text-underline-offset: .2em; transition: text-decoration-color .15s; }
+a:hover { text-decoration-color: currentColor; }
+ul, ol { padding-left: 1.6em; }
+li { margin: .25em 0; padding-left: .15em; }
+li > ul, li > ol { margin: .25em 0 0; }
+li > p { margin-bottom: .5em; }
+li::marker { color: var(--muted); }
+.task-list-item { list-style: none; margin-left: -1.45em; }
+.task-list-item input {
+  appearance: none; -webkit-appearance: none; width: 1em; height: 1em; margin: 0 .55em 0 0; vertical-align: -.15em;
+  border: 1.5px solid var(--faint); border-radius: 3px; background: transparent;
+}
+.task-list-item input:checked {
+  border-color: transparent; background: var(--check) no-repeat center / 80%
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+.task-list-item:has(> input:checked, > p:first-child > input:checked) { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--faint); }
+blockquote { margin-left: auto; margin-right: auto; padding: .1em 0 .1em 1.1em; border-left: 3px solid var(--rule-strong); color: var(--muted); }
+blockquote > :last-child { margin-bottom: 0; }
+hr { height: 1px; border: 0; background: var(--rule-strong); margin: 2.5em auto; }
+img { max-width: 100%; height: auto; border-radius: 4px; }
+code, kbd, samp, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace; }
+code { font-size: .85em; padding: .15em .35em; border-radius: 4px; background: var(--code-bg); }
+pre { font-size: .85em; line-height: 1.6; padding: 1em 1.25em; background: var(--surface); border-radius: 6px; overflow-x: auto; }
+pre code { font-size: inherit; padding: 0; background: none; border-radius: 0; }
+.table-scroll { max-width: 100%; overflow-x: auto; margin: 1em 0; }
+main > .table-scroll {
+  width: max-content; min-width: min(720px, 100%); max-width: min(1240px, 100%);
+  margin: 1.5em auto 2em;
+}
+table { border-collapse: collapse; font-size: .9rem; line-height: 1.55; }
+th, td {
+  padding: .55em .9em; text-align: left; vertical-align: top;
+  border-bottom: 1px solid var(--rule); overflow-wrap: normal; word-break: normal;
+}
+th { white-space: nowrap; font-weight: 600; color: var(--muted); background: var(--surface); border-bottom-color: var(--rule-strong); }
+th:first-child, td:first-child { padding-left: .75em; }
+td { min-width: 4.5rem; max-width: 32rem; }
+td a { white-space: nowrap; }
+tbody tr:last-child td { border-bottom: 0; }
+@media (max-width: 640px) {
+  body { padding: 2rem 1.25rem 4rem; font-size: 15.5px; }
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.3rem; }
+  h3 { font-size: 1.125rem; }
+  main > .table-scroll { margin-left: -1.25rem; margin-right: -1.25rem; max-width: calc(100% + 2.5rem); min-width: 0; width: auto; padding: 0 1.25rem; }
+  td { min-width: 8rem; }
+}
+@media print { body { padding: 0; } .table-scroll { overflow: visible; } }
+</style></head><body><main><h1>🔐 Novarium — Accessi &amp; Account (go-to file)</h1>
+<blockquote>
+<p><strong>Regola d'oro: NESSUNA PASSWORD, chiave o codice di backup in questo file.</strong> Solo la mappa: cosa esiste, con quale account, dove sono custodite le credenziali. File pubblico nell'archivio — trattarlo di conseguenza.</p>
+</blockquote>
+<p><strong>Ultimo aggiornamento: 13/10/2026</strong> · Per modifiche: &quot;aggiungi/aggiorna account X&quot; all'agente → ripubblica (stesso link).</p>
+<h2>💶 Costi ricorrenti attivi (stima, cambio indicativo 1 $ ≈ 0,92 €)</h2>
+<ul>
+<li>🖥️ <strong>Infrastruttura</strong> ≈ <strong>86 €/mese</strong>: AWS Lightsail 49,99 $ (~46 €) · Supabase 40 € · dominio Marine 11,48 $/anno (~10 €/anno)</li>
+<li>📧 <strong>Comunicazioni</strong> ≈ <strong>41 €/mese</strong>: SendGrid 19,99 $ (~18 €) · Kapso 25 $ (~23 €)</li>
+<li>🤖 <strong>AI</strong> ≈ <strong>118 €/mese</strong>: ChatGPT 100 € · Letta 20 $ (~18 €)</li>
+<li><strong>Totale ≈ 245 €/mese</strong> (+ ~10 €/anno dominio)</li>
+</ul>
+<h2>🖥️ Infrastruttura core</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Servizio</th>
+<th>A cosa serve</th>
+<th>Account / login</th>
+<th>Credenziali dove</th>
+<th>Costo</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AWS Lightsail</strong></td>
+<td>2 VM: ① server backoffice+sito ② piattaforma monitoring</td>
+<td>Root: <a href="/cdn-cgi/l/email-protection#71071805051e03181e311c100305181f18151e1f1005185f121e1c"><span class="__cf_email__" data-cfemail="d5a3bca1a1baa7bcba95b8b4a7a1bcbbbcb1babbb4a1bcfbb6bab8">[email&#160;protected]</span></a> + authenticator MFA</td>
+<td>password manager Vittorio</td>
+<td>49,99 $/mese</td>
+<td>Se giù: BO e sito fermi</td>
+</tr>
+<tr>
+<td><strong>Supabase</strong></td>
+<td>DB PostgreSQL del BO + storage S3</td>
+<td><a href="/cdn-cgi/l/email-protection#a1d7d3e1cfced7c0d3c8d4cc8fcfc4d5"><span class="__cf_email__" data-cfemail="334541735d5c4552415a465e1d5d5647">[email&#160;protected]</span></a> (project <code>lblumvooaevubjcqlwct</code>, eu-west-2)</td>
+<td>Vault Letta (<code>NOVARIUM_DB_URL</code>) + <code>.env</code> backend</td>
+<td>25+15 = 40 €/mese</td>
+<td>⚠️ rotazione service_role in attesa GO Giovanni; usare pooler :6543</td>
+</tr>
+<tr>
+<td><strong>GitHub</strong></td>
+<td>2 repo: backoffice+sito, monitoring</td>
+<td>Org <code>vittorio-art</code> + authenticator</td>
+<td>account GitHub</td>
+<td>DA COMPLETARE</td>
+<td>Connesso a Letta. Se giù: niente danno diretto ma si perde storico/backup sorgenti</td>
+</tr>
+<tr>
+<td><strong>Namecheap</strong></td>
+<td>Dominio <a href="http://novarium-marine.com">novarium-marine.com</a></td>
+<td>user <code>Novarium2026</code> — intestato Vittorio Martini Donati, Novarium Via Roma Genova; contatto <a href="/cdn-cgi/l/email-protection#641216240a0b1205160d11094a0a0110"><span class="__cf_email__" data-cfemail="a2d4d0e2cccdd4c3d0cbd7cf8cccc7d6">[email&#160;protected]</span></a>, +39 335 5293470</td>
+<td>password manager Vittorio</td>
+<td>11,48 $/anno auto-rinnovo (VISA •8319)</td>
+<td>Codici backup rigenerati/DA RIGENERARE — vedi avvisi in calce alla chat del 13/10</td>
+</tr>
+<tr>
+<td><strong>Domini &quot;core&quot;</strong></td>
+<td><a href="http://novarium.net">novarium.net</a>, <a href="http://vittoriomartinidonati.com">vittoriomartinidonati.com</a>, (<a href="http://novarium.eu/.it?">novarium.eu/.it?</a>)</td>
+<td><strong>Attualmente presso GC (Giovanni)</strong></td>
+<td>—</td>
+<td>DA COMPLETARE</td>
+<td>⚠️ In attesa trasferimento GC→Novarium (nota 11/9)</td>
+</tr>
+<tr>
+<td><strong>DNS</strong></td>
+<td>Configurazione servizi sui domini</td>
+<td><strong>Attualmente presso GC</strong></td>
+<td>—</td>
+<td>—</td>
+<td>Se giù: si ferma TUTTO (server, posta)</td>
+</tr>
+<tr>
+<td><strong>Posta elettronica</strong></td>
+<td>Caselle sui domini</td>
+<td><a href="http://novarium.net">novarium.net</a> <strong>presso GC</strong> · <a href="http://martinidonati.com">martinidonati.com</a> presso Novarium</td>
+<td>—</td>
+<td>DA COMPLETARE</td>
+<td>Trasferimento caselle GC→Novarium in programma</td>
+</tr>
+<tr>
+<td><strong>Monitoring</strong></td>
+<td>Piattaforma monitoraggio sito/BO</td>
+<td>VM AWS dedicata + repo GitHub</td>
+<td>come sopra</td>
+<td>inclusa AWS</td>
+<td>Nota 11/9: prevede alert WhatsApp quando giù</td>
+</tr>
+</tbody>
+</table></div>
+<h2>📧 Comunicazioni</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Servizio</th>
+<th>A cosa serve</th>
+<th>Account / login</th>
+<th>Credenziali dove</th>
+<th>Costo</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SendGrid</strong></td>
+<td>Email in uscita dal BO (offerte, token)</td>
+<td><a href="/cdn-cgi/l/email-protection#2a5c435e5e455843456a474b585e4344434e45444b5e4304494547"><span class="__cf_email__" data-cfemail="95e3fce1e1fae7fcfad5f8f4e7e1fcfbfcf1fafbf4e1fcbbf6faf8">[email&#160;protected]</span></a>, billing <a href="/cdn-cgi/l/email-protection#90f9fef6ffd0feffe6f1e2f9e5fdbefef5e4"><span class="__cf_email__" data-cfemail="8ce5e2eae3cce2e3faedfee5f9e1a2e2e9f8">[email&#160;protected]</span></a></td>
+<td><code>.env</code> backend</td>
+<td>19,99 $/mese</td>
+<td>Se giù: BO non invia posta</td>
+</tr>
+<tr>
+<td><strong>Kapso (WhatsApp)</strong></td>
+<td>Integrazione WhatsApp ↔ BO</td>
+<td>login Google, email <a href="/cdn-cgi/l/email-protection#7f090d3f1110091e0d160a1251111a0b"><span class="__cf_email__" data-cfemail="3f494d7f5150495e4d564a5211515a4b">[email&#160;protected]</span></a>, CC via biz</td>
+<td><code>.env</code> backend</td>
+<td>25 $/mese</td>
+<td>Attivo da 7/10/2026; in attesa permessi <strong>Meta</strong> per proattivi (&gt;24h)</td>
+</tr>
+<tr>
+<td><strong>Meta Business</strong></td>
+<td>Autorizzazioni WhatsApp Business</td>
+<td>account business (setup in onboarding Kapso, 7/10 — &quot;cc via biz&quot;)</td>
+<td>presso Meta/Kapso</td>
+<td>—</td>
+<td>In attesa loro OK per messaggi proattivi (&gt;24h)</td>
+</tr>
+</tbody>
+</table></div>
+<h2>🤖 AI &amp; strumenti</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Servizio</th>
+<th>A cosa serve</th>
+<th>Account / login</th>
+<th>Credenziali dove</th>
+<th>Costo</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ChatGPT (OpenAI)</strong></td>
+<td>Funzioni AI del BO (parti del parser, copilot) + Codex sul Mac</td>
+<td>account OpenAI Vittorio</td>
+<td><code>.env</code> backend (API) + Mac</td>
+<td>100 €/mese (ridotto da 187,70 di aprile)</td>
+<td>Se giù: parser AI e copilot del BO fermi</td>
+</tr>
+<tr>
+<td><strong>Letta</strong></td>
+<td>Agente AI (SEO, business, Marine — questo)</td>
+<td>login Google <a href="/cdn-cgi/l/email-protection#76001f020219041f19361b1704021f181f12191817021f5815191b"><span class="__cf_email__" data-cfemail="d1a7b8a5a5bea3b8be91bcb0a3a5b8bfb8b5bebfb0a5b8ffb2bebc">[email&#160;protected]</span></a> · billing <a href="/cdn-cgi/l/email-protection#acc5c2cac3ecc2c3dacddec5d9c182c2c9d8"><span class="__cf_email__" data-cfemail="543d3a323b143a3b2235263d21397a3a3120">[email&#160;protected]</span></a> su VISA Novarium (P.IVA non inseribile in fattura)</td>
+<td>account Letta</td>
+<td>20 $/mese Pro</td>
+<td>Attivo da 10/10/2026; crediti a consumo + ricarica $20 (12/10)</td>
+</tr>
+</tbody>
+</table></div>
+<h2>📈 Marketing &amp; SEO</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Servizio</th>
+<th>A cosa serve</th>
+<th>Account / login</th>
+<th>Credenziali dove</th>
+<th>Costo</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Google Search Console</strong></td>
+<td>Monitoraggio SEO <a href="http://novarium.net">novarium.net</a></td>
+<td>account Google Vittorio</td>
+<td>accesso Google</td>
+<td>gratuito</td>
+<td>✅ Accesso funzionante — dati 6 mesi già condivisi con l'agente (10/10). Proprietà Marine: da creare quando parte il monitoring Marine</td>
+</tr>
+</tbody>
+</table></div>
+<h2>❌ Servizi dismessi (solo promemoria — non più attivi)</h2>
+<p>Cursor (chiuso 13/10) · Google Cloud Italy — 3 progetti Parts (legacy) · Google iCloud caselle (cancellato 29/9) · Instantly (cancellato 29/9) · SerpAPI (cancellato 3/9 — riattivabile se serve per pipeline immagini/pesi) · HeyGen (cancellato 7/2026) · Hunter (cancellato 3/9)</p>
+<h2>🔑 Dove vivono i segreti (mappa, non i segreti)</h2>
+<ul>
+<li><strong>Vault Letta</strong> (cifrato): <code>NOVARIUM_DB_URL</code></li>
+<li><strong><code>.env</code> backend</strong>: Supabase, SendGrid, Kapso, OpenAI — mai committare</li>
+<li><strong>Password manager Vittorio</strong>: AWS root, Namecheap, ecc. + authenticator MFA</li>
+</ul>
+<hr>
+<p><em>Mantenuto dall'agente · Storico: 13/10 creazione + import note interne BO</em></p>
+</main><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script></body></html>

@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Novarium — Analisi business: Documento Master BO + Sito pubblico</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #fff; --text: #37352f; --muted: #787774; --faint: #9b9a97;
+  --rule: rgba(55, 53, 47, .09); --rule-strong: rgba(55, 53, 47, .16);
+  --surface: #f7f6f3; --code-bg: rgba(135, 131, 120, .15);
+  --link-line: rgba(55, 53, 47, .35); --check: #787774;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #191919; --text: rgba(255, 255, 255, .86); --muted: rgba(255, 255, 255, .55); --faint: rgba(255, 255, 255, .4);
+    --rule: rgba(255, 255, 255, .08); --rule-strong: rgba(255, 255, 255, .14);
+    --surface: #202020; --code-bg: rgba(255, 255, 255, .08);
+    --link-line: rgba(255, 255, 255, .35); --check: rgba(255, 255, 255, .32);
+  }
+}
+* { box-sizing: border-box; }
+html { background: var(--bg); -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; padding: 4.5rem 3rem 6rem; color: var(--text); background: var(--bg);
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+}
+main > * { max-width: 720px; margin-left: auto; margin-right: auto; }
+main > :first-child { margin-top: 0; }
+p, ul, ol, blockquote, pre, dl { margin-top: 0; margin-bottom: 1em; }
+p, li, blockquote, dd { overflow-wrap: break-word; }
+h1, h2, h3, h4, h5, h6 { color: var(--text); font-weight: 600; line-height: 1.3; margin: 2em auto .5em; }
+h1 { font-size: 2.125rem; font-weight: 700; line-height: 1.2; letter-spacing: -.021em; margin-bottom: .6em; }
+h2 { font-size: 1.5rem; letter-spacing: -.017em; margin-top: 2.2em; }
+h3 { font-size: 1.25rem; letter-spacing: -.012em; }
+h4 { font-size: 1.0625rem; }
+h5, h6 { font-size: 1rem; color: var(--muted); }
+h1 + h2, h2 + h3, h3 + h4 { margin-top: 1em; }
+strong { font-weight: 600; }
+a { color: inherit; text-decoration: underline; text-decoration-color: var(--link-line); text-decoration-thickness: 1px; text-underline-offset: .2em; transition: text-decoration-color .15s; }
+a:hover { text-decoration-color: currentColor; }
+ul, ol { padding-left: 1.6em; }
+li { margin: .25em 0; padding-left: .15em; }
+li > ul, li > ol { margin: .25em 0 0; }
+li > p { margin-bottom: .5em; }
+li::marker { color: var(--muted); }
+.task-list-item { list-style: none; margin-left: -1.45em; }
+.task-list-item input {
+  appearance: none; -webkit-appearance: none; width: 1em; height: 1em; margin: 0 .55em 0 0; vertical-align: -.15em;
+  border: 1.5px solid var(--faint); border-radius: 3px; background: transparent;
+}
+.task-list-item input:checked {
+  border-color: transparent; background: var(--check) no-repeat center / 80%
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+.task-list-item:has(> input:checked, > p:first-child > input:checked) { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--faint); }
+blockquote { margin-left: auto; margin-right: auto; padding: .1em 0 .1em 1.1em; border-left: 3px solid var(--rule-strong); color: var(--muted); }
+blockquote > :last-child { margin-bottom: 0; }
+hr { height: 1px; border: 0; background: var(--rule-strong); margin: 2.5em auto; }
+img { max-width: 100%; height: auto; border-radius: 4px; }
+code, kbd, samp, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace; }
+code { font-size: .85em; padding: .15em .35em; border-radius: 4px; background: var(--code-bg); }
+pre { font-size: .85em; line-height: 1.6; padding: 1em 1.25em; background: var(--surface); border-radius: 6px; overflow-x: auto; }
+pre code { font-size: inherit; padding: 0; background: none; border-radius: 0; }
+.table-scroll { max-width: 100%; overflow-x: auto; margin: 1em 0; }
+main > .table-scroll {
+  width: max-content; min-width: min(720px, 100%); max-width: min(1240px, 100%);
+  margin: 1.5em auto 2em;
+}
+table { border-collapse: collapse; font-size: .9rem; line-height: 1.55; }
+th, td {
+  padding: .55em .9em; text-align: left; vertical-align: top;
+  border-bottom: 1px solid var(--rule); overflow-wrap: normal; word-break: normal;
+}
+th { white-space: nowrap; font-weight: 600; color: var(--muted); background: var(--surface); border-bottom-color: var(--rule-strong); }
+th:first-child, td:first-child { padding-left: .75em; }
+td { min-width: 4.5rem; max-width: 32rem; }
+td a { white-space: nowrap; }
+tbody tr:last-child td { border-bottom: 0; }
+@media (max-width: 640px) {
+  body { padding: 2rem 1.25rem 4rem; font-size: 15.5px; }
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.3rem; }
+  h3 { font-size: 1.125rem; }
+  main > .table-scroll { margin-left: -1.25rem; margin-right: -1.25rem; max-width: calc(100% + 2.5rem); min-width: 0; width: auto; padding: 0 1.25rem; }
+  td { min-width: 8rem; }
+}
+@media print { body { padding: 0; } .table-scroll { overflow: visible; } }
+</style></head><body><main><h1>Novarium — Analisi business: Documento Master BO + Sito pubblico</h1>
+<p><em>Bozza generata da analisi read-only (10 ottobre 2026). Fonti: <code>Novarium_BO_Documento_Master_DEFINITIVO.docx</code> e repo <code>Novarium/Novarium_Website</code>.</em></p>
+<hr>
+<h2>1. Sintesi del Documento Master BO</h2>
+<p><strong>Scopo.</strong> Il documento (&quot;NUOVO BO + SITO NOVARIUM — Documento Master&quot;, stato: <em>congelato per validazione tecnica</em>) è la specifica funzionale completa, la filosofia e il piano di esecuzione per la riscrittura ex-novo del BackOffice Novarium. Il tono è volutamente prudente: &quot;misura e responsabilità&quot;, niente rincorsa della velocità, poche cose fatte bene, profondità prima della fretta.</p>
+<p><strong>Principi non negoziabili.</strong></p>
+<ul>
+<li><em>Misura</em>: nulla entra nel sistema se non serve al core.</li>
+<li><em>Separazione dei ruoli</em>: <strong>l'AI esegue, l'umano controlla</strong>; la decisione finale è sempre umana.</li>
+<li><em>Protezione dello scope</em>: regole hard congelate durante l'MVP, con blacklist esplicita.</li>
+<li><em>Crescita ordinata</em>: il sistema evolve solo dopo aver dimostrato stabilità.</li>
+</ul>
+<p><strong>Come descrive il BO (DOC 1 — Architettura funzionale, &quot;Specchio BO&quot;).</strong> Il nuovo BO deve replicare fedelmente il comportamento operativo del BO attuale (legacy usato solo come riferimento funzionale, in sola lettura, nessun riuso di codice). Entità del dominio:</p>
+<ul>
+<li><strong>Group</strong> → contenitore di clienti (unità/sedi); <strong>Client</strong> → unità operativa con flag <code>can_place_orders</code> e <code>suspended</code>; <strong>Supplier</strong>; <strong>Contact</strong> (email unica globale); <strong>Product</strong>; <strong>RFQ</strong>; <strong>SupplierRequest</strong>; <strong>Reminder</strong>; <strong>Event/Timeline</strong>.</li>
+<li>Regole hard: <code>can_place_orders</code> esiste solo sul Client; ogni Group ha almeno un Client che può ordinare; campo &quot;macchina&quot; obbligatorio (valore &quot;Various&quot; ammesso); esclusioni fornitori a livello Group; fornitore con flag Email = NO → esclusione totale; ordine di interrogazione fornitori: Categoria+Brand → Categoria → altri; override delle esclusioni tracciato; alias nel campo descrizione.</li>
+<li><strong>La RFQ è la schermata centrale</strong>: prodotto, quantità, macchina, client/billing, supplier requests, note e timeline. Messaggistica: Timeline RFQ per eventi RFQ; &quot;Discussions&quot; per email non legate a RFQ. Token pubblici: fornitore (offerta / item non disponibile / messaggio), cliente (messaggio / conferma), con idempotenza garantita.</li>
+</ul>
+<p><strong>MVP (DOC 2).</strong> Core: RFQ completa, richieste a fornitori, risposte fornitori, template core, reminder, Discussions, pagine token. Fuori scope: schede complete, contatori/drill-down, search avanzata, PI/Proforma, stock, exchange avanzato, UX polishing, nuove regole.</p>
+<p><strong>Esecuzione (DOC 3).</strong> Stack non ancora deciso (opzioni: Python/FastAPI o PHP Laravel/Symfony; criteri: chiarezza, testabilità, semplicità di deploy, robustezza; il legacy non vincola il linguaggio). Orchestrazione AI: AI-Lead (core RFQ), AI-Suppliers, AI-Token/Email, AI-Templates, AI-QA, AI-Data (opzionale). Ruoli umani: <strong>Angelo</strong> = supervisione tecnica e GO/NO-GO; <strong>Vitto</strong> = validazione funzionale. Timeline: costruzione MVP 7–14 giorni, test in parallelo 7–14 giorni. FASE 2 (appendice): Prospecting AI, Image Backfill.</p>
+<p><strong>Nota di business dal documento:</strong> il flusso operativo descritto è un classico ciclo RFQ B2B — il cliente chiede un ricambio, Novarium interroga in parallelo più fornitori (con regole di esclusione/priorità), raccoglie offerte via token page e risponde al cliente. Il documento non contiene nomi di clienti/fornitori né volumi.</p>
+<hr>
+<h2>2. Come funziona il sito pubblico (repo <code>Novarium_Website</code>)</h2>
+<p><strong>Stack.</strong> Next.js 16 (App Router) + React 19 + TypeScript strict, Tailwind CSS v4, shadcn/ui (base-ui), Lucide icons. Dati: <strong>Supabase condiviso con il BackOffice</strong>, accesso solo server-side con service-role key (variabili <code>SUPABASE_URL</code> e <code>SUPABASE_SERVICE_ROLE_KEY</code>, senza prefisso <code>NEXT_PUBLIC_</code>). Deploy: container Docker <code>website</code> (porta interna 3001) dietro nginx; il compose/nginx prevedono anche un servizio <code>backend:3000</code> esposto su <code>/api/</code> (vedi §3). Home e categorie in ISR (<code>revalidate = 3600</code>); la ricerca è <code>force-dynamic</code>.</p>
+<p><strong>Sezioni pubbliche</strong> (<code>src/app/</code>):</p>
+<ul>
+<li><code>(marketing)/</code> → Home (<code>page.tsx</code>), About, History, Contact.</li>
+<li><code>categories/</code> → indice categorie + dettaglio <code>/categories/[code]</code> (chiave: <code>LegacyCategory.code</code>).</li>
+<li><code>products/[id]</code> → pagina prodotto (chiave: <code>Product.id</code>; <code>Product.code</code> NON è univoco).</li>
+<li><code>search/</code> → ricerca server-side ILIKE su name/code/brand/description (<code>/search?q=...</code>).</li>
+<li><code>request/</code> → flusso di richiesta in 3 passi: riepilogo (<code>page.tsx</code>), dati (<code>details/page.tsx</code>), conferma (<code>confirmation/page.tsx</code>).</li>
+</ul>
+<p><strong>Catalogo.</strong> È la parte più importante del sito: legge <strong>in sola lettura</strong> le tabelle BO <code>public.&quot;Product&quot;</code> e <code>public.&quot;LegacyCategory&quot;</code> tramite una catena ben delimitata: Server Component → <code>src/lib/api/catalog.ts</code> (unico contratto consumato dalle UI) → <code>src/lib/catalog/queries.ts</code> (query Supabase) → <code>mappers.ts</code> / <code>public-scope.ts</code> / <code>images.ts</code>. Le regole di visibilità (&quot;catalogo commerciale pubblico&quot;) sono codificate in <code>src/lib/catalog/public-scope.ts</code> e documentate in <code>docs/public-commercial-catalog-scope.md</code>:</p>
+<ul>
+<li>Categorie: <code>LegacyCategory.tipo IN (1, 2)</code> e non sospese (tipo 1 ≈ imaging parts, tipo 2 ≈ equipment/ultrasound; tipo 0 = operazioni interne, escluso: ~74 categorie / ~1.445 prodotti di bookkeeping).</li>
+<li>Prodotti: non <code>suspended</code>, non <code>isPlaceholder</code>, codice non <code>DEV-*</code>, nome/codice che non iniziano con <code>repair</code>, <code>maintenance</code>, <code>service manual</code>, <code>user manual</code>, <code>courier</code> (servizi e spese di spedizione, non articoli — il solo cluster &quot;Repair&quot; conta ~980 righe).</li>
+<li>Catalogo pubblico stimato: <strong>~33.500–34.000 prodotti</strong> (tipo 1 ≈ 24.685, tipo 2 ≈ 10.297, al netto dei filtri).</li>
+<li>Immagini: bucket storage privato e attachment quasi assenti → placeholder SVG unico finché non esiste una pipeline immagini (in FASE 2 del Master: &quot;Image Backfill&quot;).</li>
+</ul>
+<p><strong>Lingue.</strong> Sito <strong>solo inglese</strong> (regola <a href="http://AGENTS.md">AGENTS.md</a> n.13: niente i18n per ora; il sito legacy <a href="http://novarium.net">novarium.net</a> serviva IT/EN sugli stessi URL). Il DB categorie ha già colonne <code>ita</code>/<code>eng</code> e descrizioni <code>descIta</code>/<code>descEng</code>, quindi il bilinguismo futuro è predisposto nei dati ma non attivato.</p>
+<p><strong>Vincoli espliciti del progetto</strong> (README + <a href="http://AGENTS.md">AGENTS.md</a>): il sito NON è un e-commerce (niente carrello, prezzi, checkout, pagamenti, account utente); è &quot;catalogo + request flow&quot;; il sito <strong>non modifica mai il BO</strong> (niente scritture su <code>Product</code>, <code>LegacyCategory</code>, <code>Client</code>, <code>RFQ</code>, <code>Supplier</code>, <code>Event</code>, niente RLS/migrazioni/edge function).</p>
+<hr>
+<h2>3. Punti di contatto sito ↔ BO/business (con evidenze)</h2>
+<h3>3.1 Esistenti oggi</h3>
+<ol>
+<li>
+<p><strong>Catalogo condiviso via Supabase (sola lettura).</strong> Il sito pubblica il catalogo prodotti/categorie del BO leggendo direttamente le stesse tabelle Supabase con service-role key, server-side. Evidenze: <code>src/lib/supabase/server.ts</code>, <code>src/lib/catalog/queries.ts</code>, <code>src/lib/catalog/public-scope.ts</code>, <code>docs/public-commercial-catalog-scope.md</code>. Nota di rischio segnalata nel README: <strong>zero policy RLS</strong> su <code>Product</code> e <code>LegacyCategory</code> → la chiave non deve mai arrivare al browser.</p>
+</li>
+<li>
+<p><strong>Flusso &quot;Product Request&quot; (lead da catalogo) — raccolta intenti, invio ancora mock.</strong> L'utente aggiunge prodotti alla richiesta (<code>AddToRequestButton</code> → draft in React Context, <code>src/features/request-draft/store.tsx</code>, stato solo in memoria, senza persistenza), apre il drawer (<code>src/components/request/request-drawer.tsx</code>), rivede il riepilogo (<code>src/components/request/request-summary.tsx</code>, pagina <code>/request</code>), compila il <strong>LeadForm</strong> (<code>src/components/request/lead-form.tsx</code>: nome, cognome, email, telefono, azienda, città, paese, note; validazione client-side) e invia. Ma <code>src/lib/api/request.ts</code> → <code>submitRequestDraft()</code> è un <strong>mock</strong>: attende 800 ms, fa <code>console.log</code> del payload e ritorna un referenceId finto <code>NOV-&lt;base36 timestamp&gt;</code>. Commento nel file: <em>&quot;TODO: replace with real API call to Novarium backend when endpoint is available&quot;</em>. La pagina di conferma (<code>/request/confirmation</code>) promette che &quot;il team tecnico-commerciale esaminerà la richiesta e invierà un preventivo personalizzato&quot;.</p>
+</li>
+<li>
+<p><strong>Contatti diretti (mailto/tel).</strong> Pagina <code>/contact</code> (<code>src/app/(marketing)/contact/page.tsx</code>) e footer (<code>src/components/layout/site-footer.tsx</code>) espongono solo telefono (+39 0185 234 691, lun–ven 9–18 CET) ed email <code><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="caa3a4aca58aa4a5bcabb8a3bfa7e4a4afbe">[email&#160;protected]</a></code> come link; <strong>nessun form contatti generico</strong> — il form &quot;contatti/registrazione&quot; del sito legacy è stato deliberatamente sostituito dal flusso Product Request. Config centralizzata in <code>src/lib/constants/site.ts</code>.</p>
+</li>
+</ol>
+<h3>3.2 Assenti / previsti ma non implementati</h3>
+<ol start="4">
+<li>
+<p><strong>Nessuna chiamata API dal sito verso il backend BO.</strong> Non esistono route handler Next.js (<code>route.ts</code>), server actions, né <code>fetch()</code> verso <code>/api/...</code> nel codice (verificato con ricerca full-text su <code>src/</code>). L'infrastruttura è però già predisposta: <code>ops/nginx/website.conf</code> instrada <code>/</code> → <code>website:3001</code> e <strong><code>/api/</code> → <code>backend:3000/api/</code></strong> (host <code>test2.novarium.net</code>), e <code>docs/website-deploy.md</code> documenta il &quot;Runtime Contract&quot; website/backend. Quindi il canale sito→BO per la sottomissione RFQ è progettato ma non cablato: il punto di innesto previsto è sostituire il mock in <code>src/lib/api/request.ts</code>.</p>
+</li>
+<li>
+<p><strong>Nessuna notifica email / WhatsApp dal sito.</strong> README: &quot;Email notifications — NOT implemented&quot;, &quot;Analytics — NOT implemented&quot;. Nessuna integrazione WhatsApp, SMTP, Mailgun/Resend/SendGrid nel codice. Le notifiche restano nel perimetro del BO (Master: Discussions, Reminder, token via email).</p>
+</li>
+<li>
+<p><strong>Nessuna area clienti.</strong> Il sito legacy aveva un'area &quot;myNovarium&quot; con login; la nuova versione la esclude esplicitamente (&quot;Backend login integration — separate concern&quot;, <code>docs/legacy/legacy-observation.md</code>; README: &quot;Authentication / user accounts — NOT implemented&quot;).</p>
+</li>
+<li>
+<p><strong>Allineamento concettuale con il Master.</strong> Il LeadForm raccoglie esattamente i dati che il BO userà per identificare/creare il contatto (Contact con email unica globale) e la RFQ (prodotti + quantità + macchina): il payload <code>SubmitRequestPayload</code> (<code>src/types/request.ts</code>: <code>items[{productId, productName, productSku, brand, quantity}]</code> + <code>lead{...}</code>) è già modellato come una pre-RFQ. Il sito è quindi progettato come <strong>canale di acquisizione lead/RFQ in ingresso al BO</strong>, non come sistema autonomo.</p>
+</li>
+</ol>
+<hr>
+<h2>4. Note di business ricavate</h2>
+<ul>
+<li><strong>Cosa vende Novarium srl</strong> (Rapallo GE, sede legale Genova Via Roma 1/9; fondata 2004; ISO 9001:2015): ricambi <strong>originali, nuovi e rigenerati</strong> per imaging medicale multivendor (RM, TC, raggi X, C-Arm, mammografia) e <strong>ultrasound</strong> (sonde e parti), più servizi tecnici/riparazioni. Marchi citati: GE, Philips, Siemens, Toshiba/Canon &quot;e tutti i principali costruttori&quot;. Tagline: &quot;MultiVendor Imaging &amp; Ultrasound Parts&quot;; valori: &quot;Integrity and Excellence&quot;.</li>
+<li><strong>Clienti target</strong>: strutture sanitarie, centri diagnostici e tecnici/ingegneri specializzati <strong>in tutto il mondo</strong> (B2B internazionale; il sito nuovo è inglese-only proprio per questo).</li>
+<li><strong>Come arrivano i lead oggi</strong>: (a) flusso catalogo → Product Request con LeadForm (da collegare al BO: oggi è mock, i lead non arrivano da nessuna parte); (b) telefono; (c) email diretta a <code><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6900070f062907061f081b001c0447070c1d">[email&#160;protected]</a></code>. Il sito legacy aveva anche form di registrazione/contatto unificato e area myNovarium.</li>
+<li><strong>Come funziona il motore commerciale (dal Master)</strong>: la richiesta cliente diventa RFQ nel BO → il BO interroga i fornitori in ordine Categoria+Brand → Categoria → altri (con esclusioni a livello Group e flag email) → i fornitori rispondono su token page (offerta / non disponibile / messaggio) → Novarium quota al cliente (conferma via token). Volumi: non dichiarati nel Master; la scala del catalogo (~34k prodotti pubblici su ~36k totali nel DB) dà l'ordine di grandezza dell'offerta.</li>
+<li><strong>Implicazione operativa chiave</strong>: finché <code>submitRequestDraft</code> non viene collegato a un endpoint reale, <strong>il sito nuovo non genera alcun lead</strong> — è vetrina catalogo + raccolta intenti simulata. <em>(Contesto verificato nel DB il 10/10/2026: il sito attualmente live FUNZIONA e invia ~4 richieste/giorno al BO — 126 negli ultimi 30 gg, RFQ <code>WEB-*</code> via modulo <code>website-requests</code>. Questo punto riguarda solo il repo del sito nuovo: il collegamento va fatto prima del go-live o il flusso lead si interrompe.)</em> Il punto di integrazione previsto (nginx <code>/api/</code> → <code>backend:3000</code>) suggerisce che il nuovo BO esporrà un'API HTTP che il sito consumerà, probabilmente sostituendo nel tempo anche l'accesso diretto Supabase (commento in <code>src/lib/api/catalog.ts</code>: &quot;If the data source changes (e.g. a real Novarium HTTP API replaces direct Supabase access), only this file ... need to change&quot;).</li>
+<li><strong>Governance</strong>: progetto guidato con AI orchestrata (5-6 agenti specializzati) ma con controllo umano stretto (Angelo: GO/NO-GO tecnico; Vitto: validazione funzionale); sviluppo MVP 7–14 gg + test 7–14 gg; scope congelato con blacklist; il sito è vincolato a non toccare mai il BO in scrittura.</li>
+</ul>
+<hr>
+<h3>Evidenze/file chiave citati</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Tema</th>
+<th>Percorso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mock invio richiesta</td>
+<td><code>src/lib/api/request.ts</code></td>
+</tr>
+<tr>
+<td>Form lead</td>
+<td><code>src/components/request/lead-form.tsx</code></td>
+</tr>
+<tr>
+<td>Payload pre-RFQ</td>
+<td><code>src/types/request.ts</code></td>
+</tr>
+<tr>
+<td>Draft richiesta (solo client)</td>
+<td><code>src/features/request-draft/store.tsx</code></td>
+</tr>
+<tr>
+<td>Client Supabase server-only</td>
+<td><code>src/lib/supabase/server.ts</code></td>
+</tr>
+<tr>
+<td>Query catalogo BO</td>
+<td><code>src/lib/catalog/queries.ts</code></td>
+</tr>
+<tr>
+<td>Regole visibilità catalogo</td>
+<td><code>src/lib/catalog/public-scope.ts</code>, <code>docs/public-commercial-catalog-scope.md</code></td>
+</tr>
+<tr>
+<td>Contatti</td>
+<td><code>src/app/(marketing)/contact/page.tsx</code>, <code>src/lib/constants/site.ts</code></td>
+</tr>
+<tr>
+<td>Routing nginx /api→backend</td>
+<td><code>ops/nginx/website.conf</code>, <code>docs/website-deploy.md</code></td>
+</tr>
+<tr>
+<td>Vincoli sito↔BO</td>
+<td><code>README.md</code>, <code>AGENTS.md</code></td>
+</tr>
+<tr>
+<td>Osservazioni sito legacy</td>
+<td><code>docs/legacy/legacy-observation.md</code></td>
+</tr>
+</tbody>
+</table></div>
+</main><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script></body></html>

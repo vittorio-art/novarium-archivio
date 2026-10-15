@@ -1,0 +1,679 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ricerca di Mercato — Divisione MARINE di Novarium srl</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #fff; --text: #37352f; --muted: #787774; --faint: #9b9a97;
+  --rule: rgba(55, 53, 47, .09); --rule-strong: rgba(55, 53, 47, .16);
+  --surface: #f7f6f3; --code-bg: rgba(135, 131, 120, .15);
+  --link-line: rgba(55, 53, 47, .35); --check: #787774;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #191919; --text: rgba(255, 255, 255, .86); --muted: rgba(255, 255, 255, .55); --faint: rgba(255, 255, 255, .4);
+    --rule: rgba(255, 255, 255, .08); --rule-strong: rgba(255, 255, 255, .14);
+    --surface: #202020; --code-bg: rgba(255, 255, 255, .08);
+    --link-line: rgba(255, 255, 255, .35); --check: rgba(255, 255, 255, .32);
+  }
+}
+* { box-sizing: border-box; }
+html { background: var(--bg); -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; padding: 4.5rem 3rem 6rem; color: var(--text); background: var(--bg);
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+}
+main > * { max-width: 720px; margin-left: auto; margin-right: auto; }
+main > :first-child { margin-top: 0; }
+p, ul, ol, blockquote, pre, dl { margin-top: 0; margin-bottom: 1em; }
+p, li, blockquote, dd { overflow-wrap: break-word; }
+h1, h2, h3, h4, h5, h6 { color: var(--text); font-weight: 600; line-height: 1.3; margin: 2em auto .5em; }
+h1 { font-size: 2.125rem; font-weight: 700; line-height: 1.2; letter-spacing: -.021em; margin-bottom: .6em; }
+h2 { font-size: 1.5rem; letter-spacing: -.017em; margin-top: 2.2em; }
+h3 { font-size: 1.25rem; letter-spacing: -.012em; }
+h4 { font-size: 1.0625rem; }
+h5, h6 { font-size: 1rem; color: var(--muted); }
+h1 + h2, h2 + h3, h3 + h4 { margin-top: 1em; }
+strong { font-weight: 600; }
+a { color: inherit; text-decoration: underline; text-decoration-color: var(--link-line); text-decoration-thickness: 1px; text-underline-offset: .2em; transition: text-decoration-color .15s; }
+a:hover { text-decoration-color: currentColor; }
+ul, ol { padding-left: 1.6em; }
+li { margin: .25em 0; padding-left: .15em; }
+li > ul, li > ol { margin: .25em 0 0; }
+li > p { margin-bottom: .5em; }
+li::marker { color: var(--muted); }
+.task-list-item { list-style: none; margin-left: -1.45em; }
+.task-list-item input {
+  appearance: none; -webkit-appearance: none; width: 1em; height: 1em; margin: 0 .55em 0 0; vertical-align: -.15em;
+  border: 1.5px solid var(--faint); border-radius: 3px; background: transparent;
+}
+.task-list-item input:checked {
+  border-color: transparent; background: var(--check) no-repeat center / 80%
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+.task-list-item:has(> input:checked, > p:first-child > input:checked) { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--faint); }
+blockquote { margin-left: auto; margin-right: auto; padding: .1em 0 .1em 1.1em; border-left: 3px solid var(--rule-strong); color: var(--muted); }
+blockquote > :last-child { margin-bottom: 0; }
+hr { height: 1px; border: 0; background: var(--rule-strong); margin: 2.5em auto; }
+img { max-width: 100%; height: auto; border-radius: 4px; }
+code, kbd, samp, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace; }
+code { font-size: .85em; padding: .15em .35em; border-radius: 4px; background: var(--code-bg); }
+pre { font-size: .85em; line-height: 1.6; padding: 1em 1.25em; background: var(--surface); border-radius: 6px; overflow-x: auto; }
+pre code { font-size: inherit; padding: 0; background: none; border-radius: 0; }
+.table-scroll { max-width: 100%; overflow-x: auto; margin: 1em 0; }
+main > .table-scroll {
+  width: max-content; min-width: min(720px, 100%); max-width: min(1240px, 100%);
+  margin: 1.5em auto 2em;
+}
+table { border-collapse: collapse; font-size: .9rem; line-height: 1.55; }
+th, td {
+  padding: .55em .9em; text-align: left; vertical-align: top;
+  border-bottom: 1px solid var(--rule); overflow-wrap: normal; word-break: normal;
+}
+th { white-space: nowrap; font-weight: 600; color: var(--muted); background: var(--surface); border-bottom-color: var(--rule-strong); }
+th:first-child, td:first-child { padding-left: .75em; }
+td { min-width: 4.5rem; max-width: 32rem; }
+td a { white-space: nowrap; }
+tbody tr:last-child td { border-bottom: 0; }
+@media (max-width: 640px) {
+  body { padding: 2rem 1.25rem 4rem; font-size: 15.5px; }
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.3rem; }
+  h3 { font-size: 1.125rem; }
+  main > .table-scroll { margin-left: -1.25rem; margin-right: -1.25rem; max-width: calc(100% + 2.5rem); min-width: 0; width: auto; padding: 0 1.25rem; }
+  td { min-width: 8rem; }
+}
+@media print { body { padding: 0; } .table-scroll { overflow: visible; } }
+</style></head><body><main><h1>Ricerca di Mercato — Divisione MARINE di Novarium srl</h1>
+<p><strong>v2 — aggiornata 14/10/2026</strong> (v1: 12/10). Novità v2: sezione Filiera dell'usato + sezione Buyer riscritta con split chiarito (finali / intermediari / canale).</p>
+<hr>
+<h2>0. FILIERA DELL'USATO — come fluiscono le parti (nuovo 14/10)</h2>
+<pre><code>DEMOLIZIONE NAVI          UPGRADE/RETROFIT        SURPLUS
+Alang, Chattogram,        il vecchio apparato     magazzini armatori,
+Aliaga (Turchia)          ritirato dai service    cantieri, distributori
+        │                        │                      │
+        └────────────┬───────────┴──────────────────────┘
+                     ▼
+        RACCOGLITORI LOCALI (compratori ai cantieri,
+        trader, service center — i nostri 47 fornitori)
+                     ▼
+        TEST / RICONDIZIONAMENTO (bench test, calibrazione,
+        certificazione)
+                     ▼
+        DISTRIBUZIONE (vendita diretta export, ShipServ/
+        ShipParts/Shipeq, dealer regionali, reti globali)
+                     ▼
+        BUYER: armatori/ship manager · cantieri refit ·
+               service center · dealer
+</code></pre>
+<p><strong>Split buyer — le 3 strutture che comprano la parte (373 aziende):</strong></p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Struttura</th>
+<th>N</th>
+<th>%</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cantieri riparazione</td>
+<td>268</td>
+<td><strong>72%</strong></td>
+</tr>
+<tr>
+<td>Service center / riparatori qualificati</td>
+<td>63</td>
+<td><strong>17%</strong></td>
+</tr>
+<tr>
+<td>Cantieri refit yacht (elettronica in casa)</td>
+<td>42</td>
+<td><strong>11%</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p><em>Fuori dal conteggio buyer: 84 armatori/ship manager (domanda indiretta via riparatore; eccezione grandi fleet operator) e 283 nuove costruzioni (fonte surplus).</em></p>
+<p><strong>⚠️ Ns DB ≠ mondo reale — stima MONDIALE con ancore (ricerca 14/10):</strong></p>
+<p><strong>Service/riparatori elettronica — metodo bottom-up:</strong></p>
+<ul>
+<li>Sperry Marine dichiara <strong>200+ qualified service locations</strong> (20 uffici + 100+ partner autorizzati)</li>
+<li>JRC | Alphatron: <strong>230+ distributori + 50+ dealer</strong></li>
+<li>Radio Holland: <strong>142 porti / 18 paesi</strong> · Mackay: <strong>73+ sedi proprie</strong> · Aage Hempel: 32 uffici · Kongsberg: service center in 32 paesi · Furuno: World Wide Service Network (41% quota radar mercantile)</li>
+<li>~20-25 OEM nav/com con reti globali × 100-200 stazioni = 2.000-5.000 &quot;slot&quot;, MA la stessa ditta locale serve tipicamente 3-10 OEM → dedup ≈ 3-4x → <strong>~600-1.200 ditte uniche merchant</strong></li>
+<li>+ indipendenti non affiliati OEM (yacht, pesca, piccoli porti): ~500-1.000</li>
+<li><strong>= ~1.200-2.200 ditte uniche worldwide (best estimate ~1.500-2.000)</strong></li>
+</ul>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Struttura</th>
+<th>Ns DB</th>
+<th>Mondo reale</th>
+<th>% reale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Service/riparatori elettronica</td>
+<td>63</td>
+<td><strong>~1.500-2.000</strong></td>
+<td><strong>~65-70%</strong></td>
+</tr>
+<tr>
+<td>Cantieri riparazione</td>
+<td>268</td>
+<td>~700-1.000 (721 verificati TrustedDocks + locali)</td>
+<td>~25-30%</td>
+</tr>
+<tr>
+<td>Cantieri refit yacht</td>
+<td>42</td>
+<td>~100-200</td>
+<td>~4-6%</td>
+</tr>
+</tbody>
+</table></div>
+<p>→ <strong>Ns DB invertito vs mercato (72% cantieri vs ~65-70% service reale).</strong> Copertura service: 63 su ~1.500-2.000 = <strong>~3-4%</strong>. Prossimi lotti = service center, priorità porti maggiori.**</p>
+<p><strong>⚠️ MA attenzione (14/10, Vittorio): non tutti i service sono target — distinzione NUOVO vs USATO:</strong></p>
+<ul>
+<li><strong>Classificazione service a 3 livelli (14/10, Vittorio):</strong>
+<ol>
+<li><strong>OEM-exclusivo</strong> (filiale casa madre / mono-brand): solo nuovo OEM → NON target (tranne EOL: supporto OEM finisce ~10 anni post fine-produzione — JRC e Sperry lo dichiarano — oltre DEVONO cercare altrove)</li>
+<li><strong>Autorizzato OEM multi-brand</strong> (auth per 1-3 brand ma ripara tutto): nessuna nave ha ponte mono-brand (radar Furuno + giro Sperry + VDR Danelec) → per i brand NON autorizzati si procura parti liberamente → <strong>compra usato = TARGET</strong>. Rilevabile: loghi multipli OEM sul sito, &quot;authorized for X, servicing all brands&quot;</li>
+<li><strong>Indipendente puro</strong>: compra usato abitualmente → TARGET priorità 1</li>
+</ol>
+</li>
+<li><strong>Target = livelli 2+3 ≈ ~800-1.200 worldwide</strong> (usato per prezzo + EOL: TG-8000 ~8.000 navi, NAVIGAT X...). Identificabili: categoria ShipServ &quot;Reconditioned &amp; Second-Hand&quot; (cat/22), keyword siti (reconditioned, second-hand, obsolete, EOL, surplus, discontinued). Esempi: TIMC Marine, JUKO, Moloobhoy, Sinergo</li>
+<li>Nei prossimi lotti: tag <code>oem_exclusivo</code> / <code>auth_multibrand</code> / <code>indipendente</code> su ogni candidato service</li>
+<li><strong>Lotti 14/10 pomeriggio (candidati validati, in attesa GO import)</strong>: <strong>SHM2</strong> = 56 grandi fleet operator (54 armatori + 2 ship manager; 45/56 con email, 28 tecnica/acquisti; COSCO/OOCL/MOL/NYK/Evergreen/Seaspan/Bahri/Nakilat + greci + 27 extra). <strong>SVC3</strong> = 42 service gap-fill (31 indipendenti + 11 multibrand; IT sud 6, ES nord 5, FI 3, GR 3, TR 6, Baltico 9, Balkans 3 + 5 riserve SVC2 confermate). <strong>PROD1</strong> = 70 parti EOL mappate per catalogo (gyro 10, VDR 8, GMDSS 7, automazione 7...; top domanda: TG-8000 gyrosphere, NAVIGAT X fine supporto 2026, Saab R4 AIS zero ricambi OEM su &gt;10.000 navi, Danelec DM300/500 fine supporto 12/2026 = picco ORA, magnetron MG5424).</li>
+<li><strong>Lotto SVC2 completato (14/10): 100 candidati service worldwide filtrati usato/aftermarket</strong> — 58 indipendenti + 42 auth_multibrand, 35 paesi, 47 con evidenza usato esplicita sul sito, 77 con email. Canale demolizione coperto (Alang, Chattogram, Aliağa = usato puro). File: <code>registri/registro-clienti-service-svc2.json</code>. <strong>IMPORTATO IN DB 14/10 (GO Vittorio): 247 clienti</strong> (63 SVC1 + 84 SHM1 + 100 SVC2, 0 duplicati, transazione singola). DB Marine ora: 948 clienti = 283 nuove costruzioni + 264 riparazione + <strong>163 service_elettronica</strong> + 69 armatori + 42 refit + 15 ship_manager + 108 senza segmento (backfill pendente). Copertura service: ~8-11% di ~1.500-2.000.
+→ <strong>Nei prossimi lotti: filtrare per orientamento usato/EOL, non &quot;service center&quot; generico.</strong> Nei 63 già raccolti, i 18 doppio_ruolo sono sicuramente canale usato.**</li>
+</ul>
+<p><em>Esclusi: 283 cantieri nuove costruzioni (non comprano usato — fonte surplus).</em>
+<strong>✅ MODELLO BUYER (14/10, validato con ricerca indipendente):</strong></p>
+<ol>
+<li><strong>Cantieri refit yacht</strong> = comprano diretto ✓ — Amico &amp; Co (Genova): filosofia &quot;all skills in-house&quot;, dipartimento engineering 20 tecnici + officina elettrica, service dealer ufficiale OEM; nei refit installano direttamente apparati radio/nav (caso Queen Miri, Amels 52)</li>
+<li><strong>Cantieri riparazione commerciali</strong> = comprano MA con subappalto — San Giorgio del Porto: lavori elettrici/elettronica tramite &quot;selected qualified service providers&quot; (50+ ditte specializzate nell'area portuale); il cantiere coordina, lo specialista (es. Eligroup Napoli) diagnostica e installa</li>
+<li><strong>Riparatori/service center</strong> = buyer principale e <strong>strutturalmente protetto da normativa</strong>: SOLAS impone test annuali VDR/S-VDR e AIS da facility autorizzata dal produttore (MSC.1/Circ.1222, V/18.8) e Shore-Based Maintenance GMDSS con compagnia approvata (IV/15.7) → l'armatore è OBBLIGATO ad avere un service autorizzato: il canale service per nav/com non è una scelta, è legge</li>
+<li><strong>Ship manager/armatori</strong> = comprano diretto solo i grandi organizzati (uffici acquisti con Purchasing Officer, spend $3-8M/anno su flotte 8-15 navi, RFQ su ShipServ/Tidal/Varuna) ma prevalentemente ricambi motore/deck; per <strong>elettronica nav/com dipendono comunque dal service autorizzato</strong> (vedi punto 3) → acquisto diretto elettronica limitato a consumabili e stock; piccoli/medi: tutto via riparatore</li>
+<li><strong>Nuove costruzioni</strong> = esclusi (fonte surplus)</li>
+</ol>
+<p><strong>→ Contatto target (ricerca 14/10)</strong>: dentro il riparatore/service il decisore sulla parte è il <strong>SERVICE MANAGER</strong> — job description Furuno France: riceve la richiesta del cliente → analizza il guasto coi tecnici → <strong>cerca la disponibilità della parte</strong> → fa il preventivo parte+lavoro → gestisce stock e fornitori. Nei grandi armatori: <strong>Technical Superintendent / Purchasing Officer</strong>. Outreach va mirato a questi ruoli, non a info@ generico.</p>
+<p>3 punti chiave:</p>
+<ol>
+<li><strong>Origine concentrata e mappabile</strong>: quasi tutto l'usato nasce da 3-4 piazze di demolizione + upgrade ritirati dai service EU</li>
+<li><strong>Il valore si crea nel salto di fiducia</strong>: usato cieco asiatico → ricondizionato testato con garanzia. Il margine è lì</li>
+<li><strong>Posizione Novarium</strong>: tra raccolta e distribuzione — compra all'origine, testa/garantisce, vende a buyer finali EU/Med</li>
+</ol>
+<p>Driver domanda: EOL (Tokyo Keiki TG-8000: ~8.000 navi ancora in servizio; Sperry NAVIGAT X MK1/MK2 discontinuati), costo ricondizionato = 25-40% del retrofit, lead time 1-3 sett vs 12+ OEM, consumabili programmati (magnetron, gyrosphere, batterie GMDSS).</p>
+<hr>
+<h2>1. BUYER — split chiarito (riscritto 14/10)</h2>
+<h3>A. BUYER FINALI (usano il ricambio)</h3>
+<p><strong>A1. Armatori / ship manager</strong> ⭐ cliente core — uffici tecnici, RFQ multivendor, ricorrente. Sotto-segmenti per flotta:</p>
+<ul>
+<li><em>cargo/tanker/container/bulk</em> — spare pool di flotta, EOL</li>
+<li><em>traghetti/ro-pax</em> — flotte standardizzate, molte unità legacy</li>
+<li><em>pesca</em> — price-sensitive, sonar/ecoscandagli</li>
+<li><em>workboat/rimorchio</em> — flotte datate, uso intenso</li>
+</ul>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Azienda</th>
+<th>Paese</th>
+<th>Sotto-segmento</th>
+<th>Sito</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Columbia Shipmanagement</td>
+<td>CY (+Genova)</td>
+<td>ship manager</td>
+<td><a href="http://columbiagroup.org">columbiagroup.org</a></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Thenamaris</td>
+<td>GR</td>
+<td>ship manager</td>
+<td><a href="http://thenamaris.com">thenamaris.com</a></td>
+</tr>
+<tr>
+<td>3</td>
+<td>d'Amico Group</td>
+<td>IT</td>
+<td>ship manager</td>
+<td><a href="http://en.damicoship.com">en.damicoship.com</a></td>
+</tr>
+<tr>
+<td>4</td>
+<td>Tsakos Columbia</td>
+<td>GR</td>
+<td>ship manager</td>
+<td>—</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Grimaldi Group</td>
+<td>IT</td>
+<td>traghetti/ro-ro</td>
+<td><a href="http://grimaldi-lines.com">grimaldi-lines.com</a></td>
+</tr>
+<tr>
+<td>6</td>
+<td>GNV</td>
+<td>IT</td>
+<td>traghetti</td>
+<td><a href="http://gnv.it">gnv.it</a></td>
+</tr>
+<tr>
+<td>7</td>
+<td>Baleària</td>
+<td>ES</td>
+<td>traghetti</td>
+<td><a href="http://balearia.com">balearia.com</a></td>
+</tr>
+<tr>
+<td>8</td>
+<td>Attica Group</td>
+<td>GR</td>
+<td>traghetti</td>
+<td><a href="http://attica-group.com">attica-group.com</a></td>
+</tr>
+<tr>
+<td>9</td>
+<td>Corsica Ferries</td>
+<td>FR/IT</td>
+<td>traghetti</td>
+<td><a href="http://corsica-ferries.fr">corsica-ferries.fr</a></td>
+</tr>
+<tr>
+<td>10</td>
+<td>Minoan Lines</td>
+<td>GR</td>
+<td>traghetti</td>
+<td><a href="http://minoan.it">minoan.it</a></td>
+</tr>
+<tr>
+<td>11</td>
+<td>Trasmed GLE</td>
+<td>ES</td>
+<td>traghetti</td>
+<td><a href="http://trasmed.com">trasmed.com</a></td>
+</tr>
+<tr>
+<td>12</td>
+<td>SeaJets</td>
+<td>GR</td>
+<td>fast ferry</td>
+<td><a href="http://seajets.gr">seajets.gr</a></td>
+</tr>
+<tr>
+<td>13</td>
+<td>Iberconsa</td>
+<td>ES</td>
+<td>pesca</td>
+<td><a href="http://iberconsa.com">iberconsa.com</a></td>
+</tr>
+<tr>
+<td>14</td>
+<td>Nueva Pescanova</td>
+<td>ES</td>
+<td>pesca</td>
+<td><a href="http://nuevapescanova.com">nuevapescanova.com</a></td>
+</tr>
+<tr>
+<td>15</td>
+<td>Pescatori di Mazara</td>
+<td>IT</td>
+<td>pesca</td>
+<td><a href="http://pescatoridimazara.it">pescatoridimazara.it</a></td>
+</tr>
+<tr>
+<td>16</td>
+<td>Rosso di Mazara</td>
+<td>IT</td>
+<td>pesca</td>
+<td><a href="http://rossodimazara.com">rossodimazara.com</a></td>
+</tr>
+<tr>
+<td>17</td>
+<td>MedTug</td>
+<td>IT</td>
+<td>rimorchio</td>
+<td><a href="http://medtug.eu">medtug.eu</a></td>
+</tr>
+<tr>
+<td>18</td>
+<td>Rimorchiatori Riuniti</td>
+<td>IT</td>
+<td>rimorchio</td>
+<td><a href="http://rimorchiatoririuniti.it">rimorchiatoririuniti.it</a></td>
+</tr>
+<tr>
+<td>19</td>
+<td>Fratelli Neri</td>
+<td>IT</td>
+<td>rimorchio</td>
+<td><a href="http://nerigroup.net">nerigroup.net</a></td>
+</tr>
+<tr>
+<td>20</td>
+<td>Boluda Towage</td>
+<td>ES</td>
+<td>rimorchio</td>
+<td><a href="http://boluda.eu">boluda.eu</a></td>
+</tr>
+<tr>
+<td>21</td>
+<td>Svitzer</td>
+<td>DK</td>
+<td>rimorchio</td>
+<td><a href="http://svitzer.com">svitzer.com</a></td>
+</tr>
+<tr>
+<td>22</td>
+<td>MedTugs</td>
+<td>GR</td>
+<td>rimorchio</td>
+<td><a href="http://medtugs.gr">medtugs.gr</a></td>
+</tr>
+</tbody>
+</table></div>
+<p>⚠️ <strong>Flusso reale (14/10)</strong>: compra diretto solo il <strong>grande fleet operator</strong> con ufficio tecnico/acquisti (Maersk, MSC, Thenamaris...) via RFQ. L'armatore piccolo/medio <strong>non compra la parte</strong>: va dal riparatore → diagnosi → preventivo parte+lavoro. Quindi: vendere parti = parlare ai riparatori; sugli armatori medi puntare a essere specificati/messi in contatto.</p>
+<p><strong>+84 nuovi candidati verificati 14/10</strong> (Maersk, MSC, Hapag-Lloyd, Stena, DFDS, Oldendorff, Euronav, TORM, Odfjell...) → <code>registri/registro-clienti-shipmanager.json</code></p>
+<p><strong>A2. Cantieri riparazione/refit</strong> ⭐ ticket alto, urgente, episodico — 306+42 già in DB. <strong>Hanno il riparatore elettronica in casa integrato → comprano la parte direttamente.</strong>
+⚠️ <strong>Cantieri NUOVE COSTRUZIONI (283 in DB) ESCLUSI dai buyer usato (decisione 14/10)</strong>: comprano sistemi nuovi via OEM, non ricambi → marcati <code>buyer_usato:false</code> + <code>ruolo_potenziale:fornitore_surplus</code> + blockedForMarketing (sono FONTE di surplus, non compratori).</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Azienda</th>
+<th>Paese</th>
+<th>Sito</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>San Giorgio del Porto</td>
+<td>IT</td>
+<td><a href="http://sgdp.it">sgdp.it</a></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Palumbo Group</td>
+<td>IT+MT/FR/HR</td>
+<td><a href="http://palumbogroup.it">palumbogroup.it</a></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Palumbo Superyachts</td>
+<td>MT</td>
+<td><a href="http://palumbosy.com">palumbosy.com</a></td>
+</tr>
+<tr>
+<td>4</td>
+<td>CNdM Marseille</td>
+<td>FR</td>
+<td><a href="http://cndm.fr">cndm.fr</a></td>
+</tr>
+<tr>
+<td>5</td>
+<td>Hellenic Shipyards Perama</td>
+<td>GR</td>
+<td><a href="http://hsop.gr">hsop.gr</a></td>
+</tr>
+<tr>
+<td>6</td>
+<td>Atlas Shipyards</td>
+<td>GR</td>
+<td><a href="http://atlas-shipyard.gr">atlas-shipyard.gr</a></td>
+</tr>
+<tr>
+<td>7</td>
+<td>Amico &amp; Co</td>
+<td>IT</td>
+<td><a href="http://amicoshipyard.com">amicoshipyard.com</a></td>
+</tr>
+<tr>
+<td>8</td>
+<td>Metalships &amp; Docks</td>
+<td>ES</td>
+<td>—</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Sefine Shipyard</td>
+<td>TR</td>
+<td>—</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Euploia Drydocks</td>
+<td>UE rete</td>
+<td><a href="http://euploia.eu">euploia.eu</a></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>A3. Yacht/superyacht service</strong> — nicchia refit legacy:</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Azienda</th>
+<th>Paese</th>
+<th>Sito</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Halo</td>
+<td>ES (Palma)</td>
+<td><a href="http://avithalo.com">avithalo.com</a></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Tallamar</td>
+<td>ES</td>
+<td><a href="http://tallamar.com">tallamar.com</a></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Estay Electronics</td>
+<td>ES</td>
+<td><a href="http://estayelectronics.com">estayelectronics.com</a></td>
+</tr>
+<tr>
+<td>4</td>
+<td>Area Electronica</td>
+<td>ES</td>
+<td><a href="http://marine.aelec.pro">marine.aelec.pro</a></td>
+</tr>
+<tr>
+<td>5</td>
+<td>AVIT Marine</td>
+<td>ES</td>
+<td><a href="http://avitmarine.com">avitmarine.com</a></td>
+</tr>
+<tr>
+<td>6</td>
+<td>SEMA Marine</td>
+<td>FR</td>
+<td><a href="http://sema-marine.fr">sema-marine.fr</a></td>
+</tr>
+<tr>
+<td>7</td>
+<td>Cave Group</td>
+<td>USA/IT/GR/Monaco</td>
+<td><a href="http://cavegroupllc.com">cavegroupllc.com</a></td>
+</tr>
+</tbody>
+</table></div>
+<h3>B. INTERMEDIARI (comprano per servire/rivendere)</h3>
+<p><strong>B1. Service center elettronica</strong> ⭐ doppio ruolo (cliente + canale):</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Azienda</th>
+<th>Paese</th>
+<th>Sito</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>SIRM Italia</td>
+<td>IT</td>
+<td><a href="http://sirmitalia.it">sirmitalia.it</a></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Aage Hempel Group</td>
+<td>ES +32 uffici</td>
+<td><a href="http://aagehempel.com">aagehempel.com</a></td>
+</tr>
+<tr>
+<td>3</td>
+<td>VigoSonar</td>
+<td>ES</td>
+<td><a href="http://vigosonar.com">vigosonar.com</a></td>
+</tr>
+<tr>
+<td>4</td>
+<td>Hispanova</td>
+<td>ES</td>
+<td><a href="http://hispanova.com">hispanova.com</a></td>
+</tr>
+<tr>
+<td>5</td>
+<td>Technonavalia</td>
+<td>ES</td>
+<td><a href="http://technonavalia.com">technonavalia.com</a></td>
+</tr>
+<tr>
+<td>6</td>
+<td>SRH Marine Electronics</td>
+<td>GR</td>
+<td><a href="http://srhmar.com">srhmar.com</a></td>
+</tr>
+<tr>
+<td>7</td>
+<td>Radio Piraeus</td>
+<td>GR</td>
+<td><a href="http://radiopiraeus.gr">radiopiraeus.gr</a></td>
+</tr>
+<tr>
+<td>8</td>
+<td>e3 Systems</td>
+<td>ES</td>
+<td><a href="http://e3s.com">e3s.com</a></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>+63 nuovi candidati verificati 14/10</strong> (18 con doppio ruolo) → <code>registri/registro-clienti-service.json</code></p>
+<p><strong>B2. Dealer/trader/chandler</strong> — volume, margine basso:</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Azienda</th>
+<th>Paese</th>
+<th>Sito</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Global Marine Supplies</td>
+<td>IT</td>
+<td><a href="http://gmsupplies.it">gmsupplies.it</a></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Vecchione</td>
+<td>IT</td>
+<td><a href="http://vecchionesrl.it">vecchionesrl.it</a></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Cimmino General Supply</td>
+<td>IT</td>
+<td><a href="http://cimminosupply.it">cimminosupply.it</a></td>
+</tr>
+<tr>
+<td>4</td>
+<td>LIMANi Supply Group</td>
+<td>NL/IT</td>
+<td><a href="http://limanisupply.com">limanisupply.com</a></td>
+</tr>
+<tr>
+<td>5</td>
+<td>AVS Global Ship Supply</td>
+<td>TR</td>
+<td><a href="http://avsglobalsupply.com">avsglobalsupply.com</a></td>
+</tr>
+<tr>
+<td>6</td>
+<td>Barbagelata Adriatica</td>
+<td>IT</td>
+<td><a href="http://barbagelatasupply.com">barbagelatasupply.com</a></td>
+</tr>
+<tr>
+<td>7</td>
+<td>GeCOM</td>
+<td>IT</td>
+<td>—</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Astamar Group</td>
+<td>IT</td>
+<td>—</td>
+</tr>
+<tr>
+<td>9</td>
+<td>CFI Naval Supply</td>
+<td>IT</td>
+<td>—</td>
+</tr>
+<tr>
+<td>10</td>
+<td>LALIZAS</td>
+<td>GR</td>
+<td><a href="http://lalizas.com">lalizas.com</a></td>
+</tr>
+<tr>
+<td>11</td>
+<td>Navides Hellas</td>
+<td>GR</td>
+<td><a href="http://navides-hellas.com">navides-hellas.com</a></td>
+</tr>
+</tbody>
+</table></div>
+<h3>C. CANALE (non buyer — piattaforme dove i buyer cercano)</h3>
+<p>ShipServ (43.000 fornitori, 260+ armatori) · <a href="http://ShipParts.com">ShipParts.com</a> (70.000+ venditori) · Shipeq (usato da demolizione). → presenza = lead flow passivo, da valutare.</p>
+<hr>
+<h2>2. FORNITORI (invariato dalla v1 — 47 verificati)</h2>
+<ul>
+<li><strong>A. Usato/ricondizionato da demolizione (Asia, 14)</strong>: MEAS Marine, Aurora Marine, NELCOM, Fab Marine, Alang Hub, SAR Marine, Ship Spare Parts Supplier, Alang Ship Machinery, Alang Ship Salvage, Marine Machinery India, United Marine Services, Seanav Marine, Auto2Mation, Kontek Marine</li>
+<li><strong>B. Turchia (8)</strong>: Mavi, ALM, Marin Electronics, OSEMAR, Seaway, STM, Turkey Marine Service, Kozikoğlu</li>
+<li><strong>C. Europa (7)</strong>: Lymington, Hora, E-Nav, Dahlberg, Current Marine, Telemar GmbH, Mackay Germany</li>
+<li><strong>D. Reti globali/OEM (12)</strong>: Mackay, Radio Holland, Elcome, STS Marine, Codar, Shinpo, Allied eParts, Hostmost, Master Systems, SJV, Navallance, HeroTech</li>
+<li><strong>E. Surplus automazione (4)</strong>: EU Automation, Radwell, PartnerPLC, York MRO</li>
+<li><strong>F. Marketplace (2)</strong>: <a href="http://ShipParts.com">ShipParts.com</a>, ShipServ</li>
+<li>Dettaglio completo: v1 12/10 (artifact) + registro fornitori</li>
+</ul>
+<h2>3. PRODOTTI AD ALTA ROTAZIONE (invariato — 14 categorie)</h2>
+<p>Magnetron X/S-band · radar/antenne · ECDIS/consolle · gyrosphere · schede PCB · PSU · monitor Hatteland · AIS · VDR · batterie EPIRB/SART+HRU · Kongsberg EOL · trasduttori Airmar · sonar pesca · antenne sat/TVRO/VSAT. Dettaglio modelli/PN: v1 12/10.</p>
+<h2>4. NOTE IMPORT (invariato)</h2>
+<p>16 campi anagrafica + 4 regole qualità (v1). Tag segmento: <code>Client.aiMetadata-&gt;&gt;'segmento'</code> con valori canonici: cantiere_riparazione, cantiere_refit_yacht, cantiere_nuove_costruzioni, ship_manager, armatore, service_elettronica, chandler, pesca, traghetto, workboat.</p>
+</main></body></html>

@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Novarium.net — Report Business e Flussi Operativi</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #fff; --text: #37352f; --muted: #787774; --faint: #9b9a97;
+  --rule: rgba(55, 53, 47, .09); --rule-strong: rgba(55, 53, 47, .16);
+  --surface: #f7f6f3; --code-bg: rgba(135, 131, 120, .15);
+  --link-line: rgba(55, 53, 47, .35); --check: #787774;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #191919; --text: rgba(255, 255, 255, .86); --muted: rgba(255, 255, 255, .55); --faint: rgba(255, 255, 255, .4);
+    --rule: rgba(255, 255, 255, .08); --rule-strong: rgba(255, 255, 255, .14);
+    --surface: #202020; --code-bg: rgba(255, 255, 255, .08);
+    --link-line: rgba(255, 255, 255, .35); --check: rgba(255, 255, 255, .32);
+  }
+}
+* { box-sizing: border-box; }
+html { background: var(--bg); -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; padding: 4.5rem 3rem 6rem; color: var(--text); background: var(--bg);
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+}
+main > * { max-width: 720px; margin-left: auto; margin-right: auto; }
+main > :first-child { margin-top: 0; }
+p, ul, ol, blockquote, pre, dl { margin-top: 0; margin-bottom: 1em; }
+p, li, blockquote, dd { overflow-wrap: break-word; }
+h1, h2, h3, h4, h5, h6 { color: var(--text); font-weight: 600; line-height: 1.3; margin: 2em auto .5em; }
+h1 { font-size: 2.125rem; font-weight: 700; line-height: 1.2; letter-spacing: -.021em; margin-bottom: .6em; }
+h2 { font-size: 1.5rem; letter-spacing: -.017em; margin-top: 2.2em; }
+h3 { font-size: 1.25rem; letter-spacing: -.012em; }
+h4 { font-size: 1.0625rem; }
+h5, h6 { font-size: 1rem; color: var(--muted); }
+h1 + h2, h2 + h3, h3 + h4 { margin-top: 1em; }
+strong { font-weight: 600; }
+a { color: inherit; text-decoration: underline; text-decoration-color: var(--link-line); text-decoration-thickness: 1px; text-underline-offset: .2em; transition: text-decoration-color .15s; }
+a:hover { text-decoration-color: currentColor; }
+ul, ol { padding-left: 1.6em; }
+li { margin: .25em 0; padding-left: .15em; }
+li > ul, li > ol { margin: .25em 0 0; }
+li > p { margin-bottom: .5em; }
+li::marker { color: var(--muted); }
+.task-list-item { list-style: none; margin-left: -1.45em; }
+.task-list-item input {
+  appearance: none; -webkit-appearance: none; width: 1em; height: 1em; margin: 0 .55em 0 0; vertical-align: -.15em;
+  border: 1.5px solid var(--faint); border-radius: 3px; background: transparent;
+}
+.task-list-item input:checked {
+  border-color: transparent; background: var(--check) no-repeat center / 80%
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+.task-list-item:has(> input:checked, > p:first-child > input:checked) { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--faint); }
+blockquote { margin-left: auto; margin-right: auto; padding: .1em 0 .1em 1.1em; border-left: 3px solid var(--rule-strong); color: var(--muted); }
+blockquote > :last-child { margin-bottom: 0; }
+hr { height: 1px; border: 0; background: var(--rule-strong); margin: 2.5em auto; }
+img { max-width: 100%; height: auto; border-radius: 4px; }
+code, kbd, samp, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace; }
+code { font-size: .85em; padding: .15em .35em; border-radius: 4px; background: var(--code-bg); }
+pre { font-size: .85em; line-height: 1.6; padding: 1em 1.25em; background: var(--surface); border-radius: 6px; overflow-x: auto; }
+pre code { font-size: inherit; padding: 0; background: none; border-radius: 0; }
+.table-scroll { max-width: 100%; overflow-x: auto; margin: 1em 0; }
+main > .table-scroll {
+  width: max-content; min-width: min(720px, 100%); max-width: min(1240px, 100%);
+  margin: 1.5em auto 2em;
+}
+table { border-collapse: collapse; font-size: .9rem; line-height: 1.55; }
+th, td {
+  padding: .55em .9em; text-align: left; vertical-align: top;
+  border-bottom: 1px solid var(--rule); overflow-wrap: normal; word-break: normal;
+}
+th { white-space: nowrap; font-weight: 600; color: var(--muted); background: var(--surface); border-bottom-color: var(--rule-strong); }
+th:first-child, td:first-child { padding-left: .75em; }
+td { min-width: 4.5rem; max-width: 32rem; }
+td a { white-space: nowrap; }
+tbody tr:last-child td { border-bottom: 0; }
+@media (max-width: 640px) {
+  body { padding: 2rem 1.25rem 4rem; font-size: 15.5px; }
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.3rem; }
+  h3 { font-size: 1.125rem; }
+  main > .table-scroll { margin-left: -1.25rem; margin-right: -1.25rem; max-width: calc(100% + 2.5rem); min-width: 0; width: auto; padding: 0 1.25rem; }
+  td { min-width: 8rem; }
+}
+@media print { body { padding: 0; } .table-scroll { overflow: visible; } }
+</style></head><body><main><h1><a href="http://Novarium.net">Novarium.net</a> — Report Business e Flussi Operativi</h1>
+<p><em>Report finale — 10 ottobre 2026, a cura di Letta Code per Vittorio.</em>
+<em>Fonti: repo <code>novarium-backoffice-clean</code> (main @ 18333715), repo <code>Novarium_Website</code>, Documento Master BO (docx), dati Google Search Console 6 mesi (apr–set 2026), analisi SEO pubblica. Bozze di dettaglio: <code>bozza-flussi-bo.md</code>, <code>bozza-business-sito.md</code>, <code>bozza-gap-tecnica.md</code> in questa stessa cartella.</em></p>
+<hr>
+<h2>Sintesi esecutiva</h2>
+<p>Novarium srl (Rapallo GE, dal 2004, ISO 9001:2015) vende <strong>ricambi originali, nuovi e rigenerati per imaging medicale e ultrasound</strong> (RM, TC, raggi X, C-Arm, mammografia, sonde) a clienti B2B in tutto il mondo, più servizi tecnici. Il motore commerciale è il <strong>ciclo RFQ</strong>: il cliente chiede un ricambio → il BackOffice interroga in parallelo più fornitori (con regole di priorità ed esclusione) → i fornitori rispondono su pagine token pubbliche → Novarium quota al cliente → ordine e consegna.</p>
+<p>Tre fatti emersi dall'analisi:</p>
+<ol>
+<li><strong>Lead dal sito: oggi funzionano (126 richieste web negli ultimi 30 gg, verificato nel DB il 10/10), ma il sito NUOVO va collegato prima del go-live.</strong> Il sito attualmente live invia ogni giorno richieste reali al BO (modulo <code>website-requests</code> → RFQ con referenceId <code>WEB-*</code>, ~4/giorno). Nel repo del sito nuovo, invece, l'invio è ancora un <em>mock</em>: <code>submitRequestDraft()</code> scrive in console e restituisce un referenceId finto (<code>NOV-*</code>). Se il sito nuovo va online così, <strong>le richieste smettono di arrivare</strong>. È il collegamento #1 da implementare prima del cutover (innesto già predisposto: nginx instrada <code>/api/</code> → backend; payload già in formato pre-RFQ).</li>
+<li><strong>Il BackOffice è molto più avanti della sua documentazione.</strong> È già in produzione (<code>bo.novarium.net</code>) con login JWT e ruoli, portali clienti/fornitori, inbox materializzata con parser AI delle email, proforma, marketing campaign, stock serializzato e divisione Marine. I documenti di stato sono fermi a febbraio 2026 e il README dice ancora &quot;autenticazione: planned&quot; — ~8 mesi di evoluzione non documentati.</li>
+<li><strong>La visibilità Google cresce ma poggia su fondamenta fragili.</strong> Nei 6 mesi GSC: Parts 357 click vs Sonde 152; il 42% del traffico Parts è su URL legacy che fanno 301 verso pagine noindex (a rischio evaporazione); le pagine sonda nuove sono quasi invisibili (impression su 112 URL di 10.340, ~1%); e il clone cinese <strong><a href="http://nuovomedtech.com">nuovomedtech.com</a></strong> copia il catalogo 1:1 superando Novarium su alcune query a part-number.</li>
+</ol>
+<hr>
+<h2>1. Il business di Novarium</h2>
+<h3>1.1 Cosa vende e a chi</h3>
+<ul>
+<li><strong>Prodotti</strong>: parti di ricambio per imaging medicale (RM, TC, X-ray, C-Arm, mammografia) e ultrasound (sonde e parti), originali/nuovi/rigenerati. Marchi: GE, Philips, Siemens, Sonosite, Toshiba/Canon, Carestream, Hologic e altri.</li>
+<li><strong>Servizi</strong>: assistenza tecnica e riparazioni (esclusi dal catalogo pubblico per scelta: cluster &quot;Repair&quot; ~980 righe filtrate).</li>
+<li><strong>Clienti</strong>: strutture sanitarie, centri diagnostici, tecnici/ingegneri biomedici — B2B internazionale (il sito nuovo è inglese-only per questo; il DB è già bilingue ita/eng).</li>
+<li><strong>Nuova divisione Marine</strong> in attivazione (catalogo macchine/equipment nautico, dominio <a href="http://novarium-marine.com">novarium-marine.com</a> previsto in nginx).</li>
+<li><strong>Scala catalogo</strong>: ~36.000 prodotti nel DB, di cui <strong>~34.000 pubblici</strong> (tipo 1 ≈ 24.700 parti imaging; tipo 2 ≈ 10.300 equipment/ultrasound) dopo i filtri commerciali (niente sospesi, placeholder, DEV-*, manuali, spedizioni).</li>
+</ul>
+<h3>1.2 Il motore commerciale: il ciclo RFQ</h3>
+<p>Dal Documento Master e dal codice BO:</p>
+<pre><code>Richiesta cliente (sito/email/telefono)
+  → RFQ nel BO (prodotto, quantità, macchina obbligatoria, intestata a un Client con can_place_orders)
+  → Request Suppliers: suggerimento fornitori per Categoria+Brand → Categoria → altri
+      (esclusioni a livello Group; fornitore senza email abilitata = invisibile; override tracciati)
+  → Fornitori rispondono su token page pubblica (offerta / non disponibile / messaggio), idempotente
+  → Offerta al cliente (prezzo, garanzia, consegna, IVA) via email con token di conferma
+  → Ordine → conferma fornitore → consegna (aggancia uscita stock) → eventuale proforma PDF
+</code></pre>
+<p>Tutto è <strong>event-driven e audit-first</strong>: lo stato si deriva da eventi append-only (<code>State = f(Event[])</code>), mai update distruttivi, timeline RFQ &quot;sacra&quot;, ogni override umano esplicito e tracciato. La decisione finale è sempre umana (l'AI propone, l'uomo conferma).</p>
+<h3>1.3 Numeri dalla migrazione legacy (biennio 2024–2026, validata)</h3>
+<p>La migrazione dal gestionale legacy &quot;Biferno&quot; (MySQL) è <strong>validata e congelata</strong> per il biennio 2024-01 → 2026-01 (tag <code>migration/2y-validated-v1</code>, parità perfetta): <strong>36.896 RFQ, 227.557 eventi, 51.472 messaggi inbox, 2.664 clienti, 309 fornitori, 12.504 prodotti</strong>. Dà l'ordine di grandezza dell'attività: ~18.000 RFQ/anno.</p>
+<h3>1.4 Traffico e visibilità (GSC, 6 mesi apr–set 2026)</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Metrica</th>
+<th>Parts</th>
+<th>Sonde</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Click (6 mesi)</td>
+<td><strong>357</strong></td>
+<td><strong>152</strong></td>
+</tr>
+<tr>
+<td>Query tracciate in top-10 (campione)</td>
+<td>5/29 (17%)</td>
+<td>1/24 (4%)</td>
+</tr>
+<tr>
+<td>Indicizzazione pagine nuove</td>
+<td>buona</td>
+<td><strong>~1% degli URL</strong> (112/10.340)</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><strong>Long tail part-number</strong>: 924 query con posizione media 19 — il più grande bacino di crescita.</li>
+<li><strong>Rischio</strong>: 42% del traffico Parts poggia su URL legacy <code>/vendita/marca/</code> che ora fanno 301 verso pagine noindex → il traffico può evaporare.</li>
+<li><strong>Query a intento &quot;sonde&quot;: 0 click</strong> — il sito non intercetta chi cerca sonde.</li>
+<li>Split www/non-www: il 27% delle impression è sull'host non-www (pos. media 11.6 vs 6.6 del www) — duplicazione da chiudere.</li>
+<li>Spike agosto 2026 (42.680 impression) = crawl post-migrazione/sitemap del nuovo sito.</li>
+<li><strong>Da riconciliare</strong>: la sitemap vista da Google dichiara 158.550 URL (31.666 prodotti × 5 lingue), ma il codice del sito nuovo è inglese-only con i18n esplicitamente vietato per ora. Chiarire quale versione/sitemap è online.</li>
+</ul>
+<p>Dettaglio: <code>../novarium-seo/gsc-analysis.md</code> e <code>report-sonde-vs-parts.md</code>.</p>
+<h3>1.5 Minacce esterne</h3>
+<ul>
+<li><strong><a href="http://nuovomedtech.com">nuovomedtech.com</a></strong> (Guangzhou): clone 1:1 del catalogo, gli URL embeddano persino gli ID prodotto Novarium (es. nov5246); su alcune query part-number supera Novarium. Raccomandazione già data: DMCA + rafforzamento indicizzazione (chi copia vince solo se l'originale è invisibile).</li>
+</ul>
+<hr>
+<h2>2. Il BackOffice: come gira l'azienda</h2>
+<h3>2.1 Cos'è</h3>
+<p>Centro operativo interno <strong>RFQ-centrico, event-driven, audit-first</strong> — non un CRM, non un ERP, non un client email. Reengineering green-field del legacy Biferno: replicare il comportamento operativo esistente, nessuna nuova regola di business non approvata, nessun riuso di codice legacy. Stack: React+Vite (~87 route) / NestJS (~60 moduli) / Postgres+Prisma su Supabase (~60 modelli) / storage S3 / Docker su host singolo.</p>
+<p>Governance del progetto (Documento Master): AI orchestrata (5-6 agenti) con controllo umano — <strong>Angelo</strong>: GO/NO-GO tecnico; <strong>Vitto</strong>: validazione funzionale.</p>
+<h3>2.2 Mappa dei 18 flussi operativi</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Flusso</th>
+<th>Cosa fa</th>
+<th>Stato</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Ciclo RFQ</strong></td>
+<td>Da richiesta cliente a offerta/ordine/consegna; ~100 endpoint, <code>rfq.service.ts</code> (~24k righe) = cuore del dominio</td>
+<td>✅ stabile</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Request Suppliers</strong></td>
+<td>Selezione fornitori con regole hard (ranking categoria+brand, esclusioni Group, override tracciati)</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Risposte fornitori</strong></td>
+<td>Token page pubbliche (offerta/NA/messaggio), multi-click idempotente, sessioni multi-prodotto</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Offerta→ordine</strong></td>
+<td>Quote, invio offerta (parity mail legacy regolata da contratto ASK1), conferme, consegna</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Proforma/documenti</strong></td>
+<td>PI da RFQ, PDF, documenti su S3</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>Stock serializzato</strong></td>
+<td>Magazzino per singolo seriale (compliance medicale), movimenti IN/OUT/ADJUST</td>
+<td>✅ base</td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>Inbox / Master / Action List</strong></td>
+<td>Triade operativa: verità (tutto ciò che arriva) / lavoro umano CHECK-DO-DONE / oggetti operativi</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>Parser AI email</strong></td>
+<td>Classifica email in ingresso (deterministico→AI), suggerimenti applicabili, flag needsFix</td>
+<td>✅ (gap: trigger)</td>
+</tr>
+<tr>
+<td>9</td>
+<td><strong>Token portal + portali account</strong></td>
+<td>Link pubblici non scadenti + portali con login per clienti/fornitori (reset password)</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>10</td>
+<td><strong>Outbound mail</strong></td>
+<td>MessageModel per scenario (EN/IT), template rapidi, invii programmati, Outbox con stati consegna SendGrid</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>11</td>
+<td><strong>WhatsApp (Kapso)</strong></td>
+<td>Conversazioni fornitori via WhatsApp Business</td>
+<td>⚠️ solo locale (rollout prod revertito)</td>
+</tr>
+<tr>
+<td>12</td>
+<td><strong>Anagrafiche</strong></td>
+<td>Clienti/fornitori/gruppi/prodotti: deduplica, contatti preferiti, esclusioni, schede full</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>13</td>
+<td><strong>Marketing + Await Request</strong></td>
+<td>Campagne batch (anche AI generate/improve/translate), follow-up automatico post-richiesta</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>14</td>
+<td><strong>Exchange</strong></td>
+<td>RFQ di scambio/permuta con fornitore owner</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>15</td>
+<td><strong>CS/TODO/NB/Reminder/Ticket</strong></td>
+<td>Marker operativi, promemoria delegabili, chat interna</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>16</td>
+<td><strong>Import legacy</strong></td>
+<td>ETL MySQL→Postgres idempotente, sync incrementale con dry-run, ~20 script backfill</td>
+<td>✅ (validazione prod e cutover aperti)</td>
+</tr>
+<tr>
+<td>17</td>
+<td><strong>Integrazione sito pubblico</strong></td>
+<td>Website requests (candidati→RFQ), chat pubblica, discussioni pubbliche, redirect SEO, statistiche ranking</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>18</td>
+<td><strong>Admin/auth/report/Marine</strong></td>
+<td>Utenti e ruoli, monitoring, backup DB, cambio EUR/USD (Sole24Ore), copilot AI su RFQ, divisione Marine</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table></div>
+<p>Dettaglio completo con attori/passi/file: <code>bozza-flussi-bo.md</code>.</p>
+<h3>2.3 Modello di dominio (essenziale)</h3>
+<p><strong>Group</strong> (gruppo cliente; sede delle esclusioni fornitori) → <strong>Client</strong> (sede; unico con <code>canPlaceOrders</code>) → <strong>RFQ</strong> (centro; intestata a Client, su <strong>Product</strong>) → <strong>SupplierRequest</strong> (una per fornitore contattato) → <strong>Event</strong> (audit append-only, origine client/supplier/BO/system) → <strong>ActionItem</strong> (lavoro umano). <strong>Contact</strong> con email unica globale collegabile a N clienti e N fornitori. <strong>Token</strong> pubblici idempotenti. A corredo: StockItem/StockMovement, MasterMessage/InboxItem/ParseRun, MessageModel/Template/OutboxMessage/ScheduledClientMessage, MarketingCampaign, Reminder/Ticket/InternalNote/InternalMessage, User/PortalAccount.</p>
+<h3>2.4 Integrazioni esterne</h3>
+<p>SendGrid (email out + webhook consegne) · IMAP poller (email in) · Kapso (WhatsApp, solo locale) · Supabase (DB + storage) · sito pubblico (requests/chat/SEO) · Sole24Ore (cambio EUR/USD) · AI/LLM (parser, copilot RFQ, marketing) · MySQL legacy (import on-demand) · Airtable (progetto SP esterno, concept).</p>
+<h3>2.5 Stato reale vs documentazione</h3>
+<p>Documenti fermi a <strong>febbraio 2026</strong>: README obsoleto (&quot;no auth&quot;, link a file inesistenti), 3 file-trappola vuoti in <code>docs/02_PROJECT/</code>, DECISIONS_FROZEN contraddetto dal codice (&quot;no inbox materializzata, no parser&quot; — entrambi in produzione). La conoscenza operativa è sparsa tra handoff, ASK1, PARSER_SPEC e codice; <code>bozza-flussi-bo.md</code> colma il gap. Allineamento stimato: ½ giornata.</p>
+<hr>
+<h2>3. Sito ↔ BackOffice: il collegamento che manca</h2>
+<p><strong>Cosa c'è oggi.</strong> Unico collegamento attivo: il <strong>catalogo condiviso</strong> — il sito legge in sola lettura le tabelle BO su Supabase (service-role, server-side) con regole di visibilità codificate (<code>public-scope.ts</code>). Per regole di progetto il sito non scrive mai sul BO. Nota di rischio: zero policy RLS sulle tabelle pubbliche.</p>
+<p><strong>Il gap di business #1.</strong> Il flusso Product Request (draft → riepilogo → LeadForm con nome/email/telefono/azienda → conferma) è completo lato UX e il payload è già modellato come pre-RFQ (<code>items[{productId, sku, brand, quantity}] + lead{...}</code>). Ma l'invio è <strong>mock</strong>: i lead non arrivano al BO né a nessuna casella email. La pagina di conferma promette un preventivo che nessuno vedrà mai richiesto. Contatti alternativi sul sito: solo telefono e mailto.</p>
+<p><strong>Predisposto, non cablato.</strong> nginx instrada già <code>/api/</code> → <code>backend:3000</code>; il BO ha già il modulo <code>website-requests</code> (candidati cliente → review su RFQ) usato in produzione su test3; il punto di innesto è un solo file (<code>src/lib/api/request.ts</code>). Manca anche qualsiasi notifica (email/WhatsApp) dal sito e ogni analytics.</p>
+<hr>
+<h2>4. Osservazioni strategiche e mosse consigliate</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Mossa</th>
+<th>Perché</th>
+<th>Dove</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Collegare il request flow del sito al BO</strong> (endpoint reale + notifica)</td>
+<td>Oggi il sito è una vetrina che simula la raccolta lead: ogni richiesta persa è fatturato perso. Innesto già progettato, effort basso</td>
+<td><code>src/lib/api/request.ts</code> (sito) + <code>modules/website-requests</code> (BO)</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Messa in sicurezza del BO live</strong> (5 P0 tecnici)</td>
+<td>Sistema in produzione con chiave DB esposta in git, backup forse spento, zero allarmi</td>
+<td>vedi <code>gap-analysis-bo.md</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Fix indicizzazione sonde</strong> (paginazione server-side + linking interno)</td>
+<td>~10.300 pagine prodotto sonda quasi invisibili su Google = la metà &quot;sonde&quot; del business non esiste online</td>
+<td>progetto novarium-seo</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Mettere in sicurezza il traffico Parts legacy</strong> (redirect verso hub indicizzabili)</td>
+<td>42% del traffico Parts su URL che 301ano verso noindex</td>
+<td>progetto novarium-seo</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>DMCA per <a href="http://nuovomedtech.com">nuovomedtech.com</a></strong></td>
+<td>Il clone supera l'originale su query part-number</td>
+<td>—</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>Allineare i documenti BO</strong> (½ giornata)</td>
+<td>Handover e decisioni fermi a feb-2026 rischiano errori operativi</td>
+<td>repo BO, docs/</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Decidere strategia lingue sito (EN-only vs sitemap 5 lingue vista da Google)</td>
+<td>Rischio indicizzazione/duplicazioni; IT è anche mercato locale a bassa competizione</td>
+<td>repo sito + SEO</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h2>Appendice — Glossario essenziale</h2>
+<p><strong>RFQ</strong>: richiesta di offerta, oggetto centrale · <strong>Biferno</strong>: BO legacy MySQL · <strong>Group/Client</strong>: gruppo aziendale / sede (solo il Client ordina) · <strong>SupplierRequest</strong>: richiesta a un fornitore per una RFQ · <strong>Token page</strong>: link pubblico non scadente per fornitore (offerta/NA/messaggio) o cliente (messaggio/conferma), idempotente · <strong>Event/Timeline</strong>: audit append-only, &quot;sacra&quot; · <strong>Master/Action List</strong>: verità / lavoro umano · <strong>item NA</strong>: ricambio non disponibile · <strong>Exchange</strong>: permuta · <strong>Stock serializzato</strong>: magazzino per seriale · <strong>Await Request</strong>: follow-up automatico · <strong>Marine</strong>: nuova divisione nautica. Glossario completo (40+ voci): <code>bozza-flussi-bo.md</code> §6.</p>
+</main></body></html>

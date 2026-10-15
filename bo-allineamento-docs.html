@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proposta — Allineamento documentazione BackOffice Novarium</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #fff; --text: #37352f; --muted: #787774; --faint: #9b9a97;
+  --rule: rgba(55, 53, 47, .09); --rule-strong: rgba(55, 53, 47, .16);
+  --surface: #f7f6f3; --code-bg: rgba(135, 131, 120, .15);
+  --link-line: rgba(55, 53, 47, .35); --check: #787774;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #191919; --text: rgba(255, 255, 255, .86); --muted: rgba(255, 255, 255, .55); --faint: rgba(255, 255, 255, .4);
+    --rule: rgba(255, 255, 255, .08); --rule-strong: rgba(255, 255, 255, .14);
+    --surface: #202020; --code-bg: rgba(255, 255, 255, .08);
+    --link-line: rgba(255, 255, 255, .35); --check: rgba(255, 255, 255, .32);
+  }
+}
+* { box-sizing: border-box; }
+html { background: var(--bg); -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; padding: 4.5rem 3rem 6rem; color: var(--text); background: var(--bg);
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+}
+main > * { max-width: 720px; margin-left: auto; margin-right: auto; }
+main > :first-child { margin-top: 0; }
+p, ul, ol, blockquote, pre, dl { margin-top: 0; margin-bottom: 1em; }
+p, li, blockquote, dd { overflow-wrap: break-word; }
+h1, h2, h3, h4, h5, h6 { color: var(--text); font-weight: 600; line-height: 1.3; margin: 2em auto .5em; }
+h1 { font-size: 2.125rem; font-weight: 700; line-height: 1.2; letter-spacing: -.021em; margin-bottom: .6em; }
+h2 { font-size: 1.5rem; letter-spacing: -.017em; margin-top: 2.2em; }
+h3 { font-size: 1.25rem; letter-spacing: -.012em; }
+h4 { font-size: 1.0625rem; }
+h5, h6 { font-size: 1rem; color: var(--muted); }
+h1 + h2, h2 + h3, h3 + h4 { margin-top: 1em; }
+strong { font-weight: 600; }
+a { color: inherit; text-decoration: underline; text-decoration-color: var(--link-line); text-decoration-thickness: 1px; text-underline-offset: .2em; transition: text-decoration-color .15s; }
+a:hover { text-decoration-color: currentColor; }
+ul, ol { padding-left: 1.6em; }
+li { margin: .25em 0; padding-left: .15em; }
+li > ul, li > ol { margin: .25em 0 0; }
+li > p { margin-bottom: .5em; }
+li::marker { color: var(--muted); }
+.task-list-item { list-style: none; margin-left: -1.45em; }
+.task-list-item input {
+  appearance: none; -webkit-appearance: none; width: 1em; height: 1em; margin: 0 .55em 0 0; vertical-align: -.15em;
+  border: 1.5px solid var(--faint); border-radius: 3px; background: transparent;
+}
+.task-list-item input:checked {
+  border-color: transparent; background: var(--check) no-repeat center / 80%
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+.task-list-item:has(> input:checked, > p:first-child > input:checked) { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--faint); }
+blockquote { margin-left: auto; margin-right: auto; padding: .1em 0 .1em 1.1em; border-left: 3px solid var(--rule-strong); color: var(--muted); }
+blockquote > :last-child { margin-bottom: 0; }
+hr { height: 1px; border: 0; background: var(--rule-strong); margin: 2.5em auto; }
+img { max-width: 100%; height: auto; border-radius: 4px; }
+code, kbd, samp, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace; }
+code { font-size: .85em; padding: .15em .35em; border-radius: 4px; background: var(--code-bg); }
+pre { font-size: .85em; line-height: 1.6; padding: 1em 1.25em; background: var(--surface); border-radius: 6px; overflow-x: auto; }
+pre code { font-size: inherit; padding: 0; background: none; border-radius: 0; }
+.table-scroll { max-width: 100%; overflow-x: auto; margin: 1em 0; }
+main > .table-scroll {
+  width: max-content; min-width: min(720px, 100%); max-width: min(1240px, 100%);
+  margin: 1.5em auto 2em;
+}
+table { border-collapse: collapse; font-size: .9rem; line-height: 1.55; }
+th, td {
+  padding: .55em .9em; text-align: left; vertical-align: top;
+  border-bottom: 1px solid var(--rule); overflow-wrap: normal; word-break: normal;
+}
+th { white-space: nowrap; font-weight: 600; color: var(--muted); background: var(--surface); border-bottom-color: var(--rule-strong); }
+th:first-child, td:first-child { padding-left: .75em; }
+td { min-width: 4.5rem; max-width: 32rem; }
+td a { white-space: nowrap; }
+tbody tr:last-child td { border-bottom: 0; }
+@media (max-width: 640px) {
+  body { padding: 2rem 1.25rem 4rem; font-size: 15.5px; }
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.3rem; }
+  h3 { font-size: 1.125rem; }
+  main > .table-scroll { margin-left: -1.25rem; margin-right: -1.25rem; max-width: calc(100% + 2.5rem); min-width: 0; width: auto; padding: 0 1.25rem; }
+  td { min-width: 8rem; }
+}
+@media print { body { padding: 0; } .table-scroll { overflow: visible; } }
+</style></head><body><main><h1>Proposta — Allineamento documentazione BackOffice Novarium</h1>
+<blockquote>
+<p><strong>Data</strong>: 2026-10-10
+<strong>Destinatario</strong>: Giovanni (review e applicazione)
+<strong>Autore</strong>: analisi read-only su repo <code>novarium-backoffice-clean</code> (branch <code>main</code>, commit <code>18333715</code>)
+<strong>Regola rispettata</strong>: nessun file del repo è stato modificato. Questo documento propone, per ogni intervento, il testo attuale citato ↔ il testo proposto pronto da incollare.
+<strong>Fonti</strong>: <code>bozza-gap-tecnica.md</code> (sez. 8 + priorità #12), <code>bozza-flussi-bo.md</code> (sez. 5), README e docs del repo, verifiche dirette su codice (moduli <code>backoffice-auth</code>, <code>inbox</code>, <code>parser</code>; modelli Prisma <code>InboxItem</code>, <code>ParseRun</code>, <code>PortalAccount</code>, <code>MarketingCampaign</code>, <code>Ticket</code>).</p>
+</blockquote>
+<h2>Contesto (perché ora)</h2>
+<p>I docs del BO sono fermi a <strong>febbraio 2026</strong> e in parte <strong>falsi rispetto al codice</strong>: il sistema è in produzione (<code>bo.novarium.net</code>) con auth JWT, Inbox materializzata, parser AI, proforma, portali, marketing, WhatsApp parziale e divisione Marine. Chi prende in mano il progetto oggi legge che &quot;non c'è autenticazione&quot; e segue link a file che non esistono. Intervento stimato: <strong>½ giornata</strong> (priorità #12 della gap analysis, P1).</p>
+<hr>
+<h2>Intervento 1 — <a href="http://README.md">README.md</a>: auth e link rotti</h2>
+<p><strong>File</strong>: <code>README.md</code> (root del repo)
+<strong>Effort</strong>: 45 min</p>
+<h3>1a. Dichiarazione falsa sull'autenticazione</h3>
+<p><strong>Problema</strong>: il README dichiara che l'autenticazione non esiste, mentre <code>src/backend/src/backoffice-auth/</code> (JWT via passport, guard globale, ruoli) è in produzione.</p>
+<p><strong>Testo attuale</strong> (sezione <code>## API (MVP)</code>):</p>
+<pre><code class="language-markdown">## API (MVP)
+Riferimento completo: `docs/api.md`.
+Note:
+- In dev il base URL è `/api`.
+- Attualmente non c’è autenticazione (planned).
+- Token pages usano **Token.token** (stringa), non id numerici.
+</code></pre>
+<p><strong>Testo proposto</strong> (sostituisce l'intera sezione):</p>
+<pre><code class="language-markdown">## API
+Riferimento architetturale: `docs/01_ARCHITECTURE/04_BACKEND_ARCH.md`
+(non esiste più un reference API unico: gli endpoint sono definiti nei controller
+NestJS sotto `src/backend/src/modules/`).
+Note:
+- In dev il base URL è `/api`; in produzione il BO è su `https://bo.novarium.net`.
+- **Autenticazione implementata** (`src/backend/src/backoffice-auth/`): login JWT
+  (passport, bcrypt su `User.passwordHash`, token 24h), guard globale
+  `BackofficeAuthGuard` con decorator `@Public()` per gli endpoint aperti,
+  ruoli `ADMIN`/`OPERATOR` (`@Roles()` + `RolesGuard`), flag `canViewReports`
+  con guard dedicata per i report. Il frontend conserva il JWT in memoria
+  (non in localStorage).
+- **Portali client/supplier**: auth separata (`src/backend/src/portal-auth/`)
+  con modello `PortalAccount` (bcrypt) e reset password via email (token 1h).
+- Token pages pubbliche: usano **Token.token** (stringa opaca), non id numerici;
+  multi-click idempotente via `TokenActionLog`.
+</code></pre>
+<h3>1b. Link rotti (6 riferimenti a file inesistenti)</h3>
+<p><strong>Problema</strong>: verificato sul repo che <strong>non esistono</strong> <code>docs/architecture.md</code>, <code>docs/data-model.md</code>, <code>docs/api.md</code>, <code>docs/user-manual.md</code>, <code>docs/LEGACY_IMPORT_RUNBOOK.md</code>, <code>docs/HANDOVER_CONTEXT.md</code>. I file reali sono altrove. Mappatura:</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Link rotto nel README</th>
+<th>File reale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>docs/architecture.md</code></td>
+<td>serie <code>docs/01_ARCHITECTURE/</code> (8 doc)</td>
+</tr>
+<tr>
+<td><code>docs/data-model.md</code></td>
+<td><code>docs/01_ARCHITECTURE/03_DATA_MODEL.md</code></td>
+</tr>
+<tr>
+<td><code>docs/api.md</code></td>
+<td>nessun equivalente → <code>docs/01_ARCHITECTURE/04_BACKEND_ARCH.md</code></td>
+</tr>
+<tr>
+<td><code>docs/user-manual.md</code></td>
+<td><code>docs/decisions/user-manual.md</code></td>
+</tr>
+<tr>
+<td><code>docs/LEGACY_IMPORT_RUNBOOK.md</code></td>
+<td><code>docs/runbooks/etl-legacy-to-postgres.md</code> + <code>ops/migrations/legacy_mysql_2y/runbook.md</code></td>
+</tr>
+<tr>
+<td><code>docs/HANDOVER_CONTEXT.md</code></td>
+<td><code>docs/handoff/HANDOVER_CONTEXT.md</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>I link compaiono in <strong>4 punti</strong> del README. Correzioni puntuali:</p>
+<p><strong>Punto 1 — sezione Architettura. Testo attuale:</strong></p>
+<pre><code class="language-markdown">Diagramma componenti: `docs/architecture.md`.
+</code></pre>
+<p><strong>Testo proposto:</strong></p>
+<pre><code class="language-markdown">Architettura: serie `docs/01_ARCHITECTURE/` (da `01_DOMAIN_CONTEXT.md` a `08_EVOLUTION_PLAN.md`).
+</code></pre>
+<p><strong>Punto 2 — sezione Data model. Testo attuale:</strong></p>
+<pre><code class="language-markdown">- Modello MVP e relazioni: `docs/data-model.md`.
+</code></pre>
+<p><strong>Testo proposto:</strong></p>
+<pre><code class="language-markdown">- Modello dati e relazioni: `docs/01_ARCHITECTURE/03_DATA_MODEL.md` (schema reale: `src/backend/prisma/schema.prisma`).
+</code></pre>
+<p><strong>Punto 3 — sezione &quot;How to continue with Codex (Giovanni)&quot;. Testo attuale:</strong></p>
+<pre><code class="language-markdown">Leggi i documenti in ordine:
+1) `docs/HANDOVER_CONTEXT.md`
+2) `docs/LEGACY_IMPORT_RUNBOOK.md`
+3) `docs/data-model.md`
+4) `docs/api.md`
+5) `README.md`
+6) `docs/user-manual.md`
+</code></pre>
+<p><strong>Testo proposto</strong> (aggiornare anche il prompt copiabile nel blocco <code>```text</code> subito sotto, con gli stessi path):</p>
+<pre><code class="language-markdown">Leggi i documenti in ordine:
+1) `docs/handoff/HANDOVER_CONTEXT.md` (feb-2026: leggere insieme a `docs/02_PROJECT/01_CURRENT_STATE.md` per lo stato aggiornato)
+2) `docs/runbooks/etl-legacy-to-postgres.md` e `ops/migrations/legacy_mysql_2y/runbook.md`
+3) `docs/01_ARCHITECTURE/03_DATA_MODEL.md`
+4) `docs/01_ARCHITECTURE/04_BACKEND_ARCH.md`
+5) `README.md`
+6) `docs/decisions/user-manual.md`
+</code></pre>
+<p><strong>Punto 4 — sezione Documentazione (in fondo al file). Testo attuale:</strong></p>
+<pre><code class="language-markdown">## Documentazione
+- Architettura: `docs/architecture.md`
+- Data model: `docs/data-model.md`
+- API: `docs/api.md`
+- Manuale utente: `docs/user-manual.md`
+</code></pre>
+<p><strong>Testo proposto:</strong></p>
+<pre><code class="language-markdown">## Documentazione
+- Architettura: `docs/01_ARCHITECTURE/` (8 documenti)
+- Data model: `docs/01_ARCHITECTURE/03_DATA_MODEL.md`
+- Decisioni (ADR): `docs/decisions/`
+- Stato progetto e decisioni congelate: `docs/02_PROJECT/`
+- Manuale utente: `docs/decisions/user-manual.md`
+- Runbook operativi (ETL legacy, sync, SEO): `docs/runbooks/`
+- Deploy produzione: `ops/DEPLOY.md`
+</code></pre>
+<h3>1c. Sezione &quot;Handover TODO&quot; superata (stessa partita, scoperta durante l'analisi)</h3>
+<p><strong>Problema</strong>: la sezione elenca ancora l'auth come da implementare.</p>
+<p><strong>Testo attuale:</strong></p>
+<pre><code class="language-markdown">## Handover TODO (Giovanni)
+- Implementare authn/authz per BO e token portal (policy e ruoli).
+- Definire pipeline CI/CD (build, test, migrate, deploy).
+- Aggiungere logging/monitoring operativo e alerting.
+- Completare migrazione legacy full e validazione dati.
+</code></pre>
+<p><strong>Testo proposto:</strong></p>
+<pre><code class="language-markdown">## TODO aperti (aggiornato 2026-10)
+- ~~Implementare authn/authz per BO e token portal~~ — **fatto** (auth BO JWT + ruoli;
+  portal auth con account e reset password). Resta hardening: password policy,
+  throttling globale, RBAC più fine sugli endpoint di business.
+- Definire pipeline CI/CD (build, test, migrate, deploy) — ancora assente;
+  deploy manuale via `ops/deploy-bo-prod.sh`.
+- Alerting operativo (uptime monitor esterno + alert su backup/cert/disco) —
+  gli endpoint `/api/health` e `/api/monitoring` esistono già.
+- Validazione di parità legacy→Postgres **sul DB di produzione** e runbook di
+  cutover (migrazione 2y già validata su ETL: `docs/migrations/2026-02-21_2y_legacy_migration.md`).
+</code></pre>
+<hr>
+<h2>Intervento 2 — docs/02_PROJECT/: i 3 file-trappola vuoti</h2>
+<p><strong>File</strong>: <code>docs/02_PROJECT/CURRENT_STATE.md</code>, <code>docs/02_PROJECT/ROADMAP.md</code>, <code>docs/02_PROJECT/DECISIONS_FROZEN.md</code>
+<strong>Effort</strong>: 5 min</p>
+<p><strong>Problema</strong>: verificato che i 3 file senza prefisso sono <strong>0 byte</strong>, accanto ai veri <code>01_CURRENT_STATE.md</code> (668 B), <code>02_ROADMAP.md</code> (7,3 KB), <code>03_DECISIONS_FROZEN.md</code> (482 B). Chi li apre trova nulla e può concludere che la documentazione sia persa.</p>
+<p><strong>Proposta A — cancellazione (raccomandata)</strong>:</p>
+<pre><code class="language-bash">git rm docs/02_PROJECT/CURRENT_STATE.md docs/02_PROJECT/ROADMAP.md docs/02_PROJECT/DECISIONS_FROZEN.md
+</code></pre>
+<p><strong>Proposta B — redirect (alternativa, se si temono link esterni ai nomi senza prefisso)</strong>: riempire ciascun file con una riga, es. per <code>CURRENT_STATE.md</code>:</p>
+<pre><code class="language-markdown"># CURRENT STATE
+
+&gt; File spostato: vedi [01_CURRENT_STATE.md](./01_CURRENT_STATE.md).
+</code></pre>
+<p>(e analoghe per <code>ROADMAP.md</code> → <code>02_ROADMAP.md</code>, <code>DECISIONS_FROZEN.md</code> → <code>03_DECISIONS_FROZEN.md</code>).</p>
+<hr>
+<h2>Intervento 3 — 03_DECISIONS_FROZEN.md: revoca formale di due decisioni</h2>
+<p><strong>File</strong>: <code>docs/02_PROJECT/03_DECISIONS_FROZEN.md</code>
+<strong>Effort</strong>: 15 min</p>
+<p><strong>Problema</strong>: il file dichiara congelate &quot;No Inbox materializzata per ora&quot; e &quot;No Parser automatico ora&quot;, ma <strong>entrambe sono in produzione</strong> (modello <code>InboxItem</code> + modulo <code>modules/inbox/</code>; modulo <code>modules/parser/</code> + modelli <code>ParseRun</code>/<code>ParseSuggestion</code>; spec <code>docs/parser/PARSER_SPEC.md</code>). Il registro va aggiornato con revoca formale, altrimenti resta ambiguità sui vincoli architetturali. &quot;No Time Engine&quot; resta congelato.</p>
+<p><strong>Testo attuale</strong> (file completo, 482 B):</p>
+<pre><code class="language-markdown"># 03 — DECISIONS FROZEN
+
+## Architettura
+
+- Event-driven core
+- Nessuna state machine persistita
+- Modify = amend event
+- Timeline centrale e sacra
+
+## UX
+
+- Fallback su testo se payload mancante
+- Nessun wizard rigido
+- Nessuna validazione bloccante invasiva
+
+## Tecnico
+
+- No Inbox materializzata per ora
+- No Time Engine ora
+- No Parser automatico ora
+
+Le decisioni congelate non si riaprono durante implementazione operativa.
+Si rivedono solo in fase architetturale dedicata.
+</code></pre>
+<p><strong>Testo proposto</strong> (sostituisce dalla sezione <code>## Tecnico</code> in giù; le sezioni Architettura e UX restano invariate):</p>
+<pre><code class="language-markdown">## Tecnico
+
+- No Inbox materializzata per ora — **REVOCATA il 2026-10-10** (vedi Registro revoche)
+- No Time Engine ora
+- No Parser automatico ora — **REVOCATA il 2026-10-10** (vedi Registro revoche)
+
+Le decisioni congelate non si riaprono durante implementazione operativa.
+Si rivedono solo in fase architetturale dedicata.
+
+---
+
+## Registro revoche
+
+### 2026-10-10 — Revoca &quot;No Inbox materializzata per ora&quot;
+- **Stato**: revocata. L'Inbox materializzata è in produzione.
+- **Evidenze**: modello `InboxItem` in `src/backend/prisma/schema.prisma`;
+  moduli `src/backend/src/modules/inbox/` (+ `master-list`, `master-messages`,
+  `action-list`); ingest via poller IMAP (`modules/imap`, `ops/poll-inbox.sh`).
+- **Nota**: la revoca formalizza uno stato di fatto già live. Evoluzioni collegate
+  (snapshot RFQ, projection endpoint) restano da valutare in fase architetturale.
+
+### 2026-10-10 — Revoca &quot;No Parser automatico ora&quot;
+- **Stato**: revocata. Il parser automatico (deterministico prima, AI dopo) è in produzione.
+- **Evidenze**: modulo `src/backend/src/modules/parser/`; modelli `ParseRun` /
+  `ParseSuggestion` in `schema.prisma`; specifica `docs/parser/PARSER_SPEC.md`.
+- **Gap residui noti** (non bloccano la revoca): trigger non completo
+  (nessun cron né trigger da RFQ; dipende dal poller IMAP), dispatch config da rifinire.
+
+### Ancora congelate (nessuna revoca)
+- No Time Engine
+- Nessuna state machine RFQ persistita
+</code></pre>
+<blockquote>
+<p>⚠️ <strong>Decisione per Giovanni/Vittorio</strong>: il file stabilisce che le decisioni congelate &quot;si rivedono solo in fase architetturale dedicata&quot;. La revoca proposta è quindi un atto formale da approvare esplicitamente in review (è lo scopo di questa proposta), non una modifica da applicare in silenzio.</p>
+</blockquote>
+<hr>
+<h2>Intervento 4 — 01_CURRENT_STATE.md: sezione &quot;Stato al 2026-10&quot;</h2>
+<p><strong>File</strong>: <code>docs/02_PROJECT/01_CURRENT_STATE.md</code>
+<strong>Effort</strong>: 45 min</p>
+<p><strong>Problema</strong>: il file (668 B) è fermo a feb-2026: elenca come &quot;In Corso&quot; voci poi consolidate e non copre ~8 mesi di evoluzione in produzione.</p>
+<p><strong>Testo attuale</strong> (file completo):</p>
+<pre><code class="language-markdown"># 01 — CURRENT STATE
+
+## Backend
+
+- Event model stabilizzato
+- idempotencyKey presente (non ancora applicata globalmente)
+- RFQ core stabile
+- Supplier endpoint MVP funzionante
+- Product history endpoint disponibile
+
+## Frontend
+
+- Modularizzazione Product completata
+- HistorySidebar parzialmente reale
+- SendRequest stabile
+- Group Save (PATCH) da verificare definitivamente
+
+## Moduli Completi
+
+- RFQ CRUD
+- Timeline eventi
+- ClientFullPage
+- ProductFullPage
+- Stock base
+
+## In Corso
+
+- Persistenza Group
+- Supplier flow completo
+- History unificata su RFQ
+
+## Stato Generale
+
+Sistema stabile.
+Focus su consolidamento operativo prima di ottimizzazioni avanzate.
+</code></pre>
+<p><strong>Testo proposto</strong>: mantenere tutto il contenuto esistente come fotografia storica e <strong>inserire subito dopo il titolo</strong> il blocco seguente:</p>
+<pre><code class="language-markdown">&gt; **Stato al 2026-10-10**: il resto di questo file è la fotografia di feb-2026
+&gt; (Phase 5), mantenuta come storico. La sezione seguente fotografa lo stato reale
+&gt; del sistema, in produzione su `bo.novarium.net`.
+
+## Stato al 2026-10 (aggiornamento)
+
+Il sistema è in produzione ed è andato molto oltre l'MVP. Implementato da
+feb-2026 a ott-2026:
+
+- **Autenticazione BO**: JWT + ruoli (`ADMIN`/`OPERATOR`, `canViewReports`),
+  guard globale, login page — `src/backend/src/backoffice-auth/`
+  (a feb-2026 era in quarantena).
+- **Autenticazione portali**: account client/supplier con reset password —
+  `src/backend/src/portal-auth/`, modello `PortalAccount`.
+- **Inbox materializzata**: `InboxItem` + triade operativa Inbox / Master List /
+  Action List; ingest email via poller IMAP; Discussions per messaggi non legati
+  a RFQ. (Revoca formale in `03_DECISIONS_FROZEN.md`.)
+- **Parser AI email**: deterministico + AI (`ParseRun`/`ParseSuggestion`),
+  spec `docs/parser/PARSER_SPEC.md`. Gap noti: trigger automatici, dispatch.
+- **Proforma Invoice**: generazione PI + PDF, evento `PROFORMA_CREATED`,
+  documenti su storage S3.
+- **Portali pubblici e token**: token page supplier/client, sessioni
+  multi-prodotto, form capability fornitori, allegati pubblici revocabili.
+- **Marketing**: campagne batch (`MarketingCampaign` + Recipient + Batch,
+  composer anche AI) e follow-up &quot;Await Request&quot;.
+- **WhatsApp (Kapso)**: implementato in locale; in produzione **parziale /
+  rollout revertito** (`whatsapp:enabled=false`; deploy solo su istruzione
+  esplicita).
+- **Marine**: divisione nautica (catalogo macchine/equipment, divisioni
+  Medical/Marine; migrazione additiva set-2026; guard cross-division differiti
+  in `prisma/manual/marine-division-guards.sql`).
+- **Reports**: report ordini (+ export) con accesso `canViewReports`; cambio
+  EUR/USD con scheduler e audit append-only.
+- **Collaborazione**: ticket interni (tag, priorità), internal messages,
+  reminder con forwarding, presence su RFQ.
+- **Altro consolidato**: stock serializzato, outbox con tracking consegna
+  (webhook SendGrid) + invii programmati, schede estese client/supplier/group/
+  product, exchange, SEO stats + website requests/chat, Copilot RFQ (AI),
+  backup DB automatico (`modules/database-backup`), monitoring
+  (`/api/health`, `/api/monitoring`).
+- Le voci &quot;In Corso&quot; di feb-2026 (persistenza Group, supplier flow completo,
+  history unificata) risultano **consolidate** nel codice.
+
+### Restano aperti (al 2026-10)
+
+- CI/CD assente; deploy manuale via `ops/deploy-bo-prod.sh`.
+- Snapshot RFQ / projection endpoint / materialized views (crescita tabella Event).
+- Trigger parser automatici; rollout WhatsApp in produzione; guard cross-division Marine.
+- Validazione di parità legacy su produzione + runbook cutover.
+</code></pre>
+<hr>
+<h2>Intervento 5 (opzionale, stessa passata) — README: sezione &quot;Deployment plan (roadmap)&quot;</h2>
+<p><strong>File</strong>: <code>README.md</code>
+<strong>Effort</strong>: 10 min</p>
+<p><strong>Problema</strong>: la sezione descrive ancora target cloud ipotetici (Cloud Run / ECS / Azure), mentre il sistema è deployato con Docker Compose su host dedicato (<code>docker-compose.prod.yml</code>, <code>ops/deploy-bo-prod.sh</code>, documentato in <code>ops/DEPLOY.md</code>). Fuori dai minimi richiesti, ma è lo stesso tipo di falsità documentale.</p>
+<p><strong>Proposta minima</strong>: aggiungere una riga in testa alla sezione:</p>
+<pre><code class="language-markdown">&gt; **Nota (2026-10)**: il deploy reale è Docker Compose sull'host di produzione
+&gt; (`docker-compose.prod.yml`, `ops/deploy-bo-prod.sh`); riferimento: `ops/DEPLOY.md`.
+&gt; I target cloud sotto restano solo opzioni storiche di roadmap.
+</code></pre>
+<hr>
+<h2>Nota per Giovanni</h2>
+<h3>Checklist di review</h3>
+<ul>
+<li class="task-list-item"><input type="checkbox" disabled><strong>Intervento 1</strong> (README): approvare testi 1a/1b/1c; verificare che i 6 path proposti esistano dopo la modifica.</li>
+<li class="task-list-item"><input type="checkbox" disabled><strong>Intervento 2</strong>: scegliere <strong>A (cancellazione, raccomandata)</strong> o B (redirect) per i 3 file vuoti.</li>
+<li class="task-list-item"><input type="checkbox" disabled><strong>Intervento 3</strong>: approvare formalmente le <strong>due revoche</strong> (Inbox materializzata, Parser automatico) — atto architetturale, serve ok tuo e di Vittorio; la data proposta è 2026-10-10.</li>
+<li class="task-list-item"><input type="checkbox" disabled><strong>Intervento 4</strong>: verificare a campione 2-3 voci della lista &quot;Stato al 2026-10&quot; contro il codice (es. <code>modules/marketing-campaigns/</code>, <code>modules/marine/</code>, <code>modules/tickets/</code>).</li>
+<li class="task-list-item"><input type="checkbox" disabled><strong>Intervento 5</strong> (opzionale): includere o rimandare.</li>
+<li class="task-list-item"><input type="checkbox" disabled>Commit dedicato suggerito: <code>docs: align README and project docs to production state (2026-10)</code>.</li>
+<li class="task-list-item"><input type="checkbox" disabled>Post-merge: verificare che nessun altro doc linki i nomi senza prefisso di <code>02_PROJECT</code>.</li>
+</ul>
+<h3>Stima</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Intervento</th>
+<th>Effort</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. README (auth + link + TODO)</td>
+<td>45 min</td>
+</tr>
+<tr>
+<td>2. File vuoti</td>
+<td>5 min</td>
+</tr>
+<tr>
+<td>3. Revoche decisions</td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>4. CURRENT_STATE 2026-10</td>
+<td>45 min</td>
+</tr>
+<tr>
+<td>5. (opz.) Deployment plan</td>
+<td>10 min</td>
+</tr>
+<tr>
+<td>Review + commit + verifica link</td>
+<td>~1 h</td>
+</tr>
+<tr>
+<td><strong>Totale</strong></td>
+<td><strong>≈ ½ giornata</strong> (conferma stima gap analysis)</td>
+</tr>
+</tbody>
+</table></div>
+<h3>Fuori scope (segnalati, non inclusi nella stima)</h3>
+<ul>
+<li><code>AGENTS.md</code> cita path di un'altra macchina (<code>/Users/vittoriomartinidonati/...</code>) e uso incoerente di <code>/opt/novarium</code> vs <code>/opt/novarium-prod</code>.</li>
+<li>Runbook mancanti: incidenti, restore backup, cutover legacy (priorità #9/#13 gap analysis).</li>
+<li><code>/api/monitoring</code> pubblico e altri gap di sicurezza/ops: sono priorità P0/P1 separate, non documentali.</li>
+</ul>
+<hr>
+<p><em>Proposta redatta senza modificare alcun file del repo. Ogni testo proposto è pronto da incollare previa approvazione in review.</em></p>
+</main></body></html>

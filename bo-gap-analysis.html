@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Novarium BackOffice — Gap Analysis Tecnica</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #fff; --text: #37352f; --muted: #787774; --faint: #9b9a97;
+  --rule: rgba(55, 53, 47, .09); --rule-strong: rgba(55, 53, 47, .16);
+  --surface: #f7f6f3; --code-bg: rgba(135, 131, 120, .15);
+  --link-line: rgba(55, 53, 47, .35); --check: #787774;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #191919; --text: rgba(255, 255, 255, .86); --muted: rgba(255, 255, 255, .55); --faint: rgba(255, 255, 255, .4);
+    --rule: rgba(255, 255, 255, .08); --rule-strong: rgba(255, 255, 255, .14);
+    --surface: #202020; --code-bg: rgba(255, 255, 255, .08);
+    --link-line: rgba(255, 255, 255, .35); --check: rgba(255, 255, 255, .32);
+  }
+}
+* { box-sizing: border-box; }
+html { background: var(--bg); -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; padding: 4.5rem 3rem 6rem; color: var(--text); background: var(--bg);
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+}
+main > * { max-width: 720px; margin-left: auto; margin-right: auto; }
+main > :first-child { margin-top: 0; }
+p, ul, ol, blockquote, pre, dl { margin-top: 0; margin-bottom: 1em; }
+p, li, blockquote, dd { overflow-wrap: break-word; }
+h1, h2, h3, h4, h5, h6 { color: var(--text); font-weight: 600; line-height: 1.3; margin: 2em auto .5em; }
+h1 { font-size: 2.125rem; font-weight: 700; line-height: 1.2; letter-spacing: -.021em; margin-bottom: .6em; }
+h2 { font-size: 1.5rem; letter-spacing: -.017em; margin-top: 2.2em; }
+h3 { font-size: 1.25rem; letter-spacing: -.012em; }
+h4 { font-size: 1.0625rem; }
+h5, h6 { font-size: 1rem; color: var(--muted); }
+h1 + h2, h2 + h3, h3 + h4 { margin-top: 1em; }
+strong { font-weight: 600; }
+a { color: inherit; text-decoration: underline; text-decoration-color: var(--link-line); text-decoration-thickness: 1px; text-underline-offset: .2em; transition: text-decoration-color .15s; }
+a:hover { text-decoration-color: currentColor; }
+ul, ol { padding-left: 1.6em; }
+li { margin: .25em 0; padding-left: .15em; }
+li > ul, li > ol { margin: .25em 0 0; }
+li > p { margin-bottom: .5em; }
+li::marker { color: var(--muted); }
+.task-list-item { list-style: none; margin-left: -1.45em; }
+.task-list-item input {
+  appearance: none; -webkit-appearance: none; width: 1em; height: 1em; margin: 0 .55em 0 0; vertical-align: -.15em;
+  border: 1.5px solid var(--faint); border-radius: 3px; background: transparent;
+}
+.task-list-item input:checked {
+  border-color: transparent; background: var(--check) no-repeat center / 80%
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+.task-list-item:has(> input:checked, > p:first-child > input:checked) { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--faint); }
+blockquote { margin-left: auto; margin-right: auto; padding: .1em 0 .1em 1.1em; border-left: 3px solid var(--rule-strong); color: var(--muted); }
+blockquote > :last-child { margin-bottom: 0; }
+hr { height: 1px; border: 0; background: var(--rule-strong); margin: 2.5em auto; }
+img { max-width: 100%; height: auto; border-radius: 4px; }
+code, kbd, samp, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace; }
+code { font-size: .85em; padding: .15em .35em; border-radius: 4px; background: var(--code-bg); }
+pre { font-size: .85em; line-height: 1.6; padding: 1em 1.25em; background: var(--surface); border-radius: 6px; overflow-x: auto; }
+pre code { font-size: inherit; padding: 0; background: none; border-radius: 0; }
+.table-scroll { max-width: 100%; overflow-x: auto; margin: 1em 0; }
+main > .table-scroll {
+  width: max-content; min-width: min(720px, 100%); max-width: min(1240px, 100%);
+  margin: 1.5em auto 2em;
+}
+table { border-collapse: collapse; font-size: .9rem; line-height: 1.55; }
+th, td {
+  padding: .55em .9em; text-align: left; vertical-align: top;
+  border-bottom: 1px solid var(--rule); overflow-wrap: normal; word-break: normal;
+}
+th { white-space: nowrap; font-weight: 600; color: var(--muted); background: var(--surface); border-bottom-color: var(--rule-strong); }
+th:first-child, td:first-child { padding-left: .75em; }
+td { min-width: 4.5rem; max-width: 32rem; }
+td a { white-space: nowrap; }
+tbody tr:last-child td { border-bottom: 0; }
+@media (max-width: 640px) {
+  body { padding: 2rem 1.25rem 4rem; font-size: 15.5px; }
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.3rem; }
+  h3 { font-size: 1.125rem; }
+  main > .table-scroll { margin-left: -1.25rem; margin-right: -1.25rem; max-width: calc(100% + 2.5rem); min-width: 0; width: auto; padding: 0 1.25rem; }
+  td { min-width: 8rem; }
+}
+@media print { body { padding: 0; } .table-scroll { overflow: visible; } }
+</style></head><body><main><h1>Novarium BackOffice — Gap Analysis Tecnica</h1>
+<p><em>Report finale — 10 ottobre 2026, a cura di Letta Code per Vittorio.</em>
+<em>Repo analizzato: <code>novarium-backoffice-clean</code> (branch <code>main</code>, commit <code>18333715</code>). Analisi 100% read-only: nessun file del repo modificato, nessun segreto stampato.</em></p>
+<h2>Sintesi esecutiva (per chi decide)</h2>
+<p>Il nuovo BackOffice è <strong>già in produzione</strong> (<a href="http://bo.novarium.net">bo.novarium.net</a>) e molto più completo di quanto dica il README: login con ruoli, portali clienti/fornitori, parser AI delle email, proforma, marketing, stock sono implementati. Il lavoro necessario non è &quot;finirlo&quot;, è <strong>metterlo in sicurezza operativa</strong>. Cinque urgenze (P0), tutte di effort piccolo — chiudibili in 1–2 giornate complessive:</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Urgenza</th>
+<th>In parole semplici</th>
+<th>Effort</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Chiave master del DB esposta in git</strong></td>
+<td>Il file <code>website.prod.env</code> è committato nel repo (verificato: tracked dal merge <code>8202b930</code>, NON coperto da .gitignore) e contiene la <code>SUPABASE_SERVICE_ROLE_KEY</code> reale — la chiave che bypassa ogni protezione del database. Repo privato, ma la chiave è nella storia git, nei cloni locali e sul server: va <strong>ruotata subito</strong> su Supabase e il file rimosso anche dalla storia</td>
+<td>S</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Backup quasi certamente spento</strong></td>
+<td>Il modulo di backup è completo (pg_dump, retention, check), ma il worker è opt-in e la variabile che lo attiva non è nemmeno nel file di esempio di produzione. I dump restano sullo stesso server e un ripristino non è mai stato testato</td>
+<td>S-M</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Migrazioni DB applicate a mano</strong></td>
+<td>146 migrazioni Prisma non sono nel flusso di deploy: prima o poi un deploy le dimentica e lo schema va fuori sync</td>
+<td>S</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Nessun allarme</strong></td>
+<td>I controlli esistono (salute DB, backup, certificati, disco, SendGrid) ma nessuno viene avvisato se qualcosa fallisce. E la pagina di monitoraggio è pubblica</td>
+<td>S</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Log volatili</strong></td>
+<td>I log finiscono in <code>/tmp</code> dentro il container: spariscono a ogni riavvio e non ruotano</td>
+<td>S</td>
+</tr>
+</tbody>
+</table></div>
+<p>Subito dopo (P1): pipeline CI/CD (i 254 test backend + 213 frontend + 13 e2e esistono ma girano solo a mano; il deploy builda sul server live senza gate), security headers, protezione endpoint di monitoring, password policy, audit dipendenze (<code><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e1998d9299a1d1cfd0d9cfd4">[email&#160;protected]</a></code> con CVE noti).</p>
+<p><strong>Migrazione dal legacy (Biferno)</strong>: il biennio 2024–2026 è migrato e validato con parità perfetta (tag <code>migration/2y-validated-v1</code>: 36.896 RFQ, 2.664 clienti, 309 fornitori). Restano: validazione di parità sul DB di <strong>produzione</strong>, runbook di cutover definitivo, decisione su storico pre-2024 e tabella <code>msg</code>.</p>
+<p><strong>Documentazione</strong>: ferma a febbraio 2026 e in parte contraddetta dal codice (il README dice &quot;autenticazione: planned&quot;, ma l'auth esiste) — ½ giornata di allineamento.</p>
+<p>Le sezioni seguenti sono l'analisi area per area con evidenze (file e percorsi), rischi, raccomandazioni ed effort. In coda: tabella P0/P1/P2 completa (20 voci) e checklist di messa in sicurezza.</p>
+<hr>
+<p><strong>Contesto</strong>: reengineering green-field del BackOffice Novarium (React+Vite / NestJS / Postgres+Prisma su Supabase; legacy Biferno/MySQL). Il sistema risulta <strong>già deployato in produzione</strong> su <code>/opt/novarium-prod</code> (domini <code>bo.novarium.net</code>, <code>novarium.net</code>/<code>test3.novarium.net</code>, <code>novarium-marine.com</code>) tramite <code>ops/deploy-bo-prod.sh</code>. I gap P0 vanno quindi letti come <strong>rischi su un sistema già live</strong>, non come prerequisiti di go-live.</p>
+<p><strong>Nota importante</strong>: il README elenca auth/CI-CD/logging/migrazione come &quot;TODO di handover&quot;, ma il README è <strong>datato (agosto 2026)</strong>: l'autenticazione è stata nel frattempo implementata. La fotografia reale è descritta sotto, area per area.</p>
+<hr>
+<h2>1. Autenticazione / Autorizzazione (BO + token portal)</h2>
+<h3>Stato attuale (evidenze)</h3>
+<ul>
+<li><strong>BO auth implementata</strong>: <code>src/backend/src/backoffice-auth/</code> — JWT via passport (<code>backoffice-jwt.strategy.ts</code>), login bcrypt su <code>User.passwordHash</code>, token 24h, guard <strong>globale</strong> <code>BackofficeAuthGuard</code> registrata via <code>APP_GUARD</code> in <code>backoffice-auth.module.ts</code>, decorator <code>@Public()</code> per endpoint aperti. La strategy riverifica <code>user.active</code> a ogni richiesta (revoca efficace).</li>
+<li><strong>Ruoli</strong>: <code>roles.guard.ts</code> + <code>@Roles('ADMIN'|'OPERATOR')</code>; flag <code>canViewReports</code> con guard dedicata (<code>reports-access.guard.ts</code>). <code>@Roles</code> applicato su admin, users, outbox, database-backup, parser-config, whatsapp (evidenza: <code>rg @Roles</code> → ~10 controller). La maggior parte degli endpoint di business richiede solo autenticazione (RBAC a maglie larghe).</li>
+<li><strong>Portal auth implementata</strong>: <code>src/backend/src/portal-auth/</code> — <code>PortalAccount</code> con bcrypt, dominio client/supplier, reset password con token sha256-hashed a scadenza 1h inviato via email (<code>portal-auth.service.ts</code>).</li>
+<li><strong>Token portal pubblico</strong> (link supplier/client): <code>modules/tokens/tokens.controller.ts</code> è <code>@Public()</code> con <code>OpaqueTokenPipe</code> (sanitizzazione token) e idempotenza via <code>TokenActionLog</code>.</li>
+<li><strong>Rate limiting sui login</strong>: <code>ThrottlerGuard</code> su login BO, login portal e forgot-password (10 req/60s).</li>
+<li>Session restore + env-handoff ticket cross-environment (2 min) con segreti multipli (<code>JWT_HANDOFF_ALT_SECRETS</code>, <code>ENV_HANDOFF_SECRET</code>).</li>
+<li>Frontend BO: JWT tenuto <strong>in memoria</strong> (non in localStorage — buona scelta XSS), <code>src/frontend/src/api/client.ts</code>.</li>
+</ul>
+<h3>Gap</h3>
+<ul>
+<li>README dichiara &quot;Attualmente non c'è autenticazione (planned)&quot; → documentazione fuorviante per chi prende in mano il progetto.</li>
+<li>Password policy debole: min 6 char utenti BO (<code>users.dto.ts</code>), min 8 portal (<code>portal-auth.dto.ts</code>); nessun controllo di complessità né lockout account (mitigato solo dal throttler).</li>
+<li>Nessun refresh token / sessioni multiple non gestite; logout = lato client (token 24h resta valido se copiato, salvo disattivazione utente).</li>
+<li>Rate limiting <strong>non globale</strong>: <code>ThrottlerModule.forRoot</code> è configurato ma la guard è applicata solo su 4 endpoint auth; il resto delle API (incluse le token page pubbliche) non ha throttling applicativo.</li>
+<li>Endpoint pubblici numerosi oltre ai token: health/monitoring, attachments pubblici, website-chat, discussions pubbliche — superficie da tenere sotto osservazione.</li>
+</ul>
+<h3>Rischio</h3>
+<p><strong>MEDIO</strong> (auth core solida; hardening e docs da allineare).</p>
+<h3>Raccomandazione</h3>
+<p>Aggiornare README/doc; alzare password policy (min 12 + controllo banalità); valutare throttling globale (APP_GUARD ThrottlerGuard con bypass per health); audit degli endpoint <code>@Public()</code> con motivazione documentata; considerare lockout progressivo su login.</p>
+<h3>Effort</h3>
+<p><strong>S</strong> (documentazione, policy, throttling) — M se si aggiungono lockout/audit completi.</p>
+<hr>
+<h2>2. CI/CD</h2>
+<h3>Stato attuale (evidenze)</h3>
+<ul>
+<li><strong>Nessuna pipeline CI/CD</strong>: assente <code>.github/workflows/</code>, nessun GitLab CI/Azure/CircleCI. Remote: GitHub privato <code>vittorio-art/novarium-backoffice</code> (verificato 404 anonimo → privato).</li>
+<li>Deploy produzione: <code>ops/deploy-bo-prod.sh</code> sul server — script ben fatto: dirty-tree check, <code>flock</code>, <code>git fetch + reset --hard origin/main</code>, <code>docker compose up -d --build</code>, health check con verifica <code>gitSha</code> live, asset-hash check, file di stato deploy esposto via nginx (<code>/__deployment_status</code>).</li>
+<li>Verifica &quot;CI-style&quot; solo locale/manuale: <code>scripts/verify.sh</code> + <code>scripts/run-tests.sh</code> (test, build, healthcheck con DB docker).</li>
+<li>Documentazione deploy: <code>ops/DEPLOY.md</code> (completa e allineata).</li>
+</ul>
+<h3>Gap</h3>
+<ul>
+<li>Nessun gate automatico: i 254+213 test non girano in CI; si può pushare su <code>main</code> e deployare senza che nulla sia stato eseguito.</li>
+<li>Build delle immagini avviene <strong>sul server di produzione</strong> (no registry, no artifact immutabili) → build failure = deploy failure sul live.</li>
+<li>Nessun rollback automatico (rollback = revert commit + re-deploy manuale).</li>
+<li>Deploy dipendente da accesso SSH + <code>sudo docker</code> non-interattivo configurato per l'utente.</li>
+<li>Branch feature/release multipli non protetti (nessuna evidenza di branch protection; molti branch <code>cursor/*</code> locali).</li>
+</ul>
+<h3>Rischio</h3>
+<p><strong>ALTO</strong> (deploy non gated su un sistema già live).</p>
+<h3>Raccomandazione</h3>
+<p>GitHub Actions minima: (1) workflow PR/push → install, prisma generate, test backend+frontend, build; (2) workflow main → build immagini + push a registry (GHCR) e deploy che fa <code>pull</code> invece di buildare; (3) smoke test post-deploy (già quasi tutto presente nello script). Branch protection su <code>main</code> (require PR + status checks).</p>
+<h3>Effort</h3>
+<p><strong>M</strong>.</p>
+<hr>
+<h2>3. Migrazione legacy MySQL → Postgres</h2>
+<h3>Stato attuale (evidenze)</h3>
+<ul>
+<li>Migrazione <strong>2 anni (2024-01-01 → 2026-01-31) validata</strong>: <code>docs/migrations/2026-02-21_2y_legacy_migration.md</code> — tag git <code>migration/2y-validated-v1</code>, <code>validate-inbox.sql</code> PASS (0 orfani, parità perfetta), golden check PASS, smoke PASS. Conteggi: 36.896 RFQ, 227.557 Event, 51.472 MasterMessage/InboxItem, 2.664 Client, 309 Supplier, 12.504 Product.</li>
+<li>Pipeline congelata e riproducibile: <code>ops/migrations/legacy_mysql_2y/</code> (<a href="http://runbook.md">runbook.md</a> + <a href="http://discover.sh">discover.sh</a> + <a href="http://import-msg-to-inbox.sh">import-msg-to-inbox.sh</a> + validate-inbox.sql + artifacts colonne committabili). ETL runbook congelato: <code>docs/runbooks/etl-legacy-to-postgres.md</code>.</li>
+<li>Sync incrementale field-selective con dry-run: <code>docs/runbooks/legacy-sync-v1.md</code> (<code>legacy-sync-v1.ts</code>).</li>
+<li>Numerosi script di backfill one-time già eseguiti (<code>scripts/migration-9x-*.sh</code>, ~20 script <code>legacy:*</code> in <code>src/backend/package.json</code>), incluso <code>legacy:validate-dba</code>.</li>
+<li>Known items dichiarati: tabella <code>msg</code> skippata by design (strutturalmente incompatibile), 56 RFQ fallback client (0,2%), <code>Event.code</code> NULL su eventi <code>cli</code> (preesistente).</li>
+</ul>
+<h3>Gap</h3>
+<ul>
+<li>Storico <strong>pre-2024 non migrato</strong> (finestra 2y); tabella <code>msg</code> esclusa per scelta — va confermato che sia accettato dal business come definitivo.</li>
+<li><strong>Strategia di cutover non documentata</strong>: legacy-sync-v1 suggerisce re-import periodico da nuovi dump; non c'è un runbook &quot;legacy spento il giorno X&quot; né una verifica di parità dati eseguita <strong>sul DB di produzione</strong> (la validazione è del 21/02/2026 su ambiente ETL).</li>
+<li>README punta a <code>docs/LEGACY_IMPORT_RUNBOOK.md</code> che <strong>non esiste più</strong> (spostato/renamed) e descrive una procedura &quot;demo import&quot; superata rispetto alla pipeline 2y.</li>
+<li>Log di migrazione archiviati in <code>backup/migrations/...</code> (path locale, gitignored) — non nel repo.</li>
+</ul>
+<h3>Rischio</h3>
+<p><strong>MEDIO</strong> (migrazione 2y solida e validata; cutover finale e parità su prod da certificare).</p>
+<h3>Raccomandazione</h3>
+<p>(1) Eseguire e archiviare una <strong>validazione di parità sul Postgres di produzione</strong> (conteggi per entità + campionamento) con esito scritto in <code>docs/migrations/</code>; (2) scrivere il runbook di cutover legacy (freeze scritture legacy → dump finale → sync → verifica → spegnimento); (3) decisione formale su <code>msg</code> e pre-2024; (4) aggiornare README con i puntamenti corretti.</p>
+<h3>Effort</h3>
+<p><strong>M</strong> (validazione prod + cutover) — S per la sola documentazione.</p>
+<hr>
+<h2>4. Logging / Monitoring / Alerting</h2>
+<h3>Stato attuale (evidenze)</h3>
+<ul>
+<li>Logging: <code>common/logging/app-logger.service.ts</code> — ConsoleLogger + append su file (<code>APP_LOG_PATH</code>, default <code>/tmp/novarium-backend.log</code>). Log testuali con timestamp/level/context; mai bloccante (try/catch).</li>
+<li>Health/monitoring: <code>health.controller.ts</code> espone <code>/api/health</code>, <code>/api/ready</code>, <code>/api/monitoring</code> — lo snapshot include database, sendgrid, disco, certificati TLS, S3, AI, backup (<code>health.service.ts:getMonitoringSnapshot</code>), versione e gitSha.</li>
+<li>Docker healthcheck su backend e website; deploy script verifica <code>/api/health</code> + gitSha post-deploy.</li>
+<li>Script operativi: <code>scripts/log-show-backend.sh</code>, <code>log-show-website.sh</code>; journald per il poller IMAP (systemd timer).</li>
+</ul>
+<h3>Gap</h3>
+<ul>
+<li><strong>Alerting assente</strong>: nessun uptime monitor esterno, nessun Sentry/error tracking, nessuna notifica se backup fallisce / certificato in scadenza / disco pieno — i check esistono ma nessuno li &quot;sveglia&quot;.</li>
+<li>Log su <strong>file dentro <code>/tmp</code> del container</strong> (in prod <code>APP_LOG_PATH=/tmp/novarium-backend.log</code>): effimero (perso a ricreazione container) e <strong>senza rotazione</strong> (crescita illimitata). Log non strutturati (no JSON), nessuna retention policy, docker logs non centralizzati.</li>
+<li><code>/api/monitoring</code> è <strong>pubblico</strong> (<code>@Public()</code> su tutto il controller): espone versioni, gitSha, stato disco/servizi → information disclosure utile a un attaccante.</li>
+<li>Frontend senza error tracking (errori React solo in console).</li>
+</ul>
+<h3>Rischio</h3>
+<p><strong>ALTO</strong> (mancanza di alerting su sistema live) — MEDIO per qualità/retention dei log.</p>
+<h3>Raccomandazione</h3>
+<p>Quick win: uptime monitor esterno (UptimeRobot/Healthchecks.io/BetterStack) su <code>/api/health</code> + check schedulato di <code>/api/monitoring</code> con alert email/webhook; spostare <code>APP_LOG_PATH</code> su volume persistente o loggare solo su stdout + <code>docker logs</code> con rotazione (<code>max-size</code>/<code>max-file</code> nel compose); proteggere <code>/api/monitoring</code> (auth ADMIN o IP allowlist in nginx). A seguire: log JSON + error tracking (Sentry self-hosted o SaaS).</p>
+<h3>Effort</h3>
+<p><strong>S</strong> (uptime+alert+rotation+protezione endpoint) — M per log strutturati/error tracking.</p>
+<hr>
+<h2>5. Test</h2>
+<h3>Stato attuale (evidenze)</h3>
+<ul>
+<li><strong>254 file spec backend</strong> (Jest, di cui 3 <code>*.e2e.spec.ts</code> su DB reale), config <code>src/backend/jest.config.js</code> + <code>test/jest-e2e.json</code>.</li>
+<li><strong>213 file test frontend</strong> (Vitest + Testing Library), <strong>13 spec Playwright e2e</strong> (<code>src/frontend/e2e/</code>), 6 test website, test Node per bo-local supervisor.</li>
+<li>Script di orchestrazione completi: <code>npm test</code> (backend+frontend), <code>scripts/run-tests.sh</code> (con <code>prisma migrate deploy</code> su DB docker), <code>scripts/verify.sh</code> (test+build+healthcheck end-to-end).</li>
+</ul>
+<h3>Gap</h3>
+<ul>
+<li><strong>Nessuna esecuzione in CI</strong> (vedi sezione 2): la suite è ampia ma non enforced.</li>
+<li>Playwright: <code>webServer</code> disabilitato nel config — richiede avvio manuale di backend+frontend; non gira automaticamente da nessuna parte.</li>
+<li>Nessuna soglia/report di coverage configurata.</li>
+<li>Test backend dipendono da Docker locale (Postgres) — ok in CI ma va predisposto il servizio.</li>
+</ul>
+<h3>Rischio</h3>
+<p><strong>MEDIO</strong> (ottima base, zero enforcement).</p>
+<h3>Raccomandazione</h3>
+<p>Attivare la suite esistente in GitHub Actions (job unit + job e2e Playwright con <code>webServer</code> abilitato e DB service container); coverage minimo (es. 60%) sui moduli core (rfq, inbox, auth); rendere <code>verify.sh</code> il gate pre-deploy richiamato anche dalla pipeline.</p>
+<h3>Effort</h3>
+<p><strong>S</strong> (CI su test esistenti) — M (Playwright stabilizzato in CI + coverage).</p>
+<hr>
+<h2>6. Deployment / Ops</h2>
+<h3>Stato attuale (evidenze)</h3>
+<ul>
+<li><code>docker-compose.prod.yml</code>: 3 servizi (backend, website Next.js, nginx) con healthcheck, memory limit, <code>restart: unless-stopped</code>, volumi per attachments e backup. DB esterno (Supabase; <code>DATABASE_URL</code> pooler + <code>DIRECT_URL</code> direct).</li>
+<li><code>ops/deploy-bo-prod.sh</code>: robusto (lock, dirty check, gitSha verify, asset hash, deploy status JSON servito da nginx).</li>
+<li>nginx TLS con certbot (<code>/etc/letsencrypt</code> montato ro), <code>scripts/cert_renew.sh</code>; vhost per <a href="http://bo.novarium.net">bo.novarium.net</a>, <a href="http://novarium.net/www/test3">novarium.net/www/test3</a>, <a href="http://novarium-marine.com">novarium-marine.com</a>.</li>
+<li>Backup DB: <strong>modulo completo</strong> <code>modules/database-backup/</code> (pg_dump 17 nel container, retention hour/day/week/month fino a 365gg, advisory lock anti-doppia-esecuzione, check di monitoraggio integrato, redact password nei log).</li>
+<li>IMAP poller via systemd timer (<code>ops/systemd/</code>), documentato in <code>ops/DEPLOY.md</code>.</li>
+<li><code>ops/env/prod.env.example</code> documenta tutte le variabili (nomi): <code>DATABASE_URL</code>, <code>DIRECT_URL</code>, <code>JWT_SECRET</code>, <code>NODE_ENV</code>, <code>CORS_ORIGINS</code>, <code>PORTAL_BASE_URL</code>, <code>PUBLIC_SITE_BASE_URL</code>, <code>SMTP_*</code>, <code>APP_LOG_PATH</code>, <code>IMAP_*</code>, <code>S3_DOCUMENTS_*</code>, <code>LEGACY_DOCS_MIGRATION_TOKEN</code>, <code>SUPABASE_URL</code>, <code>SUPABASE_SERVICE_ROLE_KEY</code>, <code>KAPSO_*</code>. Nel backend <code>.env.example</code> esistono inoltre (opzionali): <code>JWT_HANDOFF_ALT_SECRETS</code>, <code>ENV_HANDOFF_SECRET</code>, <code>SENDGRID_EVENT_WEBHOOK_PUBLIC_KEY</code>, <code>IMAP_POLLER_ENABLED</code>, <code>SCHEDULED_SEND_ENABLED</code>, <code>ATTACHMENT_STORAGE_DIR</code>, <code>DB_BACKUP_WORKER_ENABLED</code>, <code>DB_BACKUP_INSTANCE_ID</code>, <code>DB_BACKUP_OFFSET_MINUTES</code>, <code>DB_BACKUP_STORAGE_DIR</code>, <code>OPENAI_*</code>, <code>INTERNAL_MESSAGES_*</code>.</li>
+</ul>
+<h3>Gap</h3>
+<ul>
+<li><strong><code>prisma migrate deploy</code> NON è nel flusso di deploy</strong>: né nel Dockerfile (<code>CMD [&quot;node&quot;,&quot;dist/main.js&quot;]</code>) né in <code>deploy-bo-prod.sh</code>. 146 migrazioni nel repo → rischio drift schema applicato &quot;a mano&quot; e dimenticato.</li>
+<li><strong>Backup worker quasi certamente disattivo in prod</strong>: <code>DB_BACKUP_WORKER_ENABLED</code> non compare in <code>ops/env/prod.env.example</code> (opt-in, default disabilitato). I dump restano comunque sul <strong>volume dello stesso host</strong> (no copia off-site); <strong>procedura di restore non documentata né mai testata</strong> (esiste solo restore legacy per dev).</li>
+<li>Rollback = revert manuale; nessuna finestra di manutenzione/annuncio automatizzata (c'è solo <code>sleep 10</code> + pagina deploy-status).</li>
+<li>Single host / single point of failure (app+nginx; DB gestito esterno ✓). <code>mem_limit</code> presenti ma nessuna riserva di capacity documentata.</li>
+<li>nginx.conf referenzia upstream <code>marine-website:3002</code> <strong>non presente</strong> nel compose prod → vhost marine darà 502 finché non deployato altrove (verificare <code>docs/marine/activation.md</code>).</li>
+<li>Deploy richiede <code>sudo docker</code> passwordless: superficie privilege escalation sull'host.</li>
+</ul>
+<h3>Rischio</h3>
+<p><strong>ALTO</strong> (migrazioni manuali + backup non verificato/assente + restore mai testato su un sistema live).</p>
+<h3>Raccomandazione</h3>
+<p>(1) Step migrazioni: <code>docker compose run --rm backend npx prisma migrate deploy</code> (o init container) dentro <code>deploy-bo-prod.sh</code> prima del recreate, con fallimento bloccante; (2) attivare <code>DB_BACKUP_WORKER_ENABLED=true</code> in prod.env + sync off-site (rclone/S3) + <strong>restore drill trimestrale documentato</strong> in <code>docs/runbooks/</code>; (3) runbook rollback (revert commit + redeploy + eventuale restore); (4) chiarire/deployare il servizio marine o rimuovere il vhost.</p>
+<h3>Effort</h3>
+<p><strong>S</strong> (migrate step, backup enable, runbook) — M (off-site + restore drill + marine).</p>
+<hr>
+<h2>7. Sicurezza generale</h2>
+<h3>Stato attuale (evidenze)</h3>
+<ul>
+<li>CORS: whitelist da <code>CORS_ORIGINS</code>, <strong>default chiuso</strong> (<code>origin: false</code> se non configurato) ✓ (<code>main.ts</code>).</li>
+<li>Validazione input: <code>ValidationPipe({whitelist, transform})</code> globale + DTO sui POST critici + <code>PrismaExceptionFilter</code> globale (niente stacktrace al client) ✓.</li>
+<li>Rate limiting: solo su endpoint auth (vedi sezione 1).</li>
+<li>Segreti: <code>.gitignore</code> copre <code>.env*</code> e <code>ops/env/prod.env</code>; nessuna chiave privata trovata nel repo; README vieta commit dump.</li>
+<li>JWT BO in memoria lato frontend; token portal opachi e idempotenti; deploy status endpoint read-only.</li>
+<li>TLS 1.2/1.3 con certbot; redirect 80→443 su tutti i vhost.</li>
+</ul>
+<h3>Gap — CRITICO</h3>
+<ul>
+<li><strong><code>website.prod.env</code> committato nel repo</strong> (dalla merge commit <code>8202b930</code>) contenente <code>SUPABASE_URL</code> e <code>SUPABASE_SERVICE_ROLE_KEY</code> con valore reale (219 char). Il nome file <strong>sfugge al .gitignore</strong> (non matcha <code>.env*</code>; verificato <code>git check-ignore</code> → NOT-IGNORED, ed è tracked). Repo GitHub <strong>privato</strong> (mitigazione), ma la chiave è nella history, nei clone locali e sul server di produzione → <strong>rotazione obbligatoria</strong>. La service role key bypassa le RLS di Supabase: compromissione = accesso full al DB.</li>
+<li>Nessun <strong>security header</strong>: né helmet (assente dalle dipendenze) né headers in nginx (mancano HSTS, <code>X-Frame-Options</code>/<code>frame-ancestors</code>, <code>X-Content-Type-Options</code>, CSP, <code>Referrer-Policy</code>).</li>
+<li>Dipendenze: <code><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3e46524d467e0e100f06100b">[email&#160;protected]</a></code> (CVE noti — prototype pollution/ReDoS — senza fix sul canale npm); nessun <code>npm audit</code>/Dependabot automatizzato; Nessun lockfile check in CI.</li>
+<li><code>/api/monitoring</code> pubblico (info disclosure, vedi sezione 4).</li>
+<li>Throttling non globale; nessun account lockout; password policy debole (min 6).</li>
+<li><code>LEGACY_DOCS_MIGRATION_TOKEN</code> statico per endpoint di import documenti — ok se ruotato periodicamente, non documentato.</li>
+</ul>
+<h3>Rischio</h3>
+<p><strong>ALTO</strong> (segreto committato) — MEDIO (headers, dipendenze, throttling).</p>
+<h3>Raccomandazione</h3>
+<p><strong>Immediato</strong>: ruotare <code>SUPABASE_SERVICE_ROLE_KEY</code> (e verificare che altri segreti non siano mai stati committati — audit history), rimuovere <code>website.prod.env</code> da git e dalla history (BFG/filter-repo) o considerarlo compromesso, aggiungere <code>*.prod.env</code> al .gitignore. Poi: helmet lato Nest o <code>add_header</code> in nginx (HSTS, nosniff, frame-ancestors 'none' per il BO), ThrottlerGuard globale, <code>npm audit</code> in CI + sostituire <code>xlsx</code> (SheetJS CE ufficiale o <code>exceljs</code>), Dependabot.</p>
+<h3>Effort</h3>
+<p><strong>S</strong> (rotazione + ignore + headers + audit CI) — M (sostituzione xlsx, history rewrite coordinata).</p>
+<hr>
+<h2>8. Documentazione e decisioni congelate</h2>
+<h3>Stato attuale (evidenze)</h3>
+<ul>
+<li>Decisioni architetturali: <code>docs/decisions/</code> (ADR 0001 stack, 0002 ORM, specifiche funzionali, mvp-scope). Congelate in <code>docs/02_PROJECT/03_DECISIONS_FROZEN.md</code>: event-driven core, no state machine, modify=amend, timeline sacra, fallback su testo, no validazioni bloccanti, &quot;No Inbox materializzata / Time Engine / Parser <strong>per ora</strong>&quot;.</li>
+<li>Vincoli operativi agente: <code>AGENTS.md</code> (deploy SOLO da <code>/opt/novarium-prod</code> con <code>ops/deploy-bo-prod.sh</code>; mai editare <code>/opt/novarium</code>; mai stampare .env).</li>
+<li><code>docs/01_ARCHITECTURE/</code> completa (8 doc), runbooks operativi in <code>docs/runbooks/</code>.</li>
+<li>Handoff: <code>docs/handoff/</code> — tutti <strong>datati febbraio 2026</strong> (8 mesi fa).</li>
+</ul>
+<h3>Gap</h3>
+<ul>
+<li><strong>Documentazione non allineata al codice</strong>: README dice &quot;no auth (planned)&quot; e cita <code>docs/LEGACY_IMPORT_RUNBOOK.md</code> / <code>docs/HANDOVER_CONTEXT.md</code> in path non più esistenti; <code>01_CURRENT_STATE.md</code> fermo a Phase 5 (feb).</li>
+<li><strong>File-trappola vuoti (0 byte)</strong>: <code>docs/02_PROJECT/CURRENT_STATE.md</code>, <code>ROADMAP.md</code>, <code>DECISIONS_FROZEN.md</code> esistono vuoti accanto ai veri <code>01_/02_/03_</code> — chi li apre trova nulla.</li>
+<li>Decisione congelata &quot;No Inbox materializzata&quot; <strong>superata nei fatti</strong> (tabella <code>InboxItem</code> + <code>InboxModule</code> in produzione): il registro decisioni va aggiornato (revoca formale) o si crea ambiguità sui vincoli.</li>
+<li>Manca: runbook incidenti, runbook restore backup, doc di cutover legacy, doc &quot;com'è fatto il prod&quot; unica e aggiornata (oggi frammentata tra <a href="http://DEPLOY.md">DEPLOY.md</a>, vademecum, <a href="http://local-bo.md">local-bo.md</a>).</li>
+<li><code>AGENTS.md</code> cita path di un'altra macchina (<code>/Users/vittoriomartinidonati/...</code>) e <code>/opt/novarium</code> vs <code>/opt/novarium-prod</code> usati in modo incoerente tra i doc.</li>
+</ul>
+<h3>Rischio</h3>
+<p><strong>MEDIO</strong> (non bloccante, ma rallenta handover e aumenta errori operativi).</p>
+<h3>Raccomandazione</h3>
+<p>Passata di allineamento (½ giornata): aggiornare README (auth implementata, puntamenti runbook), eliminare o riempire i 3 file vuoti, registrare la revoca &quot;Inbox materializzata&quot; in decisions, scrivere runbook incidenti+restore, unificare convenzione path prod.</p>
+<h3>Effort</h3>
+<p><strong>S</strong>.</p>
+<hr>
+<h2>Tabella priorità</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Priorità</th>
+<th>Azione</th>
+<th>Area</th>
+<th>Effort</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>P0</strong></td>
+<td>Ruotare <code>SUPABASE_SERVICE_ROLE_KEY</code> committata, rimuovere <code>website.prod.env</code> da git+history, fix <code>.gitignore</code> (<code>*.prod.env</code>)</td>
+<td>Sicurezza</td>
+<td>S</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>P0</strong></td>
+<td>Attivare backup worker in prod (<code>DB_BACKUP_WORKER_ENABLED</code>) + copia off-site + <strong>restore drill</strong> documentato</td>
+<td>Ops</td>
+<td>S-M</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>P0</strong></td>
+<td><code>prisma migrate deploy</code> nel flusso di deploy (step bloccante)</td>
+<td>Ops</td>
+<td>S</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>P0</strong></td>
+<td>Alerting minimo: uptime monitor esterno su <code>/api/health</code> + alert su check <code>/api/monitoring</code> (backup/cert/disk/sendgrid)</td>
+<td>Monitoring</td>
+<td>S</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>P0</strong></td>
+<td>Log: spostare <code>APP_LOG_PATH</code> fuori da <code>/tmp</code> container + rotazione (o stdout + docker <code>max-size</code>)</td>
+<td>Logging</td>
+<td>S</td>
+</tr>
+<tr>
+<td>6</td>
+<td>P1</td>
+<td>CI GitHub Actions: test+build su PR e gate su <code>main</code> (branch protection)</td>
+<td>CI/CD</td>
+<td>M</td>
+</tr>
+<tr>
+<td>7</td>
+<td>P1</td>
+<td>Security headers (HSTS, nosniff, frame-ancestors, Referrer-Policy) via nginx/helmet</td>
+<td>Sicurezza</td>
+<td>S</td>
+</tr>
+<tr>
+<td>8</td>
+<td>P1</td>
+<td>Proteggere <code>/api/monitoring</code> (ADMIN o IP allowlist)</td>
+<td>Sicurezza</td>
+<td>S</td>
+</tr>
+<tr>
+<td>9</td>
+<td>P1</td>
+<td>Runbook rollback + runbook incidenti</td>
+<td>Ops</td>
+<td>S</td>
+</tr>
+<tr>
+<td>10</td>
+<td>P1</td>
+<td><code>npm audit</code> in CI + piano sostituzione <code>xlsx</code></td>
+<td>Sicurezza</td>
+<td>S-M</td>
+</tr>
+<tr>
+<td>11</td>
+<td>P1</td>
+<td>Password policy (min 12, anti-banalità) + valutare lockout/throttling globale</td>
+<td>Auth</td>
+<td>S</td>
+</tr>
+<tr>
+<td>12</td>
+<td>P1</td>
+<td>Allineamento README/docs (auth, runbook legacy, 3 file vuoti, revoca &quot;no Inbox&quot;)</td>
+<td>Docs</td>
+<td>S</td>
+</tr>
+<tr>
+<td>13</td>
+<td>P2</td>
+<td>Validazione parità dati <strong>su prod</strong> + runbook cutover legacy + decisione <code>msg</code>/pre-2024</td>
+<td>Migrazione</td>
+<td>M</td>
+</tr>
+<tr>
+<td>14</td>
+<td>P2</td>
+<td>Playwright e2e in CI (webServer + DB service)</td>
+<td>Test</td>
+<td>M</td>
+</tr>
+<tr>
+<td>15</td>
+<td>P2</td>
+<td>Coverage threshold su moduli core</td>
+<td>Test</td>
+<td>S</td>
+</tr>
+<tr>
+<td>16</td>
+<td>P2</td>
+<td>Log strutturati JSON + error tracking (Sentry) front+back</td>
+<td>Monitoring</td>
+<td>M</td>
+</tr>
+<tr>
+<td>17</td>
+<td>P2</td>
+<td>Deploy da registry (build in CI, pull in prod) + eliminazione sudo docker passwordless</td>
+<td>CI/CD</td>
+<td>M</td>
+</tr>
+<tr>
+<td>18</td>
+<td>P2</td>
+<td>Chiarire/deployare vhost <code>marine-website</code> (502 potenziale)</td>
+<td>Ops</td>
+<td>S</td>
+</tr>
+<tr>
+<td>19</td>
+<td>P2</td>
+<td>Ridondanza/HA host applicativo</td>
+<td>Ops</td>
+<td>L</td>
+</tr>
+<tr>
+<td>20</td>
+<td>P2</td>
+<td>RBAC più fine sugli endpoint di business + audit log accessi</td>
+<td>Auth</td>
+<td>M</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h2>Cosa serve per andare in produzione in sicurezza (checklist)</h2>
+<blockquote>
+<p>Il sistema risulta già live: questa checklist è la <strong>messa in sicurezza</strong> del live. Le voci ☐ sono da chiudere prima di considerare il sistema &quot;in produzione consapevolmente&quot;.</p>
+</blockquote>
+<p><strong>Segreti e accessi</strong></p>
+<ul>
+<li>☐ Ruotata <code>SUPABASE_SERVICE_ROLE_KEY</code> (e audit history per altri segreti commessi)</li>
+<li>☐ <code>website.prod.env</code> rimosso da git + history; <code>.gitignore</code> aggiornato</li>
+<li>☐ Verificati utenti BO attivi (disattivare i non usati), password admin robuste, <code>JWT_SECRET</code> prod ≥32 char random (non placeholder)</li>
+<li>☐ <code>CORS_ORIGINS</code> prod = solo <code>https://bo.novarium.net</code></li>
+</ul>
+<p><strong>Dati e continuità</strong></p>
+<ul>
+<li>☐ Backup automatico attivo e verificato (last_success recente in <code>/api/monitoring</code>)</li>
+<li>☐ Copia backup off-site (fuori dall'host)</li>
+<li>☐ Restore drill eseguito almeno una volta e documentato</li>
+<li>☐ <code>prisma migrate deploy</code> eseguito a ogni deploy (step bloccante)</li>
+<li>☐ Validazione parità legacy→prod archiviata</li>
+</ul>
+<p><strong>Osservabilità</strong></p>
+<ul>
+<li>☐ Uptime monitor esterno su <code>/api/health</code> con alert (email/SMS/webhook)</li>
+<li>☐ Alert su fallimento backup, scadenza cert (&lt;14gg), disco &gt;80%, sendgrid down</li>
+<li>☐ Log persistenti con rotazione (niente <code>/tmp</code> del container)</li>
+<li>☐ <code>/api/monitoring</code> non pubblico</li>
+</ul>
+<p><strong>Hardening applicativo</strong></p>
+<ul>
+<li>☐ Security headers (HSTS, nosniff, frame-ancestors, Referrer-Policy)</li>
+<li>☐ Throttling globale oltre agli endpoint auth</li>
+<li>☐ Password policy rafforzata</li>
+<li>☐ <code>npm audit</code> pulito o con eccezioni motivate (xlsx)</li>
+</ul>
+<p><strong>Processo</strong></p>
+<ul>
+<li>☐ CI verde obbligatoria su <code>main</code> (test + build) prima del deploy</li>
+<li>☐ Runbook: deploy, rollback, incidenti, restore — in <code>docs/runbooks/</code></li>
+<li>☐ README e decisioni allineati al codice</li>
+<li>☐ Cutover legacy formalizzato (o stato di coesistenza documentato)</li>
+</ul>
+<hr>
+<p><em>Fine report. Evidenze raccolte il 10/10/2026 su branch <code>main</code> (commit <code>18333715</code>).</em></p>
+</main><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script></body></html>

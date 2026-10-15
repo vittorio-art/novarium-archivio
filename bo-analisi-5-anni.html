@@ -1,0 +1,2231 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Novarium — Analisi dei flussi degli ultimi 5 anni (RFQ, offerte, ordini, fornitori)</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #fff; --text: #37352f; --muted: #787774; --faint: #9b9a97;
+  --rule: rgba(55, 53, 47, .09); --rule-strong: rgba(55, 53, 47, .16);
+  --surface: #f7f6f3; --code-bg: rgba(135, 131, 120, .15);
+  --link-line: rgba(55, 53, 47, .35); --check: #787774;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #191919; --text: rgba(255, 255, 255, .86); --muted: rgba(255, 255, 255, .55); --faint: rgba(255, 255, 255, .4);
+    --rule: rgba(255, 255, 255, .08); --rule-strong: rgba(255, 255, 255, .14);
+    --surface: #202020; --code-bg: rgba(255, 255, 255, .08);
+    --link-line: rgba(255, 255, 255, .35); --check: rgba(255, 255, 255, .32);
+  }
+}
+* { box-sizing: border-box; }
+html { background: var(--bg); -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; padding: 4.5rem 3rem 6rem; color: var(--text); background: var(--bg);
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+}
+main > * { max-width: 720px; margin-left: auto; margin-right: auto; }
+main > :first-child { margin-top: 0; }
+p, ul, ol, blockquote, pre, dl { margin-top: 0; margin-bottom: 1em; }
+p, li, blockquote, dd { overflow-wrap: break-word; }
+h1, h2, h3, h4, h5, h6 { color: var(--text); font-weight: 600; line-height: 1.3; margin: 2em auto .5em; }
+h1 { font-size: 2.125rem; font-weight: 700; line-height: 1.2; letter-spacing: -.021em; margin-bottom: .6em; }
+h2 { font-size: 1.5rem; letter-spacing: -.017em; margin-top: 2.2em; }
+h3 { font-size: 1.25rem; letter-spacing: -.012em; }
+h4 { font-size: 1.0625rem; }
+h5, h6 { font-size: 1rem; color: var(--muted); }
+h1 + h2, h2 + h3, h3 + h4 { margin-top: 1em; }
+strong { font-weight: 600; }
+a { color: inherit; text-decoration: underline; text-decoration-color: var(--link-line); text-decoration-thickness: 1px; text-underline-offset: .2em; transition: text-decoration-color .15s; }
+a:hover { text-decoration-color: currentColor; }
+ul, ol { padding-left: 1.6em; }
+li { margin: .25em 0; padding-left: .15em; }
+li > ul, li > ol { margin: .25em 0 0; }
+li > p { margin-bottom: .5em; }
+li::marker { color: var(--muted); }
+.task-list-item { list-style: none; margin-left: -1.45em; }
+.task-list-item input {
+  appearance: none; -webkit-appearance: none; width: 1em; height: 1em; margin: 0 .55em 0 0; vertical-align: -.15em;
+  border: 1.5px solid var(--faint); border-radius: 3px; background: transparent;
+}
+.task-list-item input:checked {
+  border-color: transparent; background: var(--check) no-repeat center / 80%
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+.task-list-item:has(> input:checked, > p:first-child > input:checked) { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--faint); }
+blockquote { margin-left: auto; margin-right: auto; padding: .1em 0 .1em 1.1em; border-left: 3px solid var(--rule-strong); color: var(--muted); }
+blockquote > :last-child { margin-bottom: 0; }
+hr { height: 1px; border: 0; background: var(--rule-strong); margin: 2.5em auto; }
+img { max-width: 100%; height: auto; border-radius: 4px; }
+code, kbd, samp, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace; }
+code { font-size: .85em; padding: .15em .35em; border-radius: 4px; background: var(--code-bg); }
+pre { font-size: .85em; line-height: 1.6; padding: 1em 1.25em; background: var(--surface); border-radius: 6px; overflow-x: auto; }
+pre code { font-size: inherit; padding: 0; background: none; border-radius: 0; }
+.table-scroll { max-width: 100%; overflow-x: auto; margin: 1em 0; }
+main > .table-scroll {
+  width: max-content; min-width: min(720px, 100%); max-width: min(1240px, 100%);
+  margin: 1.5em auto 2em;
+}
+table { border-collapse: collapse; font-size: .9rem; line-height: 1.55; }
+th, td {
+  padding: .55em .9em; text-align: left; vertical-align: top;
+  border-bottom: 1px solid var(--rule); overflow-wrap: normal; word-break: normal;
+}
+th { white-space: nowrap; font-weight: 600; color: var(--muted); background: var(--surface); border-bottom-color: var(--rule-strong); }
+th:first-child, td:first-child { padding-left: .75em; }
+td { min-width: 4.5rem; max-width: 32rem; }
+td a { white-space: nowrap; }
+tbody tr:last-child td { border-bottom: 0; }
+@media (max-width: 640px) {
+  body { padding: 2rem 1.25rem 4rem; font-size: 15.5px; }
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.3rem; }
+  h3 { font-size: 1.125rem; }
+  main > .table-scroll { margin-left: -1.25rem; margin-right: -1.25rem; max-width: calc(100% + 2.5rem); min-width: 0; width: auto; padding: 0 1.25rem; }
+  td { min-width: 8rem; }
+}
+@media print { body { padding: 0; } .table-scroll { overflow: visible; } }
+</style></head><body><main><h1>Novarium — Analisi dei flussi degli ultimi 5 anni (RFQ, offerte, ordini, fornitori)</h1>
+<p><em>Analisi read-only sul database di produzione — 10 ottobre 2026, a cura di Zakalwe (Letta Code) per Vittorio.</em>
+<em>Finestra: RFQ create dal 1° ottobre 2021 al 10 ottobre 2026 (<strong>71.443 RFQ</strong>). I dati storici fino al 6 luglio 2026 provengono dall'import del gestionale legacy &quot;Biferno&quot;; dal 7 luglio 2026 il BackOffice nuovo è operativo in nativo. Metodologia e limiti in fondo.</em></p>
+<hr>
+<h2>Sintesi in cinque punti</h2>
+<ol>
+<li><strong>La domanda cresce, le vendite no</strong>: RFQ +26% da 2022 a 2025, ma ordini -42% nello stesso periodo (conversione 10,4% → 4,8%). Il problema non è attirare richieste: è convertirle.</li>
+<li><strong>Il motore interno è velocissimo, il freno è il cliente</strong>: dalla RFQ all'offerta passano in mediana <strong>~4-5 ore</strong> (era nativa); dall'offerta all'ordine <strong>~4 giorni</strong>. Follow-up e sollecito clienti valgono più di qualsiasi automazione interna. L'esecuzione (ordine→consegna, 99% completato) è un punto di forza.</li>
+<li><strong>Due business diversi convivono</strong>: ultrasound (parti+sonde) converte al 12,8% e paga le bollette; MRI+CT assorbono il 36% delle richieste ma convertono all'1,6% — domanda insoddisfatta concentrata su ~25 codici di parti capitali (tubi RX, coil, HV tank) che nessun fornitore attuale copre.</li>
+<li><strong>Concentrazione estrema su entrambi i lati</strong>: 40 clienti = 70% delle RFQ e 63% degli ordini; i top 2 fornitori USA = ~19% degli ordini. Un solo cliente (DirectMed) genera il 15% delle richieste con 13 ordini in 5 anni — da gestire con automazione, non con persone.</li>
+<li><strong>Rete fornitori in salute ma con buchi</strong>: tasso risposta salito al 64-66% (mediana nativa 3,5 ore), ma sono usciti dal giro fornitori chiave — su tutti <strong>1MAC</strong> (98,7% di risposta, sparito a fine 2023). E cresce il canale web: ~140 RFQ/mese dal sito.</li>
+</ol>
+<hr>
+<h2>1. Volumi e trend</h2>
+<h3>1.1 Volumi per anno</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Anno</th>
+<th style="text-align:right">RFQ</th>
+<th style="text-align:right">Offerte inviate¹</th>
+<th style="text-align:right">Ordini²</th>
+<th style="text-align:right">Consegnate</th>
+<th style="text-align:right">% RFQ→ordine</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2021 (Q4)</td>
+<td style="text-align:right">3.320</td>
+<td style="text-align:right">1.516</td>
+<td style="text-align:right">403</td>
+<td style="text-align:right">390</td>
+<td style="text-align:right">12,1%</td>
+</tr>
+<tr>
+<td>2022</td>
+<td style="text-align:right">12.451</td>
+<td style="text-align:right">5.174</td>
+<td style="text-align:right">1.293</td>
+<td style="text-align:right">1.252</td>
+<td style="text-align:right">10,4%</td>
+</tr>
+<tr>
+<td>2023</td>
+<td style="text-align:right">14.648</td>
+<td style="text-align:right">5.040</td>
+<td style="text-align:right">961</td>
+<td style="text-align:right">950</td>
+<td style="text-align:right">6,6%</td>
+</tr>
+<tr>
+<td>2024</td>
+<td style="text-align:right">13.900</td>
+<td style="text-align:right">5.219</td>
+<td style="text-align:right">821</td>
+<td style="text-align:right">832</td>
+<td style="text-align:right">5,9%</td>
+</tr>
+<tr>
+<td>2025</td>
+<td style="text-align:right">15.710</td>
+<td style="text-align:right">4.633</td>
+<td style="text-align:right">753</td>
+<td style="text-align:right">779</td>
+<td style="text-align:right">4,8%</td>
+</tr>
+<tr>
+<td>2026 (parz., al 10/10)</td>
+<td style="text-align:right">11.414</td>
+<td style="text-align:right">3.502</td>
+<td style="text-align:right">501</td>
+<td style="text-align:right">497</td>
+<td style="text-align:right">4,4%</td>
+</tr>
+<tr>
+<td><strong>Totale finestra</strong></td>
+<td style="text-align:right"><strong>71.443</strong></td>
+<td style="text-align:right"><strong>25.084</strong></td>
+<td style="text-align:right"><strong>4.732</strong></td>
+<td style="text-align:right"><strong>4.700</strong></td>
+<td style="text-align:right"><strong>6,6%</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>¹ Eventi <code>OFFER_SENT</code> (una RFQ può ricevere più offerte/reinvii). ² Flag <code>hasOrder</code> sulla RFQ; gli eventi ordine (<code>CLIENT_ORDER_RECEIVED</code>/<code>ORDER_CREATED</code>) coprono 3.729 RFQ — il flag è più completo.</p>
+<p><strong>Il dato centrale: le richieste crescono (+26% da 2022 a 2025) ma gli ordini calano (-42% nello stesso periodo).</strong> La conversione richiesta→ordine è passata dal 10-12% al 4-5%. Anche le offerte inviate non seguono la crescita delle RFQ: stabili ~5.000/anno mentre le RFQ salivano — una quota crescente di richieste non viene lavorata fino all'offerta.</p>
+<h3>1.2 Stagionalità (media RFQ/mese solare, anni pieni 2022–2025)</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Mese</th>
+<th style="text-align:right">Gen</th>
+<th style="text-align:right">Feb</th>
+<th style="text-align:right">Mar</th>
+<th style="text-align:right">Apr</th>
+<th style="text-align:right">Mag</th>
+<th style="text-align:right">Giu</th>
+<th style="text-align:right">Lug</th>
+<th style="text-align:right">Ago</th>
+<th style="text-align:right">Set</th>
+<th style="text-align:right">Ott</th>
+<th style="text-align:right">Nov</th>
+<th style="text-align:right">Dic</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Media RFQ</td>
+<td style="text-align:right">1.159</td>
+<td style="text-align:right">1.179</td>
+<td style="text-align:right">1.261</td>
+<td style="text-align:right">1.033</td>
+<td style="text-align:right">1.214</td>
+<td style="text-align:right">1.163</td>
+<td style="text-align:right">1.158</td>
+<td style="text-align:right">1.181</td>
+<td style="text-align:right">1.261</td>
+<td style="text-align:right"><strong>1.312</strong></td>
+<td style="text-align:right">1.194</td>
+<td style="text-align:right">1.062</td>
+</tr>
+</tbody>
+</table></div>
+<p>Picchi a <strong>ottobre, marzo e settembre</strong>; minimi ad <strong>aprile e dicembre</strong>. <strong>Agosto non cala</strong> — coerente con una clientela globale (il fermo estivo italiano è compensato).</p>
+<h3>1.3 Canale sito web (2026)</h3>
+<p>Nel 2026 gli eventi con chiave <code>website-*</code> hanno toccato <strong>1.075 RFQ</strong> (374 create direttamente come <code>INBOX_RFQ_CREATED</code> da web, le altre arricchite da revisioni prodotto/sostituzioni cliente). Il canale è attivo da luglio 2026 e si è stabilizzato a <strong>~140 RFQ/mese</strong> (~4,5/giorno, dettaglio mensile in §6.6).</p>
+<h3>1.4 Passaggio di sistema</h3>
+<ul>
+<li>RFQ legacy importate: <strong>159.415</strong> (dal 2006); RFQ native dal 7 luglio 2026: <strong>4.248</strong> (~1.300/mese, in linea col trend).</li>
+<li>Richieste a fornitore (<code>SupplierRequest</code>): 238.279 righe di cui 233.771 legacy con <strong>date storiche preservate</strong> (<code>repliedAt</code> dal 2006) — il patrimonio storico fornitori è integro e interrogabile.</li>
+</ul>
+<hr>
+<h2>2. Funnel: conversioni e tempi per fase</h2>
+<h3>2.1 Funnel complessivo della finestra</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Fase</th>
+<th style="text-align:right">RFQ distinte</th>
+<th style="text-align:right">% su RFQ</th>
+<th style="text-align:right">% su fase precedente</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Richiesta (RFQ creata)</td>
+<td style="text-align:right">71.443</td>
+<td style="text-align:right">100%</td>
+<td style="text-align:right">—</td>
+</tr>
+<tr>
+<td>→ Lavorata: offerta inviata al cliente</td>
+<td style="text-align:right">23.014</td>
+<td style="text-align:right">32,2%</td>
+<td style="text-align:right">32,2%</td>
+</tr>
+<tr>
+<td>→ Ordine ricevuto</td>
+<td style="text-align:right">4.732</td>
+<td style="text-align:right">6,6%</td>
+<td style="text-align:right">20,6%</td>
+</tr>
+<tr>
+<td>→ Consegnata</td>
+<td style="text-align:right">4.700</td>
+<td style="text-align:right">6,6%</td>
+<td style="text-align:right">99,3%</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Il collo di bottiglia è doppio</strong>: (a) solo 1 RFQ su 3 arriva a un'offerta; (b) solo 1 offerta su 5 diventa ordine. In compenso <strong>l'esecuzione è eccellente</strong>: il 99% degli ordini arriva a consegna (mediana 14–16 giorni RFQ→consegna, p90 42–63).</p>
+<h3>2.2 Conversione per anno</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Anno</th>
+<th style="text-align:right">% RFQ→offerta (eventi)</th>
+<th style="text-align:right">% RFQ→ordine</th>
+<th style="text-align:right">% ordine→consegna</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2022</td>
+<td style="text-align:right">38,0%</td>
+<td style="text-align:right">10,4%</td>
+<td style="text-align:right">96,8%</td>
+</tr>
+<tr>
+<td>2023</td>
+<td style="text-align:right">32,0%</td>
+<td style="text-align:right">6,6%</td>
+<td style="text-align:right">98,9%</td>
+</tr>
+<tr>
+<td>2024</td>
+<td style="text-align:right">34,4%</td>
+<td style="text-align:right">5,9%</td>
+<td style="text-align:right">~100%</td>
+</tr>
+<tr>
+<td>2025</td>
+<td style="text-align:right">27,4%</td>
+<td style="text-align:right">4,8%</td>
+<td style="text-align:right">~100%</td>
+</tr>
+<tr>
+<td>2026 (parz.)</td>
+<td style="text-align:right">28,2%</td>
+<td style="text-align:right">4,4%</td>
+<td style="text-align:right">99,2%</td>
+</tr>
+</tbody>
+</table></div>
+<h3>2.3 Tempi mediani per fase (giorni, percentile_cont)</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Fase</th>
+<th style="text-align:right">Mediana</th>
+<th style="text-align:right">p90</th>
+<th>Nota</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RFQ → richiesta ai fornitori</td>
+<td style="text-align:right"><strong>0 (stesso giorno)</strong></td>
+<td style="text-align:right">1</td>
+<td>mediana 0 anche per granularità data-only legacy</td>
+</tr>
+<tr>
+<td>Invio fornitore → risposta fornitore</td>
+<td style="text-align:right"><strong>0</strong></td>
+<td style="text-align:right">2</td>
+<td>i fornitori abituali rispondono in giornata</td>
+</tr>
+<tr>
+<td>Risposta fornitore → offerta al cliente</td>
+<td style="text-align:right"><strong>0</strong></td>
+<td style="text-align:right">1</td>
+<td>l'ufficio rigira in giornata</td>
+</tr>
+<tr>
+<td><strong>Offerta → ordine del cliente</strong></td>
+<td style="text-align:right"><strong>4</strong></td>
+<td style="text-align:right">29</td>
+<td><strong>qui si accumula il tempo: la decisione del cliente</strong></td>
+</tr>
+<tr>
+<td>Ordine → consegna</td>
+<td style="text-align:right">10–14</td>
+<td style="text-align:right">32–64</td>
+<td>logistica/sourcing; peggiorata 2024 (13 gg, p90 64)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Lettura: il motore interno (interrogare fornitori, quotare) è rapidissimo; <strong>i tempi morti sono (1) l'attesa decisionale del cliente dopo l'offerta e (2) la consegna fisica</strong>. Misure in ore sull'era nativa in §6.</p>
+<h3>2.4 Tipologia di vendita: il canale EXCHANGE converte quasi sempre</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>saleType</th>
+<th style="text-align:right">RFQ</th>
+<th style="text-align:right">Ordini</th>
+<th style="text-align:right">Conversione</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(vendita standard)</td>
+<td style="text-align:right">69.878</td>
+<td style="text-align:right">3.218</td>
+<td style="text-align:right"><strong>4,6%</strong></td>
+</tr>
+<tr>
+<td>EXCHANGE (reso in permuta)</td>
+<td style="text-align:right">1.434</td>
+<td style="text-align:right">1.430</td>
+<td style="text-align:right"><strong>99,7%</strong></td>
+</tr>
+<tr>
+<td>REPAIR</td>
+<td style="text-align:right">84</td>
+<td style="text-align:right">84</td>
+<td style="text-align:right">100%</td>
+</tr>
+</tbody>
+</table></div>
+<p>Le RFQ <code>EXCHANGE</code> (il cliente restituisce il guasto e riceve il rigenerato) sono solo il 2% del volume ma producono <strong>il 30% degli ordini</strong> della finestra: chi chiede in exchange ha già deciso. È un canale ad altissima resa da coltivare.</p>
+<hr>
+<h2>3. Prodotti</h2>
+<h3>3.1 Copertura del catalogo</h3>
+<p>Nella finestra sono stati richiesti <strong>20.183 prodotti distinti su 41.316</strong> a catalogo (49%); solo <strong>1.817</strong> hanno mai ricevuto un ordine. Domanda molto long-tail: il prodotto più richiesto in assoluto è il placeholder &quot;Novarium Various Parts&quot; (4.410 RFQ, conversione 2,9%) — richieste generiche/non mappate su codice, un segnale di dati da normalizzare.</p>
+<h3>3.2 Brand (top 12 per RFQ)</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Brand</th>
+<th style="text-align:right">RFQ</th>
+<th style="text-align:right">%</th>
+<th style="text-align:right">Ordini</th>
+<th style="text-align:right">Conv.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GE</td>
+<td style="text-align:right">28.353</td>
+<td style="text-align:right">39,7%</td>
+<td style="text-align:right">1.977</td>
+<td style="text-align:right">7,0%</td>
+</tr>
+<tr>
+<td>Siemens</td>
+<td style="text-align:right">16.281</td>
+<td style="text-align:right">22,8%</td>
+<td style="text-align:right">976</td>
+<td style="text-align:right">6,0%</td>
+</tr>
+<tr>
+<td>Philips</td>
+<td style="text-align:right">9.698</td>
+<td style="text-align:right">13,6%</td>
+<td style="text-align:right">479</td>
+<td style="text-align:right">4,9%</td>
+</tr>
+<tr>
+<td>Novarium (placeholder/interno)</td>
+<td style="text-align:right">4.783</td>
+<td style="text-align:right">6,7%</td>
+<td style="text-align:right">200</td>
+<td style="text-align:right">4,2%</td>
+</tr>
+<tr>
+<td>Toshiba/Canon</td>
+<td style="text-align:right">3.882</td>
+<td style="text-align:right">5,4%</td>
+<td style="text-align:right">278</td>
+<td style="text-align:right">7,2%</td>
+</tr>
+<tr>
+<td>Samsung</td>
+<td style="text-align:right">1.840</td>
+<td style="text-align:right">2,6%</td>
+<td style="text-align:right">110</td>
+<td style="text-align:right">6,0%</td>
+</tr>
+<tr>
+<td>Esaote</td>
+<td style="text-align:right">1.394</td>
+<td style="text-align:right">2,0%</td>
+<td style="text-align:right">171</td>
+<td style="text-align:right"><strong>12,3%</strong></td>
+</tr>
+<tr>
+<td>Hitachi</td>
+<td style="text-align:right">881</td>
+<td style="text-align:right">1,2%</td>
+<td style="text-align:right">151</td>
+<td style="text-align:right"><strong>17,1%</strong></td>
+</tr>
+<tr>
+<td>Aloka</td>
+<td style="text-align:right">659</td>
+<td style="text-align:right">0,9%</td>
+<td style="text-align:right">140</td>
+<td style="text-align:right"><strong>21,2%</strong></td>
+</tr>
+<tr>
+<td>Mindray</td>
+<td style="text-align:right">556</td>
+<td style="text-align:right">0,8%</td>
+<td style="text-align:right">21</td>
+<td style="text-align:right">3,8%</td>
+</tr>
+<tr>
+<td>Hologic</td>
+<td style="text-align:right">554</td>
+<td style="text-align:right">0,8%</td>
+<td style="text-align:right">20</td>
+<td style="text-align:right">3,6%</td>
+</tr>
+<tr>
+<td>Sonosite</td>
+<td style="text-align:right">442</td>
+<td style="text-align:right">0,6%</td>
+<td style="text-align:right">36</td>
+<td style="text-align:right">8,1%</td>
+</tr>
+</tbody>
+</table></div>
+<p>GE+Siemens+Philips = <strong>76% della domanda</strong>. I brand ultrasound &quot;minori&quot; (Aloka, Hitachi, Esaote) convertono 2-4× la media: nicchie dove Novarium è evidentemente ben fornita.</p>
+<h3>3.3 Categorie (top 12 per RFQ)</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Categoria</th>
+<th style="text-align:right">RFQ</th>
+<th style="text-align:right">Ordini</th>
+<th style="text-align:right">Conv.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MRI (risonanza)</td>
+<td style="text-align:right">14.621</td>
+<td style="text-align:right">252</td>
+<td style="text-align:right"><strong>1,7%</strong></td>
+</tr>
+<tr>
+<td>Parti Ecografia</td>
+<td style="text-align:right">13.623</td>
+<td style="text-align:right">2.255</td>
+<td style="text-align:right"><strong>16,6%</strong></td>
+</tr>
+<tr>
+<td>CT (tomografia)</td>
+<td style="text-align:right">10.859</td>
+<td style="text-align:right">159</td>
+<td style="text-align:right"><strong>1,5%</strong></td>
+</tr>
+<tr>
+<td>Sonde Ecografiche</td>
+<td style="text-align:right">8.879</td>
+<td style="text-align:right">621</td>
+<td style="text-align:right">7,0%</td>
+</tr>
+<tr>
+<td>X-Ray</td>
+<td style="text-align:right">7.323</td>
+<td style="text-align:right">622</td>
+<td style="text-align:right">8,5%</td>
+</tr>
+<tr>
+<td>Archi a C</td>
+<td style="text-align:right">5.133</td>
+<td style="text-align:right">253</td>
+<td style="text-align:right">4,9%</td>
+</tr>
+<tr>
+<td>(senza categoria)</td>
+<td style="text-align:right">4.497</td>
+<td style="text-align:right">128</td>
+<td style="text-align:right">2,8%</td>
+</tr>
+<tr>
+<td>Mammografia</td>
+<td style="text-align:right">1.611</td>
+<td style="text-align:right">54</td>
+<td style="text-align:right">3,4%</td>
+</tr>
+<tr>
+<td>Angiografia</td>
+<td style="text-align:right">1.445</td>
+<td style="text-align:right">59</td>
+<td style="text-align:right">4,1%</td>
+</tr>
+<tr>
+<td>X-Ray Mobile</td>
+<td style="text-align:right">1.022</td>
+<td style="text-align:right">42</td>
+<td style="text-align:right">4,1%</td>
+</tr>
+<tr>
+<td>Bone Densitometers</td>
+<td style="text-align:right">740</td>
+<td style="text-align:right">85</td>
+<td style="text-align:right">11,5%</td>
+</tr>
+<tr>
+<td>Pet-CT</td>
+<td style="text-align:right">479</td>
+<td style="text-align:right">16</td>
+<td style="text-align:right">3,3%</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>La spaccatura del business in due</strong>: <em>ultrasound (parti+sonde) = 22.500 RFQ con conversione 12,8% — il core che paga</em>; <em>MRI+CT = 25.480 RFQ (36% della domanda) con conversione 1,6% — domanda enorme ma quasi mai convertita</em>. Sono parti capitali (tubo RX, coil, HV tank, gradient supply): costose, rare, spesso coperte da contratti OEM.</p>
+<h3>3.4 Top 30 prodotti per numero di richieste</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Prodotto</th>
+<th>Brand</th>
+<th>Categoria</th>
+<th style="text-align:right">RFQ</th>
+<th style="text-align:right">Ordini</th>
+<th style="text-align:right">Conv.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Various Parts (placeholder)</td>
+<td>Novarium</td>
+<td>—</td>
+<td style="text-align:right">4.410</td>
+<td style="text-align:right">127</td>
+<td style="text-align:right">2,9%</td>
+</tr>
+<tr>
+<td>2</td>
+<td>3SC-RS</td>
+<td>GE</td>
+<td>Sonde</td>
+<td style="text-align:right">136</td>
+<td style="text-align:right">14</td>
+<td style="text-align:right">10,3%</td>
+</tr>
+<tr>
+<td>3</td>
+<td>LNR1855ST Bicron Detector</td>
+<td>GE</td>
+<td>Bone Densit.</td>
+<td style="text-align:right">131</td>
+<td style="text-align:right">33</td>
+<td style="text-align:right">25,2%</td>
+</tr>
+<tr>
+<td>4</td>
+<td>5420884 PSB Probe Selector Board V2</td>
+<td>GE</td>
+<td>Parti Eco</td>
+<td style="text-align:right">120</td>
+<td style="text-align:right">56</td>
+<td style="text-align:right"><strong>46,7%</strong></td>
+</tr>
+<tr>
+<td>5</td>
+<td>4Vc-D</td>
+<td>GE</td>
+<td>Sonde</td>
+<td style="text-align:right">114</td>
+<td style="text-align:right">5</td>
+<td style="text-align:right">4,4%</td>
+</tr>
+<tr>
+<td>6</td>
+<td>PVT-375BT</td>
+<td>Toshiba</td>
+<td>Sonde</td>
+<td style="text-align:right">113</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">0,9%</td>
+</tr>
+<tr>
+<td>7</td>
+<td>ML6-15-D</td>
+<td>GE</td>
+<td>Sonde</td>
+<td style="text-align:right">111</td>
+<td style="text-align:right">10</td>
+<td style="text-align:right">9,0%</td>
+</tr>
+<tr>
+<td>8</td>
+<td>C1-6-D</td>
+<td>GE</td>
+<td>Sonde</td>
+<td style="text-align:right">105</td>
+<td style="text-align:right">5</td>
+<td style="text-align:right">4,8%</td>
+</tr>
+<tr>
+<td>9</td>
+<td>RIC5-9-D</td>
+<td>GE</td>
+<td>Sonde</td>
+<td style="text-align:right">105</td>
+<td style="text-align:right">16</td>
+<td style="text-align:right">15,2%</td>
+</tr>
+<tr>
+<td>10</td>
+<td>5573638 DBM128S PSB Board</td>
+<td>GE</td>
+<td>Parti Eco</td>
+<td style="text-align:right">98</td>
+<td style="text-align:right">13</td>
+<td style="text-align:right">13,3%</td>
+</tr>
+<tr>
+<td>11</td>
+<td>5420883 PSB Board S2418592-2</td>
+<td>GE</td>
+<td>Parti Eco</td>
+<td style="text-align:right">96</td>
+<td style="text-align:right">45</td>
+<td style="text-align:right"><strong>46,9%</strong></td>
+</tr>
+<tr>
+<td>12</td>
+<td>PM30-43282 Power Supply RPS-5582</td>
+<td>Toshiba</td>
+<td>Parti Eco</td>
+<td style="text-align:right">93</td>
+<td style="text-align:right">22</td>
+<td style="text-align:right">23,7%</td>
+</tr>
+<tr>
+<td>13</td>
+<td>5166108 APS Power Supply</td>
+<td>GE</td>
+<td>Parti Eco</td>
+<td style="text-align:right">92</td>
+<td style="text-align:right">45</td>
+<td style="text-align:right"><strong>48,9%</strong></td>
+</tr>
+<tr>
+<td>14</td>
+<td>4C-RS</td>
+<td>GE</td>
+<td>Sonde</td>
+<td style="text-align:right">88</td>
+<td style="text-align:right">3</td>
+<td style="text-align:right">3,4%</td>
+</tr>
+<tr>
+<td>15</td>
+<td>X5-1</td>
+<td>Philips</td>
+<td>Sonde</td>
+<td style="text-align:right">88</td>
+<td style="text-align:right">16</td>
+<td style="text-align:right">18,2%</td>
+</tr>
+<tr>
+<td>16</td>
+<td>5723262-3 Axial Drive Encoder</td>
+<td>GE</td>
+<td>CT</td>
+<td style="text-align:right">87</td>
+<td style="text-align:right">9</td>
+<td style="text-align:right">10,3%</td>
+</tr>
+<tr>
+<td>17</td>
+<td>10940888 X-Ray Tube Dura 422-MV</td>
+<td>Siemens</td>
+<td>CT</td>
+<td style="text-align:right">86</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0%</td>
+</tr>
+<tr>
+<td>18</td>
+<td>PLT-1005BT</td>
+<td>Toshiba</td>
+<td>Sonde</td>
+<td style="text-align:right">85</td>
+<td style="text-align:right">6</td>
+<td style="text-align:right">7,1%</td>
+</tr>
+<tr>
+<td>19</td>
+<td>PVU-375BT</td>
+<td>Toshiba</td>
+<td>Sonde</td>
+<td style="text-align:right">83</td>
+<td style="text-align:right">9</td>
+<td style="text-align:right">10,8%</td>
+</tr>
+<tr>
+<td>20</td>
+<td>10643086 LMAM 2 Detector</td>
+<td>Siemens</td>
+<td>Mammografia</td>
+<td style="text-align:right">81</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0%</td>
+</tr>
+<tr>
+<td>21</td>
+<td>X8-2T</td>
+<td>Philips</td>
+<td>Sonde</td>
+<td style="text-align:right">81</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">1,2%</td>
+</tr>
+<tr>
+<td>22</td>
+<td>5144543 Trackball TAS4725N</td>
+<td>GE</td>
+<td>Parti Eco</td>
+<td style="text-align:right">81</td>
+<td style="text-align:right">6</td>
+<td style="text-align:right">7,4%</td>
+</tr>
+<tr>
+<td>23</td>
+<td>6VT-D</td>
+<td>GE</td>
+<td>Sonde</td>
+<td style="text-align:right">80</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0%</td>
+</tr>
+<tr>
+<td>24</td>
+<td>2246223-7 HEMIT HV Tank</td>
+<td>GE</td>
+<td>CT</td>
+<td style="text-align:right">80</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0%</td>
+</tr>
+<tr>
+<td>25</td>
+<td>C1-5-D</td>
+<td>GE</td>
+<td>Sonde</td>
+<td style="text-align:right">80</td>
+<td style="text-align:right">4</td>
+<td style="text-align:right">5,0%</td>
+</tr>
+<tr>
+<td>26</td>
+<td>2423192 1.5T Head Neck Coil</td>
+<td>GE</td>
+<td>MRI</td>
+<td style="text-align:right">80</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0%</td>
+</tr>
+<tr>
+<td>27</td>
+<td>C5-1</td>
+<td>Philips</td>
+<td>Sonde</td>
+<td style="text-align:right">78</td>
+<td style="text-align:right">7</td>
+<td style="text-align:right">9,0%</td>
+</tr>
+<tr>
+<td>28</td>
+<td>2214527 Jedi HV Tank</td>
+<td>GE</td>
+<td>CT</td>
+<td style="text-align:right">78</td>
+<td style="text-align:right">3</td>
+<td style="text-align:right">3,8%</td>
+</tr>
+<tr>
+<td>29</td>
+<td>5341543-2 XFD-PS Gradient PS</td>
+<td>GE</td>
+<td>MRI</td>
+<td style="text-align:right">75</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0%</td>
+</tr>
+<tr>
+<td>30</td>
+<td>CA1-7A</td>
+<td>Samsung</td>
+<td>Sonde</td>
+<td style="text-align:right">74</td>
+<td style="text-align:right">5</td>
+<td style="text-align:right">6,8%</td>
+</tr>
+</tbody>
+</table></div>
+<p>Sonde GE/Philips/Toshiba dominano la classifica &quot;a pezzo singolo&quot;; le schede PSB e gli alimentatori ultrasound sono le <strong>macchine da conversione</strong> (fino al 49%).</p>
+<h3>3.5 Fascia di prezzo delle vendite</h3>
+<p><code>lastClientPrice</code> è popolato solo su 135 ordini recenti (funzione del nuovo BO): mediana <strong>1.800 €</strong>; distribuzione: 500–2k (57 ordini), 2k–10k (63), ≥10k (3, max ~21k). Valuta: EUR 125, USD 10. Campione piccolo ma coerente con un ticket mediano da ricambio ultrasound/piccola parte; i prezzi storici fornitore (più ricchi) sono in §5.</p>
+<h3>3.6 Domanda non convertita (top 10, zero ordini su ≥45 RFQ)</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Prodotto</th>
+<th>Categoria</th>
+<th style="text-align:right">RFQ</th>
+<th style="text-align:right">Clienti distinti</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Siemens 10940888 X-Ray Tube Dura 422-MV</td>
+<td>CT</td>
+<td style="text-align:right">86</td>
+<td style="text-align:right">23</td>
+</tr>
+<tr>
+<td>Siemens 10643086 LMAM 2 Detector</td>
+<td>Mammografia</td>
+<td style="text-align:right">81</td>
+<td style="text-align:right">33</td>
+</tr>
+<tr>
+<td>GE 2423192 1.5T Head Neck Coil</td>
+<td>MRI</td>
+<td style="text-align:right">80</td>
+<td style="text-align:right">18</td>
+</tr>
+<tr>
+<td>GE 6VT-D (sonda TEE)</td>
+<td>Sonde</td>
+<td style="text-align:right">80</td>
+<td style="text-align:right">40</td>
+</tr>
+<tr>
+<td>GE 2246223-7 HEMIT HV Tank</td>
+<td>CT</td>
+<td style="text-align:right">80</td>
+<td style="text-align:right">20</td>
+</tr>
+<tr>
+<td>GE 5341543-2 XFD-PS Gradient Power Supply</td>
+<td>MRI</td>
+<td style="text-align:right">75</td>
+<td style="text-align:right">25</td>
+</tr>
+<tr>
+<td>Siemens 10496530 18CH 1.5T Body Coil</td>
+<td>MRI</td>
+<td style="text-align:right">69</td>
+<td style="text-align:right">14</td>
+</tr>
+<tr>
+<td>GE 2415365 8CH Body Array</td>
+<td>MRI</td>
+<td style="text-align:right">65</td>
+<td style="text-align:right">19</td>
+</tr>
+<tr>
+<td>Philips X7-2T (sonda TEE)</td>
+<td>Sonde</td>
+<td style="text-align:right">63</td>
+<td style="text-align:right">31</td>
+</tr>
+<tr>
+<td>Siemens 7737807 X-Ray Tube THA Straton</td>
+<td>CT</td>
+<td style="text-align:right">63</td>
+<td style="text-align:right">16</td>
+</tr>
+</tbody>
+</table></div>
+<p>Tubi RX per CT, coil RM, HV tank, detettori mammografia, sonde TEE: <strong>parti da 10–50k€ con domanda ricorrente e distribuita su molti clienti, mai soddisfatta</strong>. Anche 2–3 fonti affidabili su queste famiglie (rigenerato/aftermarket) avrebbero impatto diretto sul fatturato.</p>
+<hr>
+<h2>4. Clienti</h2>
+<h3>4.1 Concentrazione</h3>
+<p>5.221 clienti hanno fatto almeno una RFQ nella finestra.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Gruppo</th>
+<th style="text-align:right">% RFQ</th>
+<th style="text-align:right">% ordini</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Top 10 clienti</td>
+<td style="text-align:right"><strong>49,0%</strong></td>
+<td style="text-align:right">34,9%</td>
+</tr>
+<tr>
+<td>Top 20</td>
+<td style="text-align:right"><strong>60,8%</strong></td>
+<td style="text-align:right">41,6%</td>
+</tr>
+<tr>
+<td>Top 50</td>
+<td style="text-align:right">72,5%</td>
+<td style="text-align:right"><strong>64,8%</strong></td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Fascia attività</th>
+<th style="text-align:right">N clienti</th>
+<th style="text-align:right">RFQ</th>
+<th style="text-align:right">Ordini</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 sola RFQ</td>
+<td style="text-align:right">3.311 (63%)</td>
+<td style="text-align:right">3.311 (4,6%)</td>
+<td style="text-align:right">85 (1,8%)</td>
+</tr>
+<tr>
+<td>2–3</td>
+<td style="text-align:right">994</td>
+<td style="text-align:right">2.262</td>
+<td style="text-align:right">91</td>
+</tr>
+<tr>
+<td>4–10</td>
+<td style="text-align:right">537</td>
+<td style="text-align:right">3.243</td>
+<td style="text-align:right">233</td>
+</tr>
+<tr>
+<td>11–50</td>
+<td style="text-align:right">266</td>
+<td style="text-align:right">5.850</td>
+<td style="text-align:right">650</td>
+</tr>
+<tr>
+<td>51–200</td>
+<td style="text-align:right">73</td>
+<td style="text-align:right">6.470</td>
+<td style="text-align:right">714</td>
+</tr>
+<tr>
+<td>&gt;200</td>
+<td style="text-align:right"><strong>40</strong></td>
+<td style="text-align:right"><strong>50.307 (70%)</strong></td>
+<td style="text-align:right"><strong>2.959 (63%)</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>Business di pochi grandi ripetitori: <strong>40 clienti &quot;abitudinari&quot; generano il 70% delle richieste e il 63% degli ordini</strong>. I 3.311 one-shot (spesso lead web) valgono pochissimo in ordini ma alimentano il funnel.</p>
+<p><strong>Livello &quot;ragione sociale&quot; (Group, 4.724 gruppi)</strong>: la concentrazione si conferma — top 20 gruppi = 66,3% delle RFQ e 56,9% degli ordini (top 50 = 77,8% RFQ). Attenzione a leggere i clienti singoli: &quot;Polygon&quot; (client) è uno di <strong>87 contatti</strong> del gruppo omonimo che vale in totale 4.284 RFQ e <strong>499 ordini</strong>; &quot;Althea Italia&quot; aggrega 104 contatti per 10.333 RFQ e 499 ordini. Il gruppo &quot;Yazan Alchalabi&quot; (Iraq, 172 contatti, 691 ordini) è il contenitore delle RFQ legacy non assegnate (³).</p>
+<h3>4.2 Top 20 clienti per volume</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Cliente</th>
+<th>Paese</th>
+<th style="text-align:right">RFQ</th>
+<th style="text-align:right">Ordini</th>
+<th style="text-align:right">Conv.</th>
+<th>Ultima RFQ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DirectMed Imaging</td>
+<td>DK</td>
+<td style="text-align:right">10.649</td>
+<td style="text-align:right">13</td>
+<td style="text-align:right">0,1%</td>
+<td>attivo</td>
+</tr>
+<tr>
+<td>Althea Global Supply</td>
+<td>IT</td>
+<td style="text-align:right">8.340</td>
+<td style="text-align:right">198</td>
+<td style="text-align:right">2,4%</td>
+<td>attivo</td>
+</tr>
+<tr>
+<td>Apr Salud</td>
+<td>ES</td>
+<td style="text-align:right">3.954</td>
+<td style="text-align:right">193</td>
+<td style="text-align:right">4,9%</td>
+<td>attivo</td>
+</tr>
+<tr>
+<td>Polygon</td>
+<td>IT</td>
+<td style="text-align:right">2.866</td>
+<td style="text-align:right">138</td>
+<td style="text-align:right">4,8%</td>
+<td>attivo</td>
+</tr>
+<tr>
+<td>MediRam</td>
+<td>IL</td>
+<td style="text-align:right">1.770</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0%</td>
+<td>attivo</td>
+</tr>
+<tr>
+<td>Philips NL</td>
+<td>NL</td>
+<td style="text-align:right">1.738</td>
+<td style="text-align:right">75</td>
+<td style="text-align:right">4,3%</td>
+<td>attivo</td>
+</tr>
+<tr>
+<td>Probo Medical UK</td>
+<td>UK</td>
+<td style="text-align:right">1.568</td>
+<td style="text-align:right">69</td>
+<td style="text-align:right">4,4%</td>
+<td>attivo</td>
+</tr>
+<tr>
+<td>Magna Meditech</td>
+<td>MY</td>
+<td style="text-align:right">1.432</td>
+<td style="text-align:right">124</td>
+<td style="text-align:right">8,7%</td>
+<td>attivo</td>
+</tr>
+<tr>
+<td>GE France Parts</td>
+<td>FR</td>
+<td style="text-align:right">1.348</td>
+<td style="text-align:right">154</td>
+<td style="text-align:right">11,4%</td>
+<td>attivo</td>
+</tr>
+<tr>
+<td>Legacy Unassigned Client³</td>
+<td>(Iraq)</td>
+<td style="text-align:right">1.308</td>
+<td style="text-align:right">688</td>
+<td style="text-align:right">52,6%</td>
+<td>chiuso con legacy</td>
+</tr>
+<tr>
+<td>Philips Italia</td>
+<td>IT</td>
+<td style="text-align:right">1.173</td>
+<td style="text-align:right">109</td>
+<td style="text-align:right">9,3%</td>
+<td>attivo</td>
+</tr>
+<tr>
+<td>Healthica</td>
+<td>TR</td>
+<td style="text-align:right">1.145</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">0,1%</td>
+<td>attivo</td>
+</tr>
+<tr>
+<td>Althea Trieste</td>
+<td>IT</td>
+<td style="text-align:right">1.034</td>
+<td style="text-align:right">131</td>
+<td style="text-align:right">12,7%</td>
+<td>attivo</td>
+</tr>
+<tr>
+<td>Medilab Global</td>
+<td>US</td>
+<td style="text-align:right">998</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0%</td>
+<td>attivo</td>
+</tr>
+<tr>
+<td>Stefano &amp; Masa</td>
+<td>PE</td>
+<td style="text-align:right">992</td>
+<td style="text-align:right">5</td>
+<td style="text-align:right">0,5%</td>
+<td>attivo</td>
+</tr>
+<tr>
+<td>Avante Health Solutions</td>
+<td>US</td>
+<td style="text-align:right">816</td>
+<td style="text-align:right">20</td>
+<td style="text-align:right">2,5%</td>
+<td>attivo (dal 2024)</td>
+</tr>
+<tr>
+<td>Fenice Med</td>
+<td>IT</td>
+<td style="text-align:right">670</td>
+<td style="text-align:right">4</td>
+<td style="text-align:right">0,6%</td>
+<td>attivo</td>
+</tr>
+<tr>
+<td>Sono Vision</td>
+<td>US</td>
+<td style="text-align:right">583</td>
+<td style="text-align:right">9</td>
+<td style="text-align:right">1,5%</td>
+<td>attivo</td>
+</tr>
+<tr>
+<td>Danelis Medical</td>
+<td>UK</td>
+<td style="text-align:right">549</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0%</td>
+<td>set 2026</td>
+</tr>
+<tr>
+<td>Imagex Medical</td>
+<td>UK</td>
+<td style="text-align:right">526</td>
+<td style="text-align:right">39</td>
+<td style="text-align:right">7,4%</td>
+<td>attivo</td>
+</tr>
+</tbody>
+</table></div>
+<p>³ Contenitore legacy di RFQ non assegnate (in larga parte Iraq): spiega l'anomalia &quot;Iraq 698 ordini&quot; in geografia — sono ordini storici non attribuiti.</p>
+<p>Due profili estremi convivono: <strong>OEM/rivenditori che usano Novarium come motore di ricerca prezzi</strong> (DirectMed 10,6k RFQ→13 ordini; MediRam, Medilab, Healthica, Danelis: migliaia di RFQ, ~zero ordini) e <strong>clienti operativi con conversione sana</strong> (GE France Parts 11,4%, Althea Trieste 12,7%, Magna Meditech 8,7%).</p>
+<h3>4.3 Geografia (top 15 paesi)</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Paese</th>
+<th style="text-align:right">RFQ</th>
+<th style="text-align:right">Ordini</th>
+<th style="text-align:right">N clienti</th>
+<th style="text-align:right">Conv.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Italia</td>
+<td style="text-align:right">22.524</td>
+<td style="text-align:right">2.194</td>
+<td style="text-align:right">656</td>
+<td style="text-align:right"><strong>9,7%</strong></td>
+</tr>
+<tr>
+<td>Danimarca</td>
+<td style="text-align:right">11.410</td>
+<td style="text-align:right">21</td>
+<td style="text-align:right">24</td>
+<td style="text-align:right">0,2%</td>
+</tr>
+<tr>
+<td>Spagna</td>
+<td style="text-align:right">5.457</td>
+<td style="text-align:right">535</td>
+<td style="text-align:right">96</td>
+<td style="text-align:right">9,8%</td>
+</tr>
+<tr>
+<td>USA</td>
+<td style="text-align:right">5.232</td>
+<td style="text-align:right">46</td>
+<td style="text-align:right">714</td>
+<td style="text-align:right">0,9%</td>
+</tr>
+<tr>
+<td>UK</td>
+<td style="text-align:right">3.526</td>
+<td style="text-align:right">144</td>
+<td style="text-align:right">93</td>
+<td style="text-align:right">4,1%</td>
+</tr>
+<tr>
+<td>Turchia</td>
+<td style="text-align:right">2.053</td>
+<td style="text-align:right">10</td>
+<td style="text-align:right">85</td>
+<td style="text-align:right">0,5%</td>
+</tr>
+<tr>
+<td>Israele</td>
+<td style="text-align:right">1.832</td>
+<td style="text-align:right">4</td>
+<td style="text-align:right">18</td>
+<td style="text-align:right">0,2%</td>
+</tr>
+<tr>
+<td>Olanda</td>
+<td style="text-align:right">1.820</td>
+<td style="text-align:right">77</td>
+<td style="text-align:right">17</td>
+<td style="text-align:right">4,2%</td>
+</tr>
+<tr>
+<td>Malaysia</td>
+<td style="text-align:right">1.747</td>
+<td style="text-align:right">135</td>
+<td style="text-align:right">46</td>
+<td style="text-align:right">7,7%</td>
+</tr>
+<tr>
+<td>Francia</td>
+<td style="text-align:right">1.730</td>
+<td style="text-align:right">204</td>
+<td style="text-align:right">58</td>
+<td style="text-align:right"><strong>11,8%</strong></td>
+</tr>
+<tr>
+<td>Iraq (legacy unassigned)</td>
+<td style="text-align:right">1.595</td>
+<td style="text-align:right">698</td>
+<td style="text-align:right">204</td>
+<td style="text-align:right">artefatto³</td>
+</tr>
+<tr>
+<td>Perù</td>
+<td style="text-align:right">1.241</td>
+<td style="text-align:right">13</td>
+<td style="text-align:right">57</td>
+<td style="text-align:right">1,0%</td>
+</tr>
+<tr>
+<td>Polonia</td>
+<td style="text-align:right">779</td>
+<td style="text-align:right">25</td>
+<td style="text-align:right">71</td>
+<td style="text-align:right">3,2%</td>
+</tr>
+<tr>
+<td>Grecia</td>
+<td style="text-align:right">758</td>
+<td style="text-align:right">129</td>
+<td style="text-align:right">65</td>
+<td style="text-align:right"><strong>17,0%</strong></td>
+</tr>
+<tr>
+<td>Portogallo</td>
+<td style="text-align:right">649</td>
+<td style="text-align:right">119</td>
+<td style="text-align:right">34</td>
+<td style="text-align:right"><strong>18,3%</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Italia + Spagna + Francia + Grecia + Portogallo = il motore degli ordini</strong> (Sud Europa, conversione 10-18%). Il volume anglosassone (DK/USA/UK/TR/IL) è in gran parte &quot;rumore da rivenditore&quot; con conversione &lt;1%. L'Italia da sola produce il 46% degli ordini.</p>
+<h3>4.4 Nuovi vs returning</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Anno</th>
+<th style="text-align:right">Clienti attivi</th>
+<th style="text-align:right">Di cui alla prima RFQ</th>
+<th style="text-align:right">% nuovi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2021 (Q4)</td>
+<td style="text-align:right">487</td>
+<td style="text-align:right">207</td>
+<td style="text-align:right">43%</td>
+</tr>
+<tr>
+<td>2022</td>
+<td style="text-align:right">1.457</td>
+<td style="text-align:right">819</td>
+<td style="text-align:right">56%</td>
+</tr>
+<tr>
+<td>2023</td>
+<td style="text-align:right"><strong>1.689</strong></td>
+<td style="text-align:right"><strong>983</strong></td>
+<td style="text-align:right">58%</td>
+</tr>
+<tr>
+<td>2024</td>
+<td style="text-align:right">1.521</td>
+<td style="text-align:right">863</td>
+<td style="text-align:right">57%</td>
+</tr>
+<tr>
+<td>2025</td>
+<td style="text-align:right">1.338</td>
+<td style="text-align:right">734</td>
+<td style="text-align:right">55%</td>
+</tr>
+<tr>
+<td>2026 (parz.)</td>
+<td style="text-align:right">1.088</td>
+<td style="text-align:right">523</td>
+<td style="text-align:right">48%</td>
+</tr>
+</tbody>
+</table></div>
+<p>Il parco clienti attivi ha <strong>picco nel 2023 e si sta contraendo</strong> (-36% clienti attivi da 2023 a 2026 su base annualizzata), nonostante il sito generi lead: acquisizione ok, <strong>retention in calo</strong>.</p>
+<h3>4.5 Clienti silenti riattivabili (top 8 per storico)</h3>
+<p>Clienti con ≥10 RFQ e ordini storici nella finestra, ma nessuna RFQ da ≥12 mesi:</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Cliente</th>
+<th>Paese</th>
+<th style="text-align:right">RFQ (5 anni)</th>
+<th style="text-align:right">Ordini</th>
+<th>Ultima RFQ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GE France Probes</td>
+<td>FR</td>
+<td style="text-align:right">288</td>
+<td style="text-align:right">44</td>
+<td>giu 2024</td>
+</tr>
+<tr>
+<td>Revi SRL</td>
+<td>IT</td>
+<td style="text-align:right">100</td>
+<td style="text-align:right">43</td>
+<td>mag 2024</td>
+</tr>
+<tr>
+<td>Mi Healthcare</td>
+<td>UK</td>
+<td style="text-align:right">136</td>
+<td style="text-align:right">22</td>
+<td>nov 2023</td>
+</tr>
+<tr>
+<td>Sincronis</td>
+<td>IT</td>
+<td style="text-align:right">44</td>
+<td style="text-align:right">11</td>
+<td>set 2025</td>
+</tr>
+<tr>
+<td>ASL AL Tecnologie Biomediche</td>
+<td>IT</td>
+<td style="text-align:right">17</td>
+<td style="text-align:right">11</td>
+<td>gen 2024</td>
+</tr>
+<tr>
+<td>HC Piacenza</td>
+<td>IT</td>
+<td style="text-align:right">44</td>
+<td style="text-align:right">10</td>
+<td>apr 2025</td>
+</tr>
+<tr>
+<td>Polygon SPA</td>
+<td>IT</td>
+<td style="text-align:right">20</td>
+<td style="text-align:right">10</td>
+<td>ott 2025</td>
+</tr>
+<tr>
+<td>Polygon Vimercate/Desio/Carate</td>
+<td>IT</td>
+<td style="text-align:right">18</td>
+<td style="text-align:right">10</td>
+<td>gen 2024</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>GE France Probes è la riattivazione #1</strong>: 44 ordini storici, fermo da giugno 2024 (mentre GE France Parts, altra entità, resta attivissima — da verificare se è una semplice migrazione interna del contatto).</p>
+<h3>4.6 Divisione</h3>
+<p>Le RFQ della finestra sono <strong>~100% MEDICAL</strong> (71.442 su 71.443; la divisione MARINE è in attivazione e non ha ancora volumi misurabili nel ciclo RFQ).</p>
+<h2>5. Fornitori</h2>
+<p>Il parco fornitori conta 2.467 anagrafiche (quasi tutte MEDICAL). Le <code>SupplierRequest</code> storiche sono state migrate con date preservate: <strong>è possibile ricostruire 5 anni di rapporti fornitore per singolo fornitore</strong>. Ogni RFQ lavorata viene inviata in parallelo a pochi fornitori selezionati (mediana 2, vedi §6.1).</p>
+<h3>5.1 Volumi e reattività per anno</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Anno</th>
+<th style="text-align:right">Richieste inviate</th>
+<th style="text-align:right">Risposte</th>
+<th style="text-align:right">Tasso risposta</th>
+<th style="text-align:right">Mediana risposta</th>
+<th style="text-align:right">p90</th>
+<th style="text-align:right">N fornitori attivi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2021 (Q4)</td>
+<td style="text-align:right">4.326</td>
+<td style="text-align:right">2.459</td>
+<td style="text-align:right">56,8%</td>
+<td style="text-align:right">0 gg</td>
+<td style="text-align:right">7 gg</td>
+<td style="text-align:right">116</td>
+</tr>
+<tr>
+<td>2022</td>
+<td style="text-align:right">16.059</td>
+<td style="text-align:right">9.490</td>
+<td style="text-align:right">59,1%</td>
+<td style="text-align:right">0 gg</td>
+<td style="text-align:right">7 gg</td>
+<td style="text-align:right">214</td>
+</tr>
+<tr>
+<td>2023</td>
+<td style="text-align:right">14.227</td>
+<td style="text-align:right">8.601</td>
+<td style="text-align:right">60,5%</td>
+<td style="text-align:right">0 gg</td>
+<td style="text-align:right">5 gg</td>
+<td style="text-align:right">230</td>
+</tr>
+<tr>
+<td>2024</td>
+<td style="text-align:right">14.406</td>
+<td style="text-align:right">9.471</td>
+<td style="text-align:right"><strong>65,7%</strong></td>
+<td style="text-align:right">0 gg</td>
+<td style="text-align:right">5 gg</td>
+<td style="text-align:right">240</td>
+</tr>
+<tr>
+<td>2025</td>
+<td style="text-align:right">14.467</td>
+<td style="text-align:right">9.343</td>
+<td style="text-align:right">64,6%</td>
+<td style="text-align:right">0 gg</td>
+<td style="text-align:right">5 gg</td>
+<td style="text-align:right">236</td>
+</tr>
+<tr>
+<td>2026 (parz.)</td>
+<td style="text-align:right">12.281</td>
+<td style="text-align:right">7.795</td>
+<td style="text-align:right">63,5%</td>
+<td style="text-align:right">0 gg</td>
+<td style="text-align:right">3 gg</td>
+<td style="text-align:right">188</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Il tasso di risposta dei fornitori è migliorato</strong> (da 57% a 64-66%) e la metà delle risposte arriva <strong>in giornata</strong> (nell'era nativa la mediana è di poche ore — §6.3). Il numero di fornitori attivi è però in calo dal picco 2024 (240 → 188).</p>
+<h3>5.2 Top 15 fornitori per richieste ricevute (5 anni)</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Fornitore</th>
+<th>Paese</th>
+<th style="text-align:right">Richieste</th>
+<th style="text-align:right">Tasso risp.</th>
+<th style="text-align:right">Ordini ricevuti</th>
+<th>Ultimo invio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ultrasound Parts</td>
+<td>US</td>
+<td style="text-align:right">4.456</td>
+<td style="text-align:right">58,7%</td>
+<td style="text-align:right"><strong>527</strong></td>
+<td>attivo</td>
+</tr>
+<tr>
+<td>US Ultrasound Services</td>
+<td>US</td>
+<td style="text-align:right">4.072</td>
+<td style="text-align:right">56,2%</td>
+<td style="text-align:right">388</td>
+<td>attivo</td>
+</tr>
+<tr>
+<td>Hes Bv.</td>
+<td>NL</td>
+<td style="text-align:right">3.338</td>
+<td style="text-align:right">43,3%</td>
+<td style="text-align:right">193</td>
+<td>attivo</td>
+</tr>
+<tr>
+<td>Bioscan Inc.</td>
+<td>US</td>
+<td style="text-align:right">3.043</td>
+<td style="text-align:right">75,5%</td>
+<td style="text-align:right">133</td>
+<td>attivo</td>
+</tr>
+<tr>
+<td>Express Systems &amp; Parts Network</td>
+<td>US</td>
+<td style="text-align:right">2.912</td>
+<td style="text-align:right">40,5%</td>
+<td style="text-align:right">85</td>
+<td>ago 2026</td>
+</tr>
+<tr>
+<td>Avante Ultrasound</td>
+<td>US</td>
+<td style="text-align:right">2.804</td>
+<td style="text-align:right">78,6%</td>
+<td style="text-align:right">98</td>
+<td>attivo</td>
+</tr>
+<tr>
+<td>A+ Medical Company</td>
+<td>US</td>
+<td style="text-align:right">2.312</td>
+<td style="text-align:right">29,4%</td>
+<td style="text-align:right">34</td>
+<td>attivo</td>
+</tr>
+<tr>
+<td>X-Ray Parts Inc.</td>
+<td>US</td>
+<td style="text-align:right">2.173</td>
+<td style="text-align:right">27,6%</td>
+<td style="text-align:right">39</td>
+<td>attivo</td>
+</tr>
+<tr>
+<td>Probo Medical</td>
+<td>US</td>
+<td style="text-align:right">1.988</td>
+<td style="text-align:right">52,9%</td>
+<td style="text-align:right">59</td>
+<td>attivo</td>
+</tr>
+<tr>
+<td>Sono Vision Inc.</td>
+<td>US</td>
+<td style="text-align:right">1.781</td>
+<td style="text-align:right"><strong>85,7%</strong></td>
+<td style="text-align:right">116</td>
+<td>attivo</td>
+</tr>
+<tr>
+<td>Dormed Hellas SA</td>
+<td>GR</td>
+<td style="text-align:right">1.769</td>
+<td style="text-align:right"><strong>89,5%</strong></td>
+<td style="text-align:right">133</td>
+<td>attivo</td>
+</tr>
+<tr>
+<td>Action Medical Repairs</td>
+<td>US</td>
+<td style="text-align:right">1.768</td>
+<td style="text-align:right">35,6%</td>
+<td style="text-align:right">82</td>
+<td>attivo</td>
+</tr>
+<tr>
+<td>BC Tech - Probo - Alpha Source</td>
+<td>US</td>
+<td style="text-align:right">1.590</td>
+<td style="text-align:right">39,7%</td>
+<td style="text-align:right">16</td>
+<td>attivo</td>
+</tr>
+<tr>
+<td>Relmedic</td>
+<td>ES</td>
+<td style="text-align:right">1.500</td>
+<td style="text-align:right"><strong>95,4%</strong></td>
+<td style="text-align:right">31</td>
+<td>attivo</td>
+</tr>
+<tr>
+<td>iMED All Inc.</td>
+<td>US</td>
+<td style="text-align:right">1.495</td>
+<td style="text-align:right">86,4%</td>
+<td style="text-align:right">18</td>
+<td>attivo</td>
+</tr>
+</tbody>
+</table></div>
+<p>La catena di approvvigionamento è <strong>dominata da rivenditori USA di parti ultrasound/imaging</strong> (12 dei top 15). Due fornitori (Ultrasound Parts + US Ultrasound Services) coprono da soli ~915 ordini della finestra — quasi 1 ordine su 5. I più reattivi (Relmedic 95%, Dormed 90%, iMED 86%, Sono Vision 86%) sono anche quelli con rapporto più stabile.</p>
+<h3>5.3 Fornitori &quot;spariti&quot; (≥100 richieste nella finestra, nessun invio da ≥18 mesi)</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Fornitore</th>
+<th style="text-align:right">Richieste</th>
+<th style="text-align:right">Risposte</th>
+<th>Ultimo invio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1MAC</td>
+<td style="text-align:right">822</td>
+<td style="text-align:right">811 (<strong>98,7%</strong>!)</td>
+<td>dic 2023</td>
+</tr>
+<tr>
+<td>MG Medical Srl</td>
+<td style="text-align:right">599</td>
+<td style="text-align:right">370</td>
+<td>set 2023</td>
+</tr>
+<tr>
+<td>Technical Prospects</td>
+<td style="text-align:right">548</td>
+<td style="text-align:right">250</td>
+<td>mar 2024</td>
+</tr>
+<tr>
+<td>Nova Technologies Inc.</td>
+<td style="text-align:right">361</td>
+<td style="text-align:right">123</td>
+<td>apr 2025</td>
+</tr>
+<tr>
+<td>All Parts Medical</td>
+<td style="text-align:right">177</td>
+<td style="text-align:right">97</td>
+<td>feb 2023</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>1MAC era il fornitore più affidabile in assoluto</strong> (praticamente rispondeva sempre) ed è uscito dal giro a fine 2023: capire perché (chiusura? acquisizione? contatto perso?) è una delle azioni a maggior valore emerse da questa analisi. Nova Technologies è uscita più di recente (apr 2025).</p>
+<h3>5.4 Prezzi fornitore per categoria (offerte in EUR, 5 anni)</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Categoria</th>
+<th style="text-align:right">N offerte con prezzo</th>
+<th style="text-align:right">p25</th>
+<th style="text-align:right">Mediana</th>
+<th style="text-align:right">p75</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sonde Ecografiche</td>
+<td style="text-align:right">2.610</td>
+<td style="text-align:right">2.000 €</td>
+<td style="text-align:right"><strong>2.650 €</strong></td>
+<td style="text-align:right">3.900 €</td>
+</tr>
+<tr>
+<td>Parti Ecografia</td>
+<td style="text-align:right">1.075</td>
+<td style="text-align:right">700 €</td>
+<td style="text-align:right">1.490 €</td>
+<td style="text-align:right">2.400 €</td>
+</tr>
+<tr>
+<td>X-Ray</td>
+<td style="text-align:right">357</td>
+<td style="text-align:right">625 €</td>
+<td style="text-align:right">925 €</td>
+<td style="text-align:right">1.800 €</td>
+</tr>
+<tr>
+<td>CT</td>
+<td style="text-align:right">337</td>
+<td style="text-align:right">800 €</td>
+<td style="text-align:right">1.800 €</td>
+<td style="text-align:right">4.724 €</td>
+</tr>
+<tr>
+<td>MRI</td>
+<td style="text-align:right">191</td>
+<td style="text-align:right">1.750 €</td>
+<td style="text-align:right">3.500 €</td>
+<td style="text-align:right">6.375 €</td>
+</tr>
+<tr>
+<td>Archi a C</td>
+<td style="text-align:right">165</td>
+<td style="text-align:right">650 €</td>
+<td style="text-align:right">950 €</td>
+<td style="text-align:right">1.750 €</td>
+</tr>
+<tr>
+<td>Mammografia</td>
+<td style="text-align:right">63</td>
+<td style="text-align:right">450 €</td>
+<td style="text-align:right">725 €</td>
+<td style="text-align:right">1.000 €</td>
+</tr>
+<tr>
+<td>Angiografia</td>
+<td style="text-align:right">57</td>
+<td style="text-align:right">650 €</td>
+<td style="text-align:right">1.000 €</td>
+<td style="text-align:right">2.250 €</td>
+</tr>
+<tr>
+<td>Ecografi (interi)</td>
+<td style="text-align:right">33</td>
+<td style="text-align:right">—</td>
+<td style="text-align:right">3.800 €</td>
+<td style="text-align:right">13.000 €</td>
+</tr>
+<tr>
+<td>Pet-CT</td>
+<td style="text-align:right">14</td>
+<td style="text-align:right">806 €</td>
+<td style="text-align:right">1.075 €</td>
+<td style="text-align:right">1.862 €</td>
+</tr>
+<tr>
+<td>Bone Densitometers</td>
+<td style="text-align:right">10</td>
+<td style="text-align:right">2.190 €</td>
+<td style="text-align:right">2.340 €</td>
+<td style="text-align:right">2.765 €</td>
+</tr>
+<tr>
+<td>Lithotripters</td>
+<td style="text-align:right">9</td>
+<td style="text-align:right">6.200 €</td>
+<td style="text-align:right">7.798 €</td>
+<td style="text-align:right">14.144 €</td>
+</tr>
+</tbody>
+</table></div>
+<p>Riferimenti di margine: una sonda mediana costa ~2.650 € al fornitore e viene venduta (campioni recenti) a ~1.800-3.000 € mediana cliente — i due campioni non sono perfettamente confrontabili (periodi e mix diversi), ma il markup tipico sulle sonde appare contenuto (~10-30%). Le offerte con prezzo sono <strong>74% in USD e 26% in EUR</strong> — specchio di una catena di fornitura USA-centrica (rischio cambio da presidiare). Lead time dichiarati dai fornitori (dato nativo): mediana 0 giorni, vedi §6.3.</p>
+<hr>
+<h2>6. Pattern di flusso</h2>
+<h3>6.1 Come si muove una RFQ tipica</h3>
+<ol>
+<li><strong>Arrivo</strong>: email/sito/telefono → RFQ (quantità 1 nel <strong>99,3%</strong> dei casi — si tratta quasi sempre di un singolo ricambio).</li>
+<li><strong>Interrogazione</strong>: la RFQ viene inviata a pochi fornitori in parallelo — distribuzione sulle 25.896 RFQ lavorate: <strong>1 fornitore 28,3% · 2 fornitori 25,8% · 3–4 29,3% · 5–8 13,9% · 9–15 2,4% · &gt;15 0,4%</strong> (mediana: 2). Invio in genere <strong>lo stesso giorno</strong> (p90 1 giorno).</li>
+<li><strong>Risposte</strong>: ~60-66% dei fornitori risponde, metà in giornata; ~4% dichiara l'item non disponibile (<code>item_na</code>, 10.836 casi — con spike 2026: 1.610, il nuovo BO traccia meglio i &quot;non disponibile&quot;). Per RFQ lavorata: <strong>0 risposte 8,8%</strong> · 1 risposta 41,3% · 2 27,6% · 3–4 17,9% · &gt;4 4,4% — la copertura delle alternative è sottile: quasi metà delle RFQ lavorate si basa su <strong>una sola</strong> risposta.</li>
+<li><strong>Offerta al cliente</strong>: rigirata in giornata (mediana 0 gg). Solo il <strong>32% delle RFQ</strong> arriva però a questa fase — e la quota scende col crescere del volume (43% nel 2022 → 28% nel 2026).</li>
+<li><strong>Decisione cliente</strong>: mediana <strong>4 giorni</strong>, p90 <strong>29 giorni</strong> — è qui che si accumula il tempo morto commerciale.</li>
+<li><strong>Ordine → consegna</strong>: mediana 10–14 giorni (p90 32–64); il 99% degli ordini viene consegnato.</li>
+<li><strong>Chiusura</strong>: ciò che non converte viene <strong>sospeso</strong> — la sospensione è lo stato finale fisiologico del funnel (93,7% delle RFQ della finestra), non necessariamente un problema. Eventi di sospensione: ~11–15k/anno, stabili proporzionalmente al volume. Nel nuovo BO le sospensioni partono subito (mediana 1 giorno dalla creazione — pulizia automatica delle non-partite).</li>
+</ol>
+<h3>6.2 Quota di RFQ effettivamente lavorate</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Anno</th>
+<th style="text-align:right">% RFQ con richiesta a fornitori</th>
+<th style="text-align:right">% RFQ con offerta al cliente</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2022</td>
+<td style="text-align:right">43,1%</td>
+<td style="text-align:right">37,9%</td>
+</tr>
+<tr>
+<td>2023</td>
+<td style="text-align:right">34,1%</td>
+<td style="text-align:right">31,9%</td>
+</tr>
+<tr>
+<td>2024</td>
+<td style="text-align:right">35,7%</td>
+<td style="text-align:right">34,2%</td>
+</tr>
+<tr>
+<td>2025</td>
+<td style="text-align:right">29,7%</td>
+<td style="text-align:right">27,3%</td>
+</tr>
+<tr>
+<td>2026</td>
+<td style="text-align:right">34,6%</td>
+<td style="text-align:right">28,0%</td>
+</tr>
+</tbody>
+</table></div>
+<p>Oltre la metà delle RFQ <strong>non viene mai inviata a nessun fornitore</strong> (richieste duplicate, prodotti non trattati, clienti &quot;rumorosi&quot;, placeholder). La quota lavorata <strong>calava</strong> col crescere del volume (carico operativo costante) e mostra un primo recupero nel 2026 con l'automazione del nuovo BO.</p>
+<h3>6.3 Era nativa (lug-ott 2026): tempi in ore</h3>
+<p>Sulle 4.248 RFQ native il nuovo BO rivela la vera velocità del motore interno (le date legacy erano senza ora affidabile):</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Fase</th>
+<th style="text-align:right">n</th>
+<th style="text-align:right">Mediana</th>
+<th style="text-align:right">p90</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RFQ → prima richiesta ai fornitori</td>
+<td style="text-align:right">1.351</td>
+<td style="text-align:right"><strong>0,4 ore</strong> (~25 min)</td>
+<td style="text-align:right">13,9 ore</td>
+</tr>
+<tr>
+<td>Invio → prima risposta fornitore</td>
+<td style="text-align:right">924</td>
+<td style="text-align:right"><strong>3,0 ore</strong></td>
+<td style="text-align:right">33,2 ore</td>
+</tr>
+<tr>
+<td>Risposta fornitore → offerta al cliente</td>
+<td style="text-align:right">602</td>
+<td style="text-align:right"><strong>1,2 ore</strong></td>
+<td style="text-align:right">39,8 ore</td>
+</tr>
+<tr>
+<td>Offerta → ordine del cliente</td>
+<td style="text-align:right">105</td>
+<td style="text-align:right"><strong>4,3 giorni</strong></td>
+<td style="text-align:right">19,5 giorni</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>La pipeline interna (dalla RFQ all'offerta) impiega in mediana ~4-5 ore lavorative complessive; il cliente impiega ~4 giorni per decidere.</strong> Rapporto ~20:1: ogni ottimizzazione sul lato decisionale/cliente (follow-up, reminder, chiarezza preventivi) vale più di qualsiasi accelerazione interna. Sulle risposte fornitore native: mediana 3,5 ore, p90 59 ore; lead time dichiarato mediano <strong>0 giorni</strong> (la maggior parte delle offerte è &quot;da stock&quot;).</p>
+<h3>6.4 Carico conversazionale</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Messaggi per RFQ</th>
+<th style="text-align:right">N RFQ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td style="text-align:right">10.278</td>
+</tr>
+<tr>
+<td>1–2</td>
+<td style="text-align:right">47.677</td>
+</tr>
+<tr>
+<td>3–5</td>
+<td style="text-align:right">7.494</td>
+</tr>
+<tr>
+<td>6–10</td>
+<td style="text-align:right">3.143</td>
+</tr>
+<tr>
+<td>11–20</td>
+<td style="text-align:right">1.831</td>
+</tr>
+<tr>
+<td>&gt;20</td>
+<td style="text-align:right">1.020</td>
+</tr>
+</tbody>
+</table></div>
+<p>La maggior parte delle RFQ si chiude con 1-2 messaggi; ~2.850 RFQ (4%) richiedono &gt;10 messaggi — sono la coda laboriosa (trattative, non conformità, exchange).</p>
+<h3>6.5 Non conformità</h3>
+<p>Solo <strong>92 casi</strong> su 71.443 RFQ (0,13%): 84 <code>Product</code>, 5 <code>Process/System</code>, 3 <code>Service</code>. La qualità del processo post-vendita non è un problema rilevante nei dati.</p>
+<h3>6.6 Canale web nel 2026 (andamento mensile)</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Mese 2026</th>
+<th style="text-align:right">RFQ create da web</th>
+<th style="text-align:right">RFQ toccate da flussi web (incluse revisioni/sostituzioni prodotto)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Luglio (dal go-live BO)</td>
+<td style="text-align:right">57</td>
+<td style="text-align:right">266</td>
+</tr>
+<tr>
+<td>Agosto</td>
+<td style="text-align:right">142</td>
+<td style="text-align:right">336</td>
+</tr>
+<tr>
+<td>Settembre</td>
+<td style="text-align:right">139</td>
+<td style="text-align:right">386</td>
+</tr>
+<tr>
+<td>Ottobre (primi 10 gg)</td>
+<td style="text-align:right">36</td>
+<td style="text-align:right">90</td>
+</tr>
+</tbody>
+</table></div>
+<p>Il sito produce <strong>~140 RFQ/mese</strong> in regime (~4,5/giorno, anche ad agosto) e i flussi web toccano in totale ~350-390 RFQ/mese: il canale è ormai strutturale. Sono tipicamente richieste &quot;one-shot&quot; (si veda §4.1: i clienti one-shot convertono pochissimo) — il sito alimenta la coda lunga, i grandi ripetitori restano il fatturato.</p>
+<hr>
+<h2>7. Profili sintetici (archetipi per l'assistente consigliere)</h2>
+<p>Profili pronti per orientare il comportamento dell'assistente: cosa aspettarsi, quanto valgono, come trattarli. <em>(Tutti i numeri si riferiscono alla finestra 5 anni; prezzi mediani solo dove disponibili.)</em></p>
+<h3>7.1 Dieci clienti archetipo</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Cliente</th>
+<th>Paese</th>
+<th style="text-align:right">RFQ</th>
+<th style="text-align:right">Ordini</th>
+<th style="text-align:right">Conv.</th>
+<th style="text-align:right">Prezzo mediano</th>
+<th>Specializzazione</th>
+<th>Profilo operativo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>C1</td>
+<td><strong>Siemens Spain</strong></td>
+<td>ES</td>
+<td style="text-align:right">467</td>
+<td style="text-align:right">234</td>
+<td style="text-align:right"><strong>50,1%</strong></td>
+<td style="text-align:right">1.000 €</td>
+<td>Siemens / X-Ray</td>
+<td><strong>OEM che compra davvero</strong>: chiede poco, converte metà. Priorità assoluta, risposta rapida paga sempre.</td>
+</tr>
+<tr>
+<td>C2</td>
+<td><strong>Siemens Italia</strong></td>
+<td>IT</td>
+<td style="text-align:right">220</td>
+<td style="text-align:right">123</td>
+<td style="text-align:right"><strong>55,9%</strong></td>
+<td style="text-align:right">1.500 €</td>
+<td>Siemens / X-Ray</td>
+<td>Gemello di C1: il miglior tasso di conversione del parco. (Ultima RFQ lug 2026 — verificare continuità nel nuovo sistema.)</td>
+</tr>
+<tr>
+<td>C3</td>
+<td><strong>GE Medical Systems Italia</strong></td>
+<td>IT</td>
+<td style="text-align:right">463</td>
+<td style="text-align:right">129</td>
+<td style="text-align:right">27,9%</td>
+<td style="text-align:right">750 €</td>
+<td>Toshiba / Parti ecografia</td>
+<td>OEM con esigenze piccole e frequenti, conversione alta, ticket basso: da servire veloci, margine nel volume.</td>
+</tr>
+<tr>
+<td>C4</td>
+<td><strong>GE France Parts</strong></td>
+<td>FR</td>
+<td style="text-align:right">1.348</td>
+<td style="text-align:right">154</td>
+<td style="text-align:right">11,4%</td>
+<td style="text-align:right">2.640 €</td>
+<td>Philips / X-Ray</td>
+<td>OEM francese ad alto volume e buona conversione. La controparte <em>Probes</em> (44 ordini) è ferma da giu 2024: riattivarla.</td>
+</tr>
+<tr>
+<td>C5</td>
+<td><strong>Althea Global Supply</strong></td>
+<td>IT</td>
+<td style="text-align:right">8.340</td>
+<td style="text-align:right">198</td>
+<td style="text-align:right">2,4%</td>
+<td style="text-align:right">1.300 €</td>
+<td>GE / MRI</td>
+<td><strong>Service provider globale</strong>: enorme volume di richieste (anche MRI/CT difficili), conversione bassa ma fatturato rilevante: è il cliente #1 per ordini assoluti. Non filtrare: il 2,4% di 8.340 vale oro.</td>
+</tr>
+<tr>
+<td>C6</td>
+<td><strong>Althea Trieste</strong></td>
+<td>IT</td>
+<td style="text-align:right">1.034</td>
+<td style="text-align:right">131</td>
+<td style="text-align:right">12,7%</td>
+<td style="text-align:right">3.216 €</td>
+<td>GE / Sonde</td>
+<td>Stessa famiglia Althea ma profilo &quot;sonde ad alto ticket&quot;: conversione 5× la capogruppo, prezzo mediano più alto del parco.</td>
+</tr>
+<tr>
+<td>C7</td>
+<td><strong>Apr Salud</strong></td>
+<td>ES</td>
+<td style="text-align:right">3.954</td>
+<td style="text-align:right">193</td>
+<td style="text-align:right">4,9%</td>
+<td style="text-align:right">1.900 €</td>
+<td>GE / MRI</td>
+<td>Grande service provider spagnolo: volume alto, conversione nella media dei grandi, mix ampio. Cliente da presidiare su prezzo e velocità.</td>
+</tr>
+<tr>
+<td>C8</td>
+<td><strong>Polygon</strong></td>
+<td>IT</td>
+<td style="text-align:right">2.866</td>
+<td style="text-align:right">138</td>
+<td style="text-align:right">4,8%</td>
+<td style="text-align:right">2.100 €</td>
+<td>GE / CT</td>
+<td>Service italiano, molto attivo, mix CT. Stessa conversione del gruppo Althea.</td>
+</tr>
+<tr>
+<td>C9</td>
+<td><strong>Magna Meditech</strong></td>
+<td>MY</td>
+<td style="text-align:right">1.432</td>
+<td style="text-align:right">124</td>
+<td style="text-align:right">8,7%</td>
+<td style="text-align:right">1.600 €</td>
+<td>vario (spesso &quot;Various Parts&quot;)</td>
+<td>Distributore SE-Asia: richieste spesso generiche (placeholder), ma converte bene: vale la pena chiedere il part-number esatto, paga.</td>
+</tr>
+<tr>
+<td>C10</td>
+<td><strong>DirectMed Imaging</strong></td>
+<td>DK</td>
+<td style="text-align:right">10.649</td>
+<td style="text-align:right"><strong>13</strong></td>
+<td style="text-align:right">0,1%</td>
+<td style="text-align:right">—</td>
+<td>tutto il catalogo</td>
+<td><strong>Il &quot;rumoroso&quot; #1</strong>: 15% di tutte le RFQ della finestra, quasi zero ordini. Rivenditore che usa Novarium per price discovery. Regola: rispondere con automazione/priorità bassa, mai lavoro manuale proporzionale al volume.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Contro-esempi da trattare come C10</strong> (volume alto, conversione ~0): MediRam IL (1.770 RFQ, 0 ordini), Medilab Global US (998, 0), Healthica TR (1.145, 1), Danelis UK (549, 0). Insieme a C1–C2 formano i due estremi della scala &quot;valore per richiesta&quot;.</p>
+<h3>7.2 Dieci fornitori archetipo</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Fornitore</th>
+<th>Paese</th>
+<th style="text-align:right">Richieste</th>
+<th style="text-align:right">Tasso risp.</th>
+<th style="text-align:right">Ordini</th>
+<th style="text-align:right">Ord./risp.</th>
+<th style="text-align:right">Prezzo med.</th>
+<th>Valuta</th>
+<th>Profilo operativo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>F1</td>
+<td><strong>Ultrasound Parts</strong></td>
+<td>US</td>
+<td style="text-align:right">4.456</td>
+<td style="text-align:right">58,7%</td>
+<td style="text-align:right"><strong>527</strong></td>
+<td style="text-align:right">20,1%</td>
+<td style="text-align:right">(USD)</td>
+<td>USD</td>
+<td><strong>Il pilastro</strong>: primo per richieste e ordini (11% degli ordini totali). Specialista parti ecografia GE, 12 categorie. Se non risponde lui, il margine di ripiego è basso.</td>
+</tr>
+<tr>
+<td>F2</td>
+<td><strong>US Ultrasound Services</strong></td>
+<td>US</td>
+<td style="text-align:right">4.072</td>
+<td style="text-align:right">56,2%</td>
+<td style="text-align:right">388</td>
+<td style="text-align:right">16,9%</td>
+<td style="text-align:right">(USD)</td>
+<td>USD</td>
+<td>Secondo pilastro ultrasound, stesso peso specifico. F1+F2 = dipendenza da presidiare (doppio canale vitale).</td>
+</tr>
+<tr>
+<td>F3</td>
+<td><strong>Novarium Supplier</strong> (magazzino interno)</td>
+<td>IT</td>
+<td style="text-align:right">378</td>
+<td style="text-align:right">9,8%</td>
+<td style="text-align:right">302</td>
+<td style="text-align:right">—</td>
+<td style="text-align:right">—</td>
+<td>EUR</td>
+<td><strong>Non un fornitore</strong>: contenitore interno (stock proprio/exchange). Gli &quot;ordini&quot; non passano da risposte — da escludere dalle analisi comparative, ma segnala quanto il magazzino proprio contribuisca (~6% degli ordini).</td>
+</tr>
+<tr>
+<td>F4</td>
+<td><strong>Hes Bv.</strong></td>
+<td>NL</td>
+<td style="text-align:right">3.338</td>
+<td style="text-align:right">43,3%</td>
+<td style="text-align:right">193</td>
+<td style="text-align:right">13,3%</td>
+<td style="text-align:right">875 €</td>
+<td>EUR</td>
+<td><strong>Generalista europeo imaging</strong> (Siemens/X-Ray, 18 categorie): tasso risposta sotto media ma copre ciò che gli USA non hanno; prezzi contenuti.</td>
+</tr>
+<tr>
+<td>F5</td>
+<td><strong>Bioscan Inc.</strong></td>
+<td>US</td>
+<td style="text-align:right">3.043</td>
+<td style="text-align:right">75,5%</td>
+<td style="text-align:right">133</td>
+<td style="text-align:right">5,8%</td>
+<td style="text-align:right">(USD)</td>
+<td>USD</td>
+<td>Affidabile e veloce su Siemens/X-Ray; converte poco in ordine: prezzi probabilmente meno competitivi — da usare come fonte secondaria/tecnica.</td>
+</tr>
+<tr>
+<td>F6</td>
+<td><strong>Dormed Hellas</strong></td>
+<td>GR</td>
+<td style="text-align:right">1.769</td>
+<td style="text-align:right"><strong>89,5%</strong></td>
+<td style="text-align:right">133</td>
+<td style="text-align:right">8,4%</td>
+<td style="text-align:right">1.800 €</td>
+<td>EUR</td>
+<td>Specialista sonde (Hitachi): risponde quasi sempre in giornata, prezzo mediano coerente col mercato sonde. Prima scelta su sonde non-GE.</td>
+</tr>
+<tr>
+<td>F7</td>
+<td><strong>Sono Vision Inc.</strong></td>
+<td>US</td>
+<td style="text-align:right">1.781</td>
+<td style="text-align:right"><strong>85,7%</strong></td>
+<td style="text-align:right">116</td>
+<td style="text-align:right">7,6%</td>
+<td style="text-align:right">(USD)</td>
+<td>USD</td>
+<td>Nicchia stretta (4 categorie, parti ecografia GE) ma altissima affidabilità: quando ha l'articolo, chiude.</td>
+</tr>
+<tr>
+<td>F8</td>
+<td><strong>Avante Ultrasound</strong></td>
+<td>US</td>
+<td style="text-align:right">2.804</td>
+<td style="text-align:right">78,6%</td>
+<td style="text-align:right">98</td>
+<td style="text-align:right">4,4%</td>
+<td style="text-align:right">(USD)</td>
+<td>USD</td>
+<td>Grande volume, risponde bene, converte poco (4,4% ordini/risposte): benchmark di prezzo più che fonte primaria.</td>
+</tr>
+<tr>
+<td>F9</td>
+<td><strong>Umed LTD</strong></td>
+<td>LV</td>
+<td style="text-align:right">971</td>
+<td style="text-align:right"><strong>95,0%</strong></td>
+<td style="text-align:right">90</td>
+<td style="text-align:right">9,8%</td>
+<td style="text-align:right">3.050 €</td>
+<td>EUR</td>
+<td>Piccolo ma quasi perfetto: risponde sempre, ticket più alto ( Toshiba/parti ecografia), ottima resa ordini. Da espandere.</td>
+</tr>
+<tr>
+<td>F10</td>
+<td><strong>Express Systems &amp; Parts Network</strong></td>
+<td>US</td>
+<td style="text-align:right">2.912</td>
+<td style="text-align:right">40,5%</td>
+<td style="text-align:right">85</td>
+<td style="text-align:right">7,2%</td>
+<td style="text-align:right">(USD)</td>
+<td>USD</td>
+<td>Volume alto, risposta debole; <strong>ultimo invio ago 2026 — a rischio uscita dal giro</strong> (come 1MAC). Verificare il rapporto.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Panchina di affidabilità</strong> (tasso risposta ≥80%, ≥300 richieste — da preferire nel suggeritore): Relmedic ES (95,4%), Sonoref DE (96,7%), Umed LV (95%), Mideas (94,3%), Jean Medical (93,2%), Sono House JP (91,9%), Dormed GR (89,5%), Camed (88,2%), iMED All US (86,4%), Sono Vision US (85,7%).
+<strong>Da non dimenticare</strong>: 1MAC (98,7% di risposta, 822 richieste) è uscito dal giro a dic 2023 — il singolo &quot;buco&quot; più costoso della rete fornitori.</p>
+<hr>
+<h2>Note metodologiche</h2>
+<ul>
+<li><strong>Accesso</strong>: sola lettura su Postgres/Supabase di produzione, via script Node temporanei in <code>/tmp</code> (<code>prisma.$queryRawUnsafe</code> con sole SELECT aggregate; <code>DATABASE_URL</code> letta da <code>.env</code> backend, mai stampata). Nessuna scrittura, nessun dump riga-per-riga: tutte le query sono GROUP BY/COUNT/percentili con filtri di data e LIMIT sui campioni.</li>
+<li><strong>Finestra</strong>: <code>createdAt &gt;= 2021-10-01</code> per RFQ; per gli eventi <code>occurredAt &gt;= 2021-10-01</code> (in <code>Event</code> la data &quot;vera&quot; è <code>occurredAt</code>: <code>createdAt</code> parte da mar 2026 per tutti, legacy inclusi).</li>
+<li><strong>Migrazione legacy (&quot;Biferno&quot;)</strong>: 159.415 RFQ legacy vs 4.248 native (dal 7 lug 2026). Attenzione: <code>RFQ.updatedAt</code> delle righe legacy riflette l'import, non la vita reale — per questo i tempi di vita delle RFQ sono stimati solo via eventi. I campi <code>SupplierRequest.repliedAt</code>/<code>lastReplyPrice</code> storici sono preservati (53.415 prezzi legacy); <code>lastReplyLeadTimeDays</code> esiste solo nel nativo.</li>
+<li><strong>Link eventi→fornitore</strong>: gli eventi non hanno <code>supplierId</code> popolato (tranne pochi nativi); il fornitore si risale via <code>supplierRequestId → SupplierRequest.supplierId</code>. La data &quot;vera&quot; di invio richiesta è <code>min(occurredAt)</code> degli eventi <code>SUPPLIER_REQUEST_SENT</code> per richiesta.</li>
+<li><strong>Granularità temporale legacy</strong>: molte <code>occurredAt</code> storiche sono date senza ora affidabile; le mediane &quot;0 giorni&quot; sulle prime fasi vanno lette come &quot;stesso giorno&quot;. Le misure in ore sono calcolate solo sull'era nativa (lug 2026+).</li>
+<li><strong>hasOrder vs eventi ordine</strong>: il flag <code>RFQ.hasOrder</code> (4.732) è più completo degli eventi <code>ORDER_CREATED</code>/<code>CLIENT_ORDER_RECEIVED</code> (3.729 RFQ distinte) per via di migrazioni parziali; dove possibile si usa il flag.</li>
+<li><strong><code>lastClientPrice</code></strong>: popolato solo su 135 ordini recenti (funzione del nuovo BO): le fasce di prezzo vendita sono indicative.</li>
+<li><strong>Anomalie note</strong>: (a) il prodotto più richiesto è il placeholder &quot;Various Parts&quot; — le RFQ non mappate gonfiano i conteggi &quot;senza categoria&quot;; (b) &quot;Legacy Unassigned Client&quot; (Iraq) è un contenitore di RFQ non attribuite — distorce la geografia (Iraq) e la classifica clienti; (c) alcuni eventi hanno <code>occurredAt</code> future (fino al 2029) per note interne — escluse dalle serie storiche con filtro <code>&lt; now()</code>; (d) ORDER_CREATED (33k) &gt; CLIENT_ORDER_RECEIVED (19,5k): il primo include bozze/ordini creati lato BO.</li>
+<li><strong>Riproducibilità</strong>: script in <code>/tmp/nov-01..12-*.cjs</code> sulla macchina di Vittorio (non fanno parte del repo).</li>
+</ul>
+</main></body></html>
