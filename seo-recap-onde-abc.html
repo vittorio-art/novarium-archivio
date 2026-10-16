@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Recap del lavoro SEO Novarium al 16 ottobre 2026: Onde A, B e C in produzione, verifiche e interventi residui.">
+  <title>Recap SEO — Onde A, B, C | Archivio Novarium</title>
+  <style>
+    :root { color-scheme: light dark; --bg:#fff; --text:#37352f; --muted:#666; --rule:#ddd; --surface:#f7f6f3; --status-bg:#edf7ef; --status-text:#225b30; }
+    @media (prefers-color-scheme:dark) { :root { --bg:#191919; --text:#e6e6e6; --muted:#b0b0b0; --rule:#444; --surface:#242424; --status-bg:#1d3525; --status-text:#b8e4c2; } }
+    * { box-sizing:border-box; }
+    body { margin:0; padding:40px 20px 64px; background:var(--bg); color:var(--text); font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    main { max-width:880px; margin:auto; }
+    h1,h2,h3 { line-height:1.25; }
+    h1 { font-size:2rem; margin:26px 0 12px; }
+    h2 { font-size:1.4rem; margin:32px 0 14px; }
+    a { color:inherit; text-underline-offset:3px; }
+    .meta { color:var(--muted); font-size:.9rem; }
+    .status { padding:18px 20px; background:var(--status-bg); color:var(--status-text); border-radius:8px; }
+    .status p { margin:4px 0; }
+    .table-scroll { overflow-x:auto; margin:14px 0 22px; }
+    table { width:100%; border-collapse:collapse; font-size:.94rem; }
+    th,td { padding:12px; text-align:left; vertical-align:top; border-bottom:1px solid var(--rule); }
+    th { background:var(--surface); }
+    td:first-child { min-width:145px; }
+    td:last-child { min-width:115px; }
+    li { margin:7px 0; }
+    code { background:var(--surface); padding:2px 5px; border-radius:4px; overflow-wrap:anywhere; }
+    footer { margin-top:32px; padding-top:18px; border-top:1px solid var(--rule); }
+    @media (max-width:600px) {
+      body { padding:24px 16px 40px; } h1 { font-size:1.6rem; }
+      table,tbody,tr,td { display:block; width:100%; }
+      thead { display:none; }
+      tr { padding:12px; margin-bottom:12px; background:var(--surface); border-radius:6px; }
+      td { padding:4px 0; border:0; }
+      td:first-child,td:last-child { min-width:0; }
+      td:first-child { font-weight:600; }
+      td:last-child { color:var(--muted); font-size:.88rem; }
+    }
+    @media print { body { padding:0; font-size:11pt; } .table-scroll { overflow:visible; } a { text-decoration:none; } }
+  </style>
+</head>
+<body>
+<main>
+  <nav aria-label="Archivio"><a href="index.html#seo">← Archivio · SEO</a> · <a href="cruscotto-lavori.html#seo">Cruscotto lavori</a></nav>
+  <h1>Recap SEO — Onde A, B, C</h1>
+  <p class="meta">Aggiornato al 16 ottobre 2026 · Riepilogo dei lavori e dei report post-deploy disponibili.</p>
+  <div class="status">
+    <p><strong>Gli interventi delle tre onde sono in produzione.</strong></p>
+    <p>Anche il problema dei permessi della cache è stato corretto e verificato sul catalogo reale. Restano tre interventi tecnici separati e la misurazione dei risultati su Google.</p>
+  </div>
+
+  <h2>Onda A — Accesso e scansione</h2>
+  <div class="table-scroll"><table>
+    <thead><tr><th>Lavoro</th><th>Risultato</th><th>Stato</th></tr></thead>
+    <tbody>
+      <tr><td>Sitemap veloci</td><td>Sitemap prerenderizzate anziché ricostruite a ogni richiesta. <a href="https://github.com/vittorio-art/novarium-backoffice/pull/41">PR #41</a>.</td><td>Live</td></tr>
+      <tr><td>URL e canonical</td><td>Host canonico www; schede prodotto canoniche in inglese; risolto il canonical ibrido delle altre lingue e corretti i primi redirect legacy.</td><td>Live</td></tr>
+      <tr><td>Search Console</td><td>Sitemap reinviata da Vittorio il 15 ottobre.</td><td>Fatto</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>Onda B — Struttura SEO</h2>
+  <div class="table-scroll"><table>
+    <thead><tr><th>Lavoro</th><th>Risultato</th><th>Stato</th></tr></thead>
+    <tbody>
+      <tr><td>Dati strutturati</td><td>Product JSON-LD sulle schede prodotto. <a href="https://github.com/vittorio-art/novarium-backoffice/pull/45">PR #45</a>.</td><td>Live</td></tr>
+      <tr><td>Lingue collegate</td><td>Hreflang nelle sitemap delle pagine indicizzabili: cinque lingue e x-default inglese. Le schede prodotto non-EN restano noindex con canonical EN. <a href="https://github.com/vittorio-art/novarium-backoffice/pull/46">PR #46</a>.</td><td>Live</td></tr>
+      <tr><td>Vecchi URL prodotto</td><td><code>/prodotti/Marca/codice/ID/</code> risolto tramite ID storico alla scheda attuale. La prova Philips C8-4V termina sulla scheda corretta, con risposta 200. <a href="https://github.com/vittorio-art/novarium-backoffice/pull/56">PR #56</a>.</td><td>Live; hop 307 da rifinire</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>Onda C — Pagine e contenuti</h2>
+  <div class="table-scroll"><table>
+    <thead><tr><th>Lavoro</th><th>Risultato</th><th>Stato</th></tr></thead>
+    <tbody>
+      <tr><td>Schede sonda</td><td>Introduzione e meta description con tipo, frequenza ed ecografi compatibili: meno testo generico. PR #45.</td><td>Live</td></tr>
+      <tr><td>Pagine ecografo</td><td>Marca nel titolo, modelli pertinenti e collegamenti dalla sonda. Pagine sotto tre sonde accessibili con noindex/follow, escluse dalla sitemap. <a href="https://github.com/vittorio-art/novarium-backoffice/pull/47">#47</a>, <a href="https://github.com/vittorio-art/novarium-backoffice/pull/48">#48</a>, <a href="https://github.com/vittorio-art/novarium-backoffice/pull/52">#52</a>.</td><td>Live</td></tr>
+      <tr><td>Marca e famiglie</td><td>Ecografi della marca corretta; famiglie soltanto sotto la propria marca. Eliminata la vetrina generica di famiglie dalla landing. <a href="https://github.com/vittorio-art/novarium-backoffice/pull/53">#53</a>, <a href="https://github.com/vittorio-art/novarium-backoffice/pull/55">#55</a>.</td><td>Live</td></tr>
+      <tr><td>Terminologia</td><td>“Ecografi / ultrasound machines”; titoli e testi editoriali senza “and Transducers” né gergo SEO per il cliente. <a href="https://github.com/vittorio-art/novarium-backoffice/pull/54">#54</a>.</td><td>Live</td></tr>
+      <tr><td>Landing in 5 lingue</td><td>Introduzione, Perché Novarium, nuove/ricondizionate e richiesta offerta. IT, EN, FR, ES, DE. Il menu continua a portare direttamente al catalogo: nessun clic aggiuntivo. <a href="https://github.com/vittorio-art/novarium-backoffice/pull/57">#57</a>.</td><td>Live</td></tr>
+    </tbody>
+  </table></div>
+  <p class="meta">Sitemap ecografi verificata: <strong>2.220 URL</strong>, con hreflang; ProSound 3500SX esclusa perché sotto soglia. È il conteggio al 16 ottobre, non una costante se cambia il catalogo.</p>
+
+  <h2>Deploy e verifiche</h2>
+  <ul>
+    <li><strong>Primo report post-deploy, 16/10:</strong> incluse le PR website #52–57; landing nelle cinque lingue, pagine marca/ecografo, canonical e sitemap controllati.</li>
+    <li><strong>Report Codex delle 18:42:</strong> fix permessi cache <code>f32f6eee</code> in produzione. Sul catalogo reale: 16 file cache creati, uno aggiornato, sitemap statica rigenerata, zero nuovi EACCES nei controlli; processo non-root mantenuto.</li>
+    <li><strong>Prove precedenti alla pubblicazione:</strong> landing controllata in cinque lingue su desktop e mobile; build, tipi e lint superati. <a href="https://chat.letta.com/artifacts/6a13eda2-387e-47d5-975b-9bb54792b973">Screenshot desktop</a> · <a href="https://chat.letta.com/artifacts/14d94593-e52a-43dd-8a56-cb6341704c29">Screenshot mobile</a>.</li>
+  </ul>
+  <p class="meta">Fonte dello stato runtime: report post-deploy Codex condivisi da Vittorio. La verifica completa desktop/mobile del rilascio live e il controllo manuale dei chip Aloka restano da completare; non sono certificati dall’ultimo report.</p>
+
+  <h2>Ancora aperto — non confondere con lavori da deployare</h2>
+  <ol>
+    <li><strong>Cache dati sitemap oltre 2 MB:</strong> avviso distinto dai permessi, ancora aperto. Preservare il prerender già funzionante.</li>
+    <li><strong>Redirect legacy:</strong> catena osservata <code>308 → 307 → 301 → 200</code>; eliminare il passaggio temporaneo aggiuntivo senza cambiare il prodotto di destinazione.</li>
+    <li><strong>Staging isolato:</strong> predisporre un ambiente realmente separato. Test3 non è un ambiente di prova indipendente dalla produzione.</li>
+  </ol>
+
+  <h2>Misurazione — risultati ancora da valutare</h2>
+  <ul>
+    <li><strong>29 ottobre:</strong> primo checkpoint GSC dopo il reinvio sitemap del 15/10: scansione, errori e prime impressioni delle nuove pagine.</li>
+    <li><strong>Circa 13 novembre:</strong> confronto impressioni, clic e query Sonde vs Parts, incluse le ricerche per ecografo.</li>
+    <li>Gli effetti delle ultime modifiche vanno letti dalla data effettiva del rilascio. Nessun aumento di ranking o traffico è ancora dimostrato da questo recap.</li>
+  </ul>
+  <footer>
+    <p><a href="index.html#seo">Torna alla sezione SEO dell’archivio</a> · <a href="cruscotto-lavori.html#seo">Stato progetti</a></p>
+    <p class="meta">Analisi iniziali conservate come storico: <a href="seo-report-sonde-vs-parts.html">Sonde vs Parts</a> · <a href="seo-analisi-gsc.html">Search Console</a> · <a href="seo-audit-tecnico.html">Audit tecnico</a>.</p>
+  </footer>
+</main>
+</body>
+</html>
