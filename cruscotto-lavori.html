@@ -87,41 +87,18 @@ tbody tr:last-child td { border-bottom: 0; }
 }
 @media print { body { padding: 0; } .table-scroll { overflow: visible; } }
 </style></head><body><main><h1>Stato progetti Novarium — quadro riepilogativo</h1>
-<p>Aggiornato: 14 ottobre 2026 · Mantenuto da: Letta (aggiornato a ogni progresso)
+<p>Ultimo aggiornamento: 16 ottobre 2026 · Sezione SEO aggiornata; le altre sezioni mantengono le rispettive date e verifiche.
 Legenda stati: ✅ fatto · 🔄 in corso · ⏸️ in attesa (di chi) · 🆕 da avviare</p>
-<h2>1. SEO — 🔄 in corso (Onda A idraulica COMPLETA live 15/10 ✅; attesa re-submit sitemap)</h2>
+<h2 id="seo">1. SEO — ✅ Onde A, B, C in produzione; rifiniture e misurazione aperte</h2>
+<p><strong><a href="seo-recap-onde-abc.html">Recap completo del lavoro SEO — 16 ottobre</a></strong></p>
 <ul>
-<li>
-<p>✅ Analisi completate: report-sonde-vs-parts, gsc-analysis, technical-audit</p>
-</li>
-<li>
-<p>✅ Spec pronte: spec-fix-indicizzazione-sonde + spec-redirect-parts-legacy (con fix stopgap e mappe redirect)</p>
-</li>
-<li>
-<p>✅ Benchmark competitor analizzato (13/10): <a href="http://lysis.cc">lysis.cc</a> — pagine sonda distinte con spec+compatibilità = il modello della spec, confermato dal vivo</p>
-</li>
-<li>
-<p>✅ <strong>Primo rilascio Giovanni LIVE (14/10)</strong>: PDP consolidate a una lingua canonica (EN) + sitemap prodotto solo canonica (~158k → ~32k URL) + <code>noindex, follow</code> sulle PDP non-EN — verificato live da Letta</p>
-</li>
-<li>
-<p>✅ <strong>Review Letta dei commit (14/10)</strong>: direzione corretta, NON annullare. Trovato 1 bug (canonical ibrido EN+slug locale sulle PDP non-EN) + raccomandazione EN come lingua canonica + piano misurazione</p>
-</li>
-<li>
-<p>✅ <strong>Decisioni 14/10 (Vittorio): EN confermato come lingua canonica · ok al fix del bug</strong></p>
-</li>
-<li>
-<p>✅ <strong>Onda A live e verificata (15/10)</strong>: redirect legacy <code>/vendita/prodotto/?pid=N</code>→PDP EN, <code>/vendita/&lt;brand&gt;/</code>→search, <code>/vendita/</code>→categories, apex→www 301, rotta senza ID→404, canonical ibrido RISOLTO — tutto implementato da Giovanni su main (PR #39 chiusa come superata). Nuovi hub SEO in sitemap: ultrasound-brands (45) + machines (40)</p>
-</li>
-<li>
-<p>✅ <strong>ONDA A COMPLETA (15/10)</strong>: fix sitemap (PR #41) mergiata, DEPLOY verificato live (cache HIT), re-submit GSC fatto da Vittorio → <strong>checkpoint T+2 = 29 ott</strong>
-🔵 <strong>Onda B/C in corso</strong>: mergiate su main 15/10 — PR #45 (pagine sonda uniche + Product JSON-LD) e PR #46 (hreflang sitemap) → <strong>live al prossimo deploy</strong>. Resta: mappe redirect legacy (Letta)</p>
-</li>
-<li>
-<p>🔄 Prossime (Onda B/C): hreflang sitemap + Product JSON-LD (Letta) → contenuti pagine sonda (modello lysis) + hub brand/macchine</p>
-</li>
-<li>
-<p>🔗 Collegato: immagini prodotto (progetto 10) = anche leva SEO</p>
-</li>
+<li><strong>Onda A:</strong> sitemap prerenderizzate (#41), host/canonical corretti e reinvio GSC fatto il 15/10.</li>
+<li><strong>Onda B:</strong> Product JSON-LD (#45), hreflang (#46), vecchi URL <code>/prodotti/...</code> verso il prodotto esatto (#56).</li>
+<li><strong>Onda C:</strong> schede sonda arricchite, pagine ecografo, chip cliccabili, famiglie sotto la propria marca e testi landing in cinque lingue (#45, #47–48, #52–55, #57). Menu diretto al catalogo invariato.</li>
+<li><strong>Permessi cache EACCES:</strong> fix <code>f32f6eee</code> in produzione, verificato sul catalogo reale nel report Codex delle 18:42 del 16/10.</li>
+<li><strong>Ancora aperti:</strong> cache dati sitemap &gt;2 MB; passaggio temporaneo 307 aggiuntivo nei redirect legacy; staging realmente separato. Test3 non è staging.</li>
+<li><strong>Da completare sul rilascio live:</strong> verifica visiva desktop/mobile e controllo manuale dei chip Aloka.</li>
+<li><strong>Misurazione prevista:</strong> GSC il 29 ottobre e circa il 13 novembre. Benefici di traffico e ranking ancora da valutare.</li>
 </ul>
 <h2>2. DMCA (clone Nuovomedtech) — ⏸️ in attesa di Vittorio</h2>
 <ul>
@@ -260,7 +237,7 @@ Legenda stati: ✅ fatto · 🔄 in corso · ⏸️ in attesa (di chi) · 🆕 d
 <h2>In attesa di risposta (bloccanti)</h2>
 <ul>
 <li>
-<p>Deploy → <strong>prossimo deploy porta live PR #45+#46</strong>; checkpoint GSC 29 ott (T+2); mappe redirect legacy = ultimo pezzo Onda B</p>
+<p>SEO → <strong>rilascio completato, incluse PR #52–57 e fix EACCES</strong>. Restano cache sitemap &gt;2 MB, rifinitura redirect 307, staging isolato e verifiche residue. <a href="seo-recap-onde-abc.html">Recap aggiornato</a>; checkpoint GSC 29 ottobre.</p>
 </li>
 <li>
 <p>Vittorio → review proposte 5/10/11/12; decisione invio notice DMCA; primo batch dati Marine; ok audit fornitori (progetto 8) · <strong>SEO: export GSC per baseline (performance 3 mesi per pagina + breakdown indicizzazione)</strong></p>
