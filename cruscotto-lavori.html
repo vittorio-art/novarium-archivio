@@ -153,10 +153,21 @@ Legenda stati: ✅ fatto · 🔄 in corso · ⏸️ in attesa (di chi) · 🆕 d
 <p>⏸️ Prossimo passo: GO di Giovanni + 4 risposte → poi rotazione chiave + cleanup git (Letta fa la parte git)</p>
 </li>
 </ul>
-<h2>5. Parser — 🔄 proposta pronta, review di Vittorio</h2>
+<h2>5. Parser — 🔄 fix live in produzione (16/10) ✅; proposta 5 fasi in review di Vittorio</h2>
 <ul>
 <li>
-<p>✅ proposta-miglioramento-parser: 5 fasi (~25-39 gg) — tracciamento esiti suggestion (oggi il rifiuto è invisibile), confidence per-campo, auto-apply in shadow mode, eval set dai vostri correttivi</p>
+<p>✅ <strong>Live 16/10</strong> (deploy main <code>7e6e65ec</code>, flag multi-RFQ attivo):</p>
+<ul>
+<li><strong>Auto-categoria DirectMed/TriImaging</strong> (PR #44, 15/10): prodotti da portale classificati da soli per modalità (MRI/CT/X-Ray/US) — primi 6 prodotti post-deploy tutti classificati, zero classificazione manuale</li>
+<li><strong>Split multi-RFQ riparato</strong> (PR #50 + #51, 16/10): email con più codici in lista libera (senza "P/N") ora aprono una RFQ per prodotto col match giusto — casi reali Longevity (7 sonde→5 RFQ) e APR (4 codici→4 RFQ). Guardia anti-allucinazioni LLM testata e intatta</li>
+<li><strong>Inbox raggruppata</strong> (PR #51): una email = una riga con badge "+N linked", Resolve chiude tutto il gruppo</li>
+</ul>
+</li>
+<li>
+<p>🔄 Monitoraggio: report finale categorie 17/10 mattina; poi verifica primo split reale in produzione</p>
+</li>
+<li>
+<p>✅ proposta-miglioramento-parser: 5 fasi (~25-39 gg) — tracciamento esiti suggestion, confidence per-campo, auto-apply in shadow mode, eval set dai vostri correttivi</p>
 </li>
 <li>
 <p>⏸️ Prossimo passo: Vittorio legge e decide cosa mandare a Giovanni</p>
