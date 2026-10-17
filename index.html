@@ -1,30 +1,29 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Archivio Novarium</title>
+<title>Novarium — Stato lavori</title>
 <style>
 :root {
-color-scheme: light dark;
---bg: #fff; --text: #37352f; --muted: #787774; --faint: #9b9a97;
---rule: rgba(55, 53, 47, .09); --rule-strong: rgba(55, 53, 47, .16);
---surface: #f7f6f3; --code-bg: rgba(135, 131, 120, .15);
---link-line: rgba(55, 53, 47, .35); --check: #787774;
+  color-scheme: light dark;
+  --bg: #fff; --text: #37352f; --muted: #787774; --faint: #9b9a97;
+  --rule: rgba(55, 53, 47, .09); --rule-strong: rgba(55, 53, 47, .16);
+  --surface: #f7f6f3; --code-bg: rgba(135, 131, 120, .15);
+  --link-line: rgba(55, 53, 47, .35); --check: #787774;
 }
 @media (prefers-color-scheme: dark) {
-:root {
---bg: #191919; --text: rgba(255, 255, 255, .86); --muted: rgba(255, 255, 255, .55); --faint: rgba(255, 255, 255, .4);
---rule: rgba(255, 255, 255, .08); --rule-strong: rgba(255, 255, 255, .14);
---surface: #202020; --code-bg: rgba(255, 255, 255, .08);
---link-line: rgba(255, 255, 255, .35); --check: rgba(255, 255, 255, .32);
+  :root {
+    --bg: #191919; --text: rgba(255, 255, 255, .86); --muted: rgba(255, 255, 255, .55); --faint: rgba(255, 255, 255, .4);
+    --rule: rgba(255, 255, 255, .08); --rule-strong: rgba(255, 255, 255, .14);
+    --surface: #202020; --code-bg: rgba(255, 255, 255, .08);
+    --link-line: rgba(255, 255, 255, .35); --check: rgba(255, 255, 255, .32);
+  }
 }
-}</p>
-<ul>
-<li>{ box-sizing: border-box; }
+* { box-sizing: border-box; }
 html { background: var(--bg); -webkit-text-size-adjust: 100%; }
 body {
-margin: 0; padding: 4.5rem 3rem 6rem; color: var(--text); background: var(--bg);
-font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
--webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+  margin: 0; padding: 4.5rem 3rem 6rem; color: var(--text); background: var(--bg);
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
 }
 main > * { max-width: 720px; margin-left: auto; margin-right: auto; }
 main > :first-child { margin-top: 0; }
@@ -47,12 +46,12 @@ li > p { margin-bottom: .5em; }
 li::marker { color: var(--muted); }
 .task-list-item { list-style: none; margin-left: -1.45em; }
 .task-list-item input {
-appearance: none; -webkit-appearance: none; width: 1em; height: 1em; margin: 0 .55em 0 0; vertical-align: -.15em;
-border: 1.5px solid var(--faint); border-radius: 3px; background: transparent;
+  appearance: none; -webkit-appearance: none; width: 1em; height: 1em; margin: 0 .55em 0 0; vertical-align: -.15em;
+  border: 1.5px solid var(--faint); border-radius: 3px; background: transparent;
 }
 .task-list-item input:checked {
-border-color: transparent; background: var(--check) no-repeat center / 80%
-url("data:image/svg+xml,%3Csvg xmlns='<a href="http://www.w3.org/2000/svg">http://www.w3.org/2000/svg</a>' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  border-color: transparent; background: var(--check) no-repeat center / 80%
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
 .task-list-item:has(> input:checked, > p:first-child > input:checked) { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--faint); }
 blockquote { margin-left: auto; margin-right: auto; padding: .1em 0 .1em 1.1em; border-left: 3px solid var(--rule-strong); color: var(--muted); }
@@ -65,13 +64,13 @@ pre { font-size: .85em; line-height: 1.6; padding: 1em 1.25em; background: var(-
 pre code { font-size: inherit; padding: 0; background: none; border-radius: 0; }
 .table-scroll { max-width: 100%; overflow-x: auto; margin: 1em 0; }
 main > .table-scroll {
-width: max-content; min-width: min(720px, 100%); max-width: min(1240px, 100%);
-margin: 1.5em auto 2em;
+  width: max-content; min-width: min(720px, 100%); max-width: min(1240px, 100%);
+  margin: 1.5em auto 2em;
 }
 table { border-collapse: collapse; font-size: .9rem; line-height: 1.55; }
 th, td {
-padding: .55em .9em; text-align: left; vertical-align: top;
-border-bottom: 1px solid var(--rule); overflow-wrap: normal; word-break: normal;
+  padding: .55em .9em; text-align: left; vertical-align: top;
+  border-bottom: 1px solid var(--rule); overflow-wrap: normal; word-break: normal;
 }
 th { white-space: nowrap; font-weight: 600; color: var(--muted); background: var(--surface); border-bottom-color: var(--rule-strong); }
 th:first-child, td:first-child { padding-left: .75em; }
@@ -79,81 +78,75 @@ td { min-width: 4.5rem; max-width: 32rem; }
 td a { white-space: nowrap; }
 tbody tr:last-child td { border-bottom: 0; }
 @media (max-width: 640px) {
-body { padding: 2rem 1.25rem 4rem; font-size: 15.5px; }
-h1 { font-size: 1.75rem; }
-h2 { font-size: 1.3rem; }
-h3 { font-size: 1.125rem; }
-main > .table-scroll { margin-left: -1.25rem; margin-right: -1.25rem; max-width: calc(100% + 2.5rem); min-width: 0; width: auto; padding: 0 1.25rem; }
-td { min-width: 8rem; }
+  body { padding: 2rem 1.25rem 4rem; font-size: 15.5px; }
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.3rem; }
+  h3 { font-size: 1.125rem; }
+  main > .table-scroll { margin-left: -1.25rem; margin-right: -1.25rem; max-width: calc(100% + 2.5rem); min-width: 0; width: auto; padding: 0 1.25rem; }
+  td { min-width: 8rem; }
 }
 @media print { body { padding: 0; } .table-scroll { overflow: visible; } }
-</style></head><body><main><h1>Archivio Novarium</h1>
-<p>Archivio permanente di tutto il lavoro fatto con l'agente. Salva questa pagina nei preferiti.</p>
-<p><strong>Ultimo aggiornamento: 16/10/2026</strong> — aggiunto il recap SEO delle Onde A, B e C, con deploy e punti ancora aperti. Le altre aree mantengono le rispettive date di aggiornamento.</p>
-<p><strong>🆕 <a href="seo-recap-onde-abc.html">Recap lavoro SEO — Onde A, B, C (16 ottobre)</a></strong> — interventi in produzione, fix cache verificato, lavori residui e checkpoint Google.</p>
+</style></head><body><main>
+<h1>🎛️ Novarium — Stato lavori</h1>
+<p><a href="accessi-account.html">🔐 Accessi &amp; Account</a> · <strong>agg. 17/10/2026 ore 12:30</strong></p>
 <hr>
-<h1>🎛️ I DUE PANNELLI — sempre a portata di mano</h1>
-<blockquote>
-<h3>1️⃣ <a href="cruscotto-lavori.html">CRUSCOTTO LAVORI — stato di tutti i progetti</a></h3>
-<p><strong>La pagina viva: cosa è fatto, cosa aspetta chi, prossimi passi.</strong> Aggiornata a ogni progresso.</p>
-<h3>2️⃣ <a href="accessi-account.html">ACCESSI & ACCOUNT</a> 🔐</h3>
-<p><strong>La mappa di tutti i servizi/account Novarium</strong> (senza password): chi cosa, dove, scadenze.</p>
-</blockquote>
-<hr>
-<h2>👷 Giovanni — cose pendenti</h2>
-<p><em>Cosa aspettiamo da Giovanni. I documenti stanno nelle sezioni Novarium qui sotto (nessun doppione).</em></p>
-<ol>
-<li><strong>🔴 P0 — GO Supabase + 4 risposte</strong> → nel <a href="memo-giovanni.html">Memo per Giovanni</a> (chiave service_role in git)</li>
-<li><strong>SEO — interventi principali in produzione</strong> → <a href="seo-recap-onde-abc.html">stato aggiornato e interventi residui</a>. Le vecchie specifiche restano come storico.</li>
-<li><strong>Docs BO — 5 interventi</strong> → <a href="bo-allineamento-docs.html">Allineamento docs</a></li>
-</ol>
-<hr>
-<h2>🔵 NOVARIUM</h2>
-<h3 id="seo">1. SEO (tutto il SEO sta qui)</h3>
-<p><strong><a href="seo-recap-onde-abc.html">✅ RECAP SEO — Onde A, B, C · aggiornato al 16/10</a></strong><br>Parti da qui: cosa è live, cosa resta aperto e come misuriamo i risultati.</p>
-<p><strong>Analisi e specifiche iniziali — storico, da leggere in questo ordine:</strong></p>
-<ol>
-<li><a href="seo-spiegazione-giovanni.html">Spiegazione SEO (12/10)</a> — perché lysis sì e noi no, Parts sì Sonde no, evidenze GSC</li>
-<li><a href="seo-riconciliazione-live.html">Riconciliazione spec ↔ live (12/10)</a> — cosa esiste già sul sito, cosa manca, primo rilascio</li>
-<li>Spec: <a href="seo-briefing-dev.html">Briefing Fase 0/1</a> · <a href="seo-spec-indicizzazione-sonde.html">Fix indicizzazione sonde</a> · <a href="seo-spec-redirect-parts.html">Redirect parts legacy</a> · <a href="seo-audit-tecnico.html">Audit tecnico</a></li>
-</ol>
-<p><strong>Analisi e report:</strong></p>
+<h2>⏸️ IN ATTESA</h2>
 <ul>
-<li><a href="seo-report-sonde-vs-parts.html">Report Sonde vs Parts</a> — diagnosi completa + fix prioritari</li>
-<li><a href="seo-analisi-gsc.html">Analisi Search Console</a> — 6 mesi GSC: Parts 357 vs Sonde 152 click</li>
-<li><a href="seo-brand-test-80.html">Brand test — 80 ricerche</a> · <a href="seo-serp-overview.html">SERP overview</a></li>
+<li>🔴 <strong>Supabase P0</strong> — aspetta <strong>Giovanni</strong> (dal 13/10) → <a href="memo-giovanni.html">memo</a></li>
+<li>🔴 <strong>Docs BO</strong> — aspetta <strong>Giovanni</strong> (dal 13/10) → <a href="bo-allineamento-docs.html">doc</a></li>
+<li>🔴 <strong>SEO residui</strong> — aspetta <strong>Giovanni</strong> (dal 16/10) → <a href="seo-recap-onde-abc.html">recap</a></li>
+<li>🔴 <strong>DMCA anti-clone</strong> — aspetta <strong>Vittorio</strong> (dal 13/10, materiale riservato)</li>
 </ul>
-<h3>2. Business & Backoffice</h3>
+<hr>
+<h2>🔵 NOV MED</h2>
+<h3>Progetti in corso</h3>
+<ol>
+<li><p><strong>Parser</strong> — fix live 16/10: split multi-RFQ riparato, auto-categoria DirectMed (test 28/28 ✅), inbox raggruppata<br>
+💡 <em>proposta mia:</em> report settimanale automatico esiti parser (auto vs review, tasso split) — i dati sono già nel DB, così la "proposta 5 fasi" la valuti su numeri veri → <a href="proposta-parser.html">proposta parser</a></p></li>
+<li><p><strong>SEO</strong> — Onde A, B, C in produzione (redirect legacy ✅, landing sonde ✅)<br>
+💡 <em>proposta mia:</em> monitoraggio settimanale GSC sulle landing sonde vs baseline pre-fix — lo schedulo io, ti arriva un rigo a settimana → <a href="seo-recap-onde-abc.html">recap onde ABC</a></p></li>
+<li><p><strong>Immagini prodotto → sito</strong> — proposta pronta, in tua review<br>
+💡 <em>proposta mia:</em> partire dai prodotti con più RFQ negli ultimi anni (lista già nell'analisi 5 anni) — immagini prima dove gira la domanda → <a href="proposta-immagini.html">proposta</a></p></li>
+<li><p><strong>Supplier self-update</strong> — in corso lato vostro (report + bozze mail)<br>
+💡 <em>proposta mia:</em> incrociare le risposte con il DB: fornitori che non rispondono entro 2 sett → lista recall telefonico</p></li>
+<li><p><strong>Pesi e misure</strong> — proposta pronta, in tua review<br>
+💡 <em>proposta mia:</em> priorità ai prodotti spediti più spesso (da storico ordini): il peso serve dove si quota davvero il trasporto → <a href="proposta-pesi-misure.html">proposta</a></p></li>
+<li><p><strong>Arricchimento fornitori Med</strong> — in corso, mail già partite<br>
+💡 <em>proposta mia:</em> scoring fornitori per conversione RFQ→ordine dai 5 anni di storico: arricchire prima chi porta margine, non in ordine alfabetico</p></li>
+</ol>
+<h3>Ricerche &amp; docs Med</h3>
 <ul>
-<li><a href="bo-report-business-flussi.html">Report business e flussi</a> — 18 flussi BO + gap sito↔BO</li>
-<li><a href="bo-gap-analysis.html">Gap analysis tecnica BO</a> — P0/P1/P2</li>
 <li><a href="bo-analisi-5-anni.html">Analisi flussi 5 anni</a> — 81.857 RFQ: clienti, fornitori, dormienti, domanda non convertita</li>
-</ul>
-<h3>3. Proposte funzionalità (review Vittorio)</h3>
-<ul>
-<li><strong><a href="proposte-funzionalita-lotto2.html">Lotto 2 🆕 (14/10): F1–F7</a></strong> — prezzo storico in-line, registro seriali, badge info-seeker, match fornitore, RfqLink auto, riattivazione dormienti, radar sourcing</li>
-<li>Lotto 1 (13/10): <a href="proposta-parser.html">Parser AI</a> · <a href="proposta-pesi-misure.html">Pesi e misure</a> · <a href="proposta-immagini.html">Acquisizione immagini</a></li>
-<li><strong>Parser — fix live 16/10 ✅</strong>: auto-categoria DirectMed/TriImaging, split multi-RFQ riparato (codici in lista libera), inbox raggruppata per email — dettagli nel <a href="cruscotto-lavori.html">cruscotto lavori §5</a></li>
-</ul>
-<h3>4. Operazioni DB ✅ completate</h3>
-<ul>
-<li><a href="op-pulizia-legacy.html">Pulizia schede legacy</a> — ✅ 14/10: 3.391 RFQ riassegnate ai clienti veri, prodotti LEGACY azzerati, spazzatura eliminata, 283 ordini in "Archivio pre-migrazione" (recuperabili su richiesta), 16 supplier sistemati</li>
+<li><a href="bo-report-business-flussi.html">Report business e flussi</a> · <a href="bo-gap-analysis.html">Gap analysis BO</a> · <a href="op-pulizia-legacy.html">Pulizia legacy</a></li>
+<li>SEO: <a href="seo-report-sonde-vs-parts.html">Sonde vs Parts</a> · <a href="seo-analisi-gsc.html">Analisi GSC</a> · <a href="seo-spiegazione-giovanni.html">Spiegazione</a> · <a href="seo-riconciliazione-live.html">Riconciliazione</a> · <a href="seo-audit-tecnico.html">Audit</a> · <a href="seo-brand-test-80.html">Brand test</a> · <a href="seo-serp-overview.html">SERP</a> · <a href="seo-briefing-dev.html">Briefing</a> · <a href="seo-spec-indicizzazione-sonde.html">Spec sonde</a> · <a href="seo-spec-redirect-parts.html">Spec redirect</a></li>
+<li>Proposte: <a href="proposte-funzionalita-lotto2.html">Lotto 2 F1–F7</a> · <a href="proposta-parser.html">Parser</a> · <a href="proposta-pesi-misure.html">Pesi</a> · <a href="proposta-immagini.html">Immagini</a></li>
 </ul>
 <hr>
-<h2>⚓ MARINE (divisione in avvio)</h2>
+<h2>⚓ MARINE</h2>
+<h3>Progetti in corso</h3>
+<ol start="7">
+<li><p><strong>Arricchimento prodotti/clienti/fornitori</strong> — in corso: 948 clienti · 120 fornitori · 1.813 prodotti; candidati validati (56 fleet op, 42 service, 70 parti EOL) — serve tuo GO import<br>
+💡 <em>proposta mia:</em> crossare i 69 shipowner con le parti EOL (TG-8000, NAVIGAT X, Danelec fine supporto 12/2026): chi ha sistemi vicini a fine supporto è il primo target, non invio a pioggia → <a href="marine-ricerca-mercato.html">ricerca</a></p></li>
+<li><p><strong>Costruzione website Marine</strong> — mirror della struttura SEO di Med<br>
+💡 <em>proposta mia:</em> non copia 1:1 — la landing brand+modello di Med funziona, ma i buyer Marine (service/repair yard) cercano diverso: bozza mia → review tua → spec per Codex</p></li>
+<li><p><strong>Progetto partenza — mailings a clienti e fornitori</strong><br>
+💡 <em>proposta mia:</em> prima i 948 clienti già a DB (mai contattati) con logica "riattivazione" (dai dati Med: riattivare converte meglio che acquisire), poi prospect nuovi</p></li>
+</ol>
+<h3>Ricerche &amp; docs Marine</h3>
 <ul>
-<li><a href="marine-ricerca-mercato.html">Ricerca di mercato Marine v2</a> — filiera usato, modello buyer (buyer = service + repair_yard + refit_yard), stime mondiali ancorate, aggiornata 14/10</li>
+<li><a href="marine-ricerca-mercato.html">Ricerca di mercato Marine v2</a> — filiera usato, modello buyer, stime mondiali (14/10)</li>
 <li><a href="marine-chi-compra.html">Analisi buyer parti usate</a> — chi compra usato e perché (EOL, costo, lead time)</li>
-<li><a href="spec-tag-segmento-clienti.html">Spec BO: tag Type cliente</a> — ✅ implementata 14/10 (colonna + filtro Buyers/Other + badge)</li>
-<li>Sito <a href="http://www.novarium-marine.com">novarium-marine.com</a> live · stato dati e prossimi passi → <a href="cruscotto-lavori.html">cruscotto lavori §6</a></li>
+<li><a href="spec-tag-segmento-clienti.html">Spec tag Type cliente</a> · sito <a href="http://www.novarium-marine.com">novarium-marine.com</a></li>
 </ul>
 <hr>
-<h2>⚖️ Riservato (non pubblicato)</h2>
+<h2>✅ COMPLETATI</h2>
 <ul>
-<li><strong>Pacchetto DMCA anti-clone (nuovomedtech)</strong> — materiale legale sensibile, su richiesta in conversazione Letta.</li>
+<li><strong>Med:</strong> test categorie DirectMed 28/28 (17/10) · parser fix live (16/10) · SEO Onde A,B,C (16/10) · pulizia legacy — 3.391 RFQ riassegnate (14/10) · tag Type cliente (14/10) · analisi 5 anni (10/10)</li>
+<li><strong>Marine:</strong> sito novarium-marine.com live · tag Type cliente (14/10)</li>
 </ul>
-<h2>📁 Bozze originali (storico 13/10)</h2>
+<hr>
+<h2>📁 Storico</h2>
 <ul>
-<li><a href="bozza-flussi-bo.html">Bozza flussi BO</a> · <a href="bozza-gap-tecnica.html">Bozza gap tecnica</a> · <a href="bozza-business-sito.html">Bozza business sito</a></li>
+<li>Bozze 13/10: <a href="bozza-flussi-bo.html">Flussi BO</a> · <a href="bozza-gap-tecnica.html">Gap tecnica</a> · <a href="bozza-business-sito.html">Business sito</a></li>
 </ul>
 </main></body></html>
