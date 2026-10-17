@@ -92,12 +92,12 @@ tbody tr:last-child td { border-bottom: 0; }
 <strong>Premessa:</strong> tutta l'analisi è stata fatta in <strong>sola lettura</strong>. Nessuna modifica è stata fatta ai repo, al DB o alla produzione. Ogni azione sui repo attende il tuo GO. I documenti di dettaglio citati sono in <code>~/Documents/novarium-business/</code> e <code>~/Documents/novarium-seo/</code>.</p>
 <hr>
 <h2>1. SICUREZZA — chiave Supabase <code>service_role</code> tracciata in git (priorità)</h2>
-<p><strong>Problema:</strong> il file <code>website.prod.env</code> è tracciato in git (dal merge <code>8202b930</code>) e contiene:</p>
+<p><strong>Problema:</strong> un file <code>.env</code> di produzione è tracciato in git (nome file e commit nel memo privato — chiedere a Vittorio) e contiene:</p>
 <ul>
 <li><code>SUPABASE_URL</code></li>
 <li><code>SUPABASE_SERVICE_ROLE_KEY</code> — la chiave <strong>service_role bypassa tutte le Row Level Security</strong>: chi la possiede ha accesso totale al database di produzione.</li>
 </ul>
-<p>Lo stesso file è tracciato anche nei due clone satellite (<code>novarium-backoffice-nwd</code> e <code>novarium-backoffice-delete-product-client-group</code>). Chiunque abbia accesso in lettura al repo — su GitHub o in locale — ha la chiave master del DB.</p>
+<p>Lo stesso file è tracciato anche in due clone satellite del repo. Chiunque abbia accesso in lettura al repo — su GitHub o in locale — ha la chiave master del DB.</p>
 <p><strong>Piano di remediation in 5 passi:</strong></p>
 <ol>
 <li><strong>Rotazione della chiave</strong> dalla dashboard Supabase → la vecchia chiave si invalida istantaneamente. Subito dopo vanno aggiornati gli env (prod + locali) per non interrompere il sito. <em>(Questo passo lo fate tu/Vittorio: non ho accesso alla dashboard.)</em></li>
