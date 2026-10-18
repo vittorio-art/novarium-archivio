@@ -96,7 +96,7 @@ code { background: var(--code-bg); border-radius: 3px; padding: .1em .3em; font-
 @media (prefers-color-scheme: dark) { .alto{background:#5c2626;color:#fbb} .medio{background:#4d4020;color:#ec6} .basso{background:#24401f;color:#8c8} }
 </style>
 </head><body><main>
-<p style="color:var(--muted);font-size:.9em"><a href="index.html">🎛️ Novarium</a> · Analisi tecnica · 18 ottobre 2026 · dati: codice main + pg_stat produzione</p>
+<p style="color:var(--muted);font-size:.9em"><a href="index.html">🎛️ Novarium</a> · Analisi tecnica · 18 ottobre 2026 · dati: codice main + pg_stat produzione · <strong>v2: integrata review statica Codex (stesso giorno)</strong> — correzioni marcate <em>in corsivo</em>. Misure di produzione (pg_stat) non contestate dalla review: erano fuori dal suo scope.</p>
 <h1>BO — Cosa cambierei riscrivendolo da zero &amp; come renderlo più veloce</h1>
 
 <h2>In sintesi</h2>
@@ -114,8 +114,8 @@ code { background: var(--code-bg); border-radius: 3px; padding: .1em .3em; font-
 <h2>Parte 1 — Le 7 cose che cambierei (con vantaggi)</h2>
 
 <h3>1. La doppia verità eventi/stato → una sola proiezione <span class="tag alto">impatto alto</span></h3>
-<p><strong>Evidenza:</strong> il BO è "event-driven": ogni azione scrive un Event append-only (2,2M righe). Ma lo stato è <em>anche</em> copiato in colonne della tabella RFQ (<code>status</code>, <code>hasOrder</code>, <code>lastClientPrice</code>…). Prova che le due verità divergono: esistono funzioni di riparazione <code>syncRfqHasOrderFromTimeline</code> e <code>syncLastClientPriceFromTimeline</code> (rfq.service.ts:10835/10881) — se non divergessero mai, non servirebbero. A ogni apertura RFQ lo stato viene ri-calcolato rileggendo tutti gli eventi.</p>
-<p><strong>Da zero farei:</strong> eventi append-only (come oggi, funziona) + tabella <code>RfqProjection</code> aggiornata <em>nella stessa transazione</em> dell'evento. Replay solo per repair/debug.</p>
+<p><strong>Evidenza:</strong> il BO è "event-driven": ogni azione scrive un Event append-only (2,2M righe). Ma lo stato è <em>anche</em> copiato in colonne della tabella RFQ (<code>status</code>, <code>hasOrder</code>, <code>lastClientPrice</code>…). Prova che le due verità divergono: esistono funzioni di riparazione <code>syncRfqHasOrderFromTimeline</code> e <code>syncLastClientPriceFromTimeline</code> (rfq.service.ts:10835/10881) — se non divergessero mai, non servirebbero. A ogni apertura RFQ lo stato proiettato viene ricalcolato sull'endpoint secondario <code>GET /rfq/:id/state</code> (la timeline è invece paginata, 20-100 eventi — non c'è replay sul read principale). <em>Correzione post-review Codex 18/10:</em> le funzioni sync non sono solo riparazioni — codificano regole operative (annulli, ripristini prezzi, protezione consegne); Event non è strettamente append-only (payload e occurredAt aggiornati). Quindi: prima coerenza degli update di stato, proiezione solo dopo aver misurato cosa risolve.</p>
+<p><strong>Da zero farei:</strong> una sola fonte di verità (eventi + proiezione nella stessa transazione). <em>Nel percorso reale:</em> prima rendere coerenti gli update delle colonne di stato esistenti; <code>RfqProjection</code> solo se la misura dimostra il beneficio.</p>
 <p><strong>Vantaggi:</strong> dettaglio RFQ = 1 query invece di replay; sparisce la divergenza (e le funzioni "sync"); timeline invariata per l'utente.</p>
 
 <h3>2. rfq.service.ts: 24k righe / 189 metodi → 8 service per capability <span class="tag alto">impatto alto</span></h3>
@@ -124,12 +124,12 @@ code { background: var(--code-bg); border-radius: 3px; padding: .1em .3em; font-
 <p><strong>Vantaggi:</strong> PR piccole e reviewabili (oggi ogni modifica = stesso file da 24k righe, conflitti garantiti); test per capability; <strong>anche Codex/agenti AI editano file da 2-3k righe in modo drasticamente più affidabile</strong> che uno da 24k — rilevante per il nostro workflow.</p>
 
 <h3>3. Parser: v1 (17k righe flat) + v2 (6k, pipeline) → solo v2, sender come config <span class="tag alto">impatto alto</span></h3>
-<p><strong>Evidenza:</strong> esiste già una v2 ben architettata (pipeline p0→p6: normalize → marker → source → llm → product → client → open-rfq). Il v1 convive: 40 file flat, <code>deterministic-apply.ts</code> da 4k righe. I 16 parser per-mittente sono fork di codice (123-174 righe ciascuno).</p>
+<p><strong>Evidenza:</strong> esiste già una v2 ben architettata (pipeline p0→p6: normalize → marker → source → llm → product → client → open-rfq). Il v1 convive: 40 file flat, <code>deterministic-apply.ts</code> da 4k righe. <em>Correzione post-review:</em> esiste già <code>StandardParserService</code> che estende v2 e viene selezionato dal dispatch per il percorso standard — il consolidamento è quindi già iniziato; va completato mappando i percorsi effettivamente selezionabili e verificando la parità di risultati sugli stessi messaggi (cliente, prodotto, qty, routing, RFQ create) prima di rimuovere il legacy.</p>
 <p><strong>Da zero farei:</strong> v2 unica pipeline; per-sender = file di config (regex, override campi, fixture), non codice.</p>
 <p><strong>Vantaggi:</strong> allineato alla tua priorità #1 (accuratezza parser): le 2 root cause trovate il 18/10 (domain fallback, product matching) diventano fix puntuali in <code>p5-client</code>/<code>p4-product</code> invece che sparse nel flat; un nuovo fornitore = ~50 righe di config, non un branch.</p>
 
 <h3>4. Feature flag sparsi → config tipata centrale <span class="tag medio">medio-alto</span></h3>
-<p><strong>Evidenza:</strong> 139 letture <code>process.env</code> sparse; la flag <code>PARSER_FREE_SCAN_MULTI_PRODUCT</code> è letta in <strong>34 punti</strong> con parsing inline duplicato. Ci abbiamo già perso due volte ("deploy ≠ attivo in prod": 15/10 e 18/10).</p>
+<p><strong>Evidenza:</strong> <strong>139 letture <code>process.env</code> sparse in 34 file</strong>; la singola flag <code>PARSER_FREE_SCAN_MULTI_PRODUCT</code> è in 1 file (3 righe) — <em>corretto dopo review Codex: il numero 34 riguardava i file, non le letture della flag</em>. Ci abbiamo già perso due volte ("deploy ≠ attivo in prod": 15/10 e 18/10).</p>
 <p><strong>Da zero farei:</strong> modulo <code>TypedConfig</code> (env validata all'avvio) + <code>FeatureFlagsService</code> con override da tabella <code>AppConfig</code> (esiste già!) + endpoint/pagina "stato flag in prod".</p>
 <p><strong>Vantaggio:</strong> verifica "la flag è ON?" in 10 secondi da schermata, non con query a mano. Sforzo piccolo (S).</p>
 
@@ -165,12 +165,12 @@ code { background: var(--code-bg); border-radius: 3px; padding: .1em .3em; font-
 <tr><th>#</th><th>Collo</th><th>Evidenza (produzione)</th><th>Fix</th><th>Sforzo</th></tr>
 <tr><td>1</td><td><strong>Il sito affossa il DB del BO</strong></td><td>Le 2 query #1 del DB intero sono il sito (PostgREST) che legge <code>Documents</code> per le pagine prodotto: <strong>7,3M × 426ms + 5,2M × 382ms ≈ 59 CPU-giorni</strong>. Stesso Postgres del BO → il sito ruba CPU al BO.</td><td>(a) cache/ISR Next.js sulla lista documenti prodotto (cambiano raramente); (b) indice <code>(productId, createdAt)</code>; (c) colonna <code>isImage</code> invece di ILIKE su content_type</td><td>S — la cache sito è la vittoria singola più grande</td></tr>
 <tr><td>2</td><td><strong>Inbox: ~0,5 GB letti a ogni refresh</strong></td><td><code>listItems</code> senza paginazione su <strong>6.689 item non risolti</strong>, includendo <code>bodyHtml/bodyText/rawHeaders</code> (~70 KB ciascuno, campionati 14 MB su 200) — poi li scarta per la preview. InboxItem: 2,97M seq_scan (62%).</td><td><code>take:100</code> + paginazione; select lista senza corpi (caricati al click); indice <code>(isResolved, createdAt)</code></td><td>S</td></tr>
-<tr><td>3</td><td><strong>Query JSONB su Event: 11-31 sec</strong></td><td>Filtri su <code>payload-&gt;&gt;'chiave'</code> su 2,2M righe: 580 calls × 31,4s · 1.639 × 15,9s · 3.173 × 11,4s. Assurdo: la raw SQL filtra sul payload quando esiste già la <em>colonna</em> <code>supplierRequestId</code> indicizzata.</td><td>Riscrivere la WHERE sulla colonna → da 11s a millisecondi; indice <code>(code, occurredAt)</code> per lo scan code+data (322k calls × 810ms)</td><td>S</td></tr>
+<tr><td>3</td><td><strong>Query JSONB su Event: 11-31 sec</strong></td><td>Filtri su <code>payload-&gt;&gt;'chiave'</code> su 2,2M righe: 580 calls × 31,4s · 1.639 × 15,9s · 3.173 × 11,4s. La query lenta (11,4s × 3.173 calls) è il <strong>fallback legacy</strong> su <code>payload-&gt;&gt;'prodotto'</code> in <code>products.service.ts:434</code> — intenzionale: copre righe legacy NON collegate via colonna (<em>identificata da review Codex; la mia proposta iniziale di riscrivere sulla colonna era sbagliata: cambierebbe i risultati</em>).</td><td><strong>Indice expression parziale</strong> su <code>(payload-&gt;&gt;'prodotto')</code> — comportamento identico, da 11s a ms; + indice <code>(code, occurredAt)</code> per lo scan code+data (322k calls × 810ms)</td><td>S</td></tr>
 </table>
 
 <h3>B. Quick wins (&lt; 1 giorno, effetto visibile)</h3>
 <ol>
-<li><strong>Inbox</strong>: take:100 + select senza corpi → da ~0,5 GB a KB per refresh</li>
+<li><strong>Inbox</strong>: select senza corpi (bodyHtml/bodyText/rawHeaders letti e scartati — misurato su prod: 14 MB su campione 200 item) + paginazione <em>che rispetti</em> grouping per email, item personali, conteggi e "Resolve all" (review Codex: take:100 isolato spezzerebbe i gruppi). Nuovo finding Codex: il refresh lista esegue anche <strong>recupero allegati Althea con upload+scritture</strong> → spostare fuori dal refresh</li>
 <li><strong>Raw SQL Event</strong> su colonna invece di payload → 11,4s → ms</li>
 <li><strong><code>compression()</code></strong> in main.ts: una riga, −70/90% banda API (oggi assente)</li>
 <li><strong>Cache in-memory LegacyCategory</strong> (letta 5,27M volte × 3,9ms — tabella di poche centinaia di righe!) + tasso EUR/USD: pattern cache già usato in casa (parser-config.service.ts)</li>
@@ -194,15 +194,15 @@ code { background: var(--code-bg); border-radius: 3px; padding: .1em .3em; font-
 
 <hr>
 <h2>💡 Idea mia (nuova, data-backed)</h2>
-<p><strong>Auto-resolve discussioni stale.</strong> Dei 6.689 inbox non risolti: 4.513 sono DISCUSSION e 2.209 hanno &gt;90 giorni. Le discussioni su RFQ chiuse o senza attività da X giorni restano "aperte" per sempre, gonfiando sia la query (collo #2) sia il rumore per gli operatori. Regola: auto-resolve DISCUSSION/RFQ_THREAD se RFQ chiusa o nessun evento da 60+ giorni. <em>Misurabile:</em> count non-risolti e tempo query inbox prima/dopo, nel digest settimanale.</p>
+<p><strong><del>Auto-resolve discussioni stale</del> — RITIRATA (18/10, verifica con Vittorio + review Codex).</strong> Il BO nasconde già per-operatore le card aperte (6.667/6.689 già lette): la lista visibile è già corta, non c'è rumore da pulire. L'età da sola non dimostra che un'attività sia conclusa. Resta solo il fix tecnico invisibile (collo #2).</p>
 <p><strong>DB load nel digest del lunedì.</strong> Il digest settimanale (già attivo) può includere le top-3 query per tempo totale da pg_stat_statements: ogni deploy di questa lista (cache sito, indici) verrebbe verificato sui numeri reali la settimana dopo, chiudendo il ciclo "deploy ≠ effetto" che ci ha bruciato due volte.</p>
 
 <hr>
 <h2>Piano suggerito (ordine di esecuzione)</h2>
 <table>
 <tr><th>Quando</th><th>Cosa</th><th>Perché prima</th></tr>
-<tr><td>Batch 1 (giorni)</td><td>compression · cache LegacyCategory/EUR-USD · 5 indici · inbox select senza corpi + take · raw SQL Event su colonna</td><td>Sforzo S, rischio zero, effetto immediato su BO lento</td></tr>
-<tr><td>Batch 2 (settimana)</td><td>Cache Documents lato sito (ISR) · fix query JSONB Event rimanenti · react-window inbox</td><td>Dimezza il carico DB totale (59 CPU-giorni)</td></tr>
+<tr><td>Batch 1 (giorni)</td><td>compression · cache LegacyCategory/EUR-USD · 5 indici verificati · inbox select senza corpi + paginazione rispettosa · recupero Althea fuori refresh</td><td>Sforzo S, rischio zero, effetto immediato su BO lento</td></tr>
+<tr><td>Batch 2 (settimana)</td><td>Cache Documents lato sito (ISR) + riduzione dati getFirstImage (Codex: legge TUTTE le immagini poi sceglie la prima) · indice expression payload-&gt;&gt;'prodotto' · timeline RFQ mostrata appena pronta senza attendere le 5 chiamate secondarie (finding Codex) · react-window inbox</td><td>Dimezza il carico DB totale (59 CPU-giorni)</td></tr>
 <tr><td>Batch 3 (incrementale)</td><td>Proiezione stato RFQ · feature flag centrali · split rfq.service per capability · parser v2 unico · react-query</td><td>Strangler: una capability alla volta, test 1:1 come rete di sicurezza</td></tr>
 </table>
 <p style="color:var(--muted)">Nota: niente big-bang rewrite — il valore è nel percorso incrementale. I fix di performance sono quasi tutti non-strutturali (li posso preparare io in PR); solo gli indici/schema passano da Giovanni.</p>
