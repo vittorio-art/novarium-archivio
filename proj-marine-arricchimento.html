@@ -90,13 +90,13 @@ tbody tr:last-child td { border-bottom: 0; }
 <p><a href="index.html">← Novarium</a></p>
 <h1>Marine — Arricchimento prodotti/clienti/fornitori</h1>
 <p><strong>Stato:</strong> in corso · candidati validati, attesa GO import</p>
-<p>Costruzione base dati divisione Marine: 948 clienti (264 repair_yard · 163 service · 283 newbuild_yard · 69 shipowner · 42 refit_yard · 15 ship_manager), 120 fornitori, <strong>2.503 prodotti</strong> (18/10, da 1.813). Programma +1.200 in corso: 13 lotti di ricerca web mirati sui gap di catalogo (elettrico/potenza, sensori, governor, ECDIS, VDR, GMDSS), ogni part number OEM con fonte pubblica verificata, anti-duplicato automatico. In attesa: GO clienti SHM2 (56 fleet op) + SVC3 (42 service) e backfill 108 clienti senza segmento.</p>
+<p>Costruzione base dati divisione Marine: 948 clienti (264 repair_yard · 163 service · 283 newbuild_yard · 69 shipowner · 42 refit_yard · 15 ship_manager), 120 fornitori, <strong>3.003 prodotti</strong> (18/10, da 1.813 — programma +1.200 completato). 13 lotti di ricerca web mirati sui gap di catalogo (elettrico/potenza, sensori, governor, ECDIS, VDR, GMDSS, radar), ogni part number OEM con fonte pubblica; audit qualità fonti + fix pass in chiusura. In attesa: GO clienti SHM2 (56 fleet op) + SVC3 (42 service) e backfill 108 clienti senza segmento.</p>
 <blockquote><strong>Proposta mia:</strong> i 283 newbuild_yard quasi certamente NON comprano usato → depriorizzarli e concentrare import e qualità dati su service + repair yard</blockquote>
 <h2>Timeline progetto</h2>
 <ul>
 <li><strong>12/10</strong> — Base iniziale: 593 clienti, 84 fornitori, 1.813 prodotti</li>
 <li><strong>14/10</strong> — 948 clienti · 120 fornitori; validati SHM2 (56 fleet op), SVC3 (42 service), PROD1 (70 parti EOL)</li>
-<li><strong>18/10</strong> — GO prodotti ricevuto («aggiungerne altri 1200»): PROD1 importato (60/70, 10 dupe saltati) → ondata 1 importata (P5a AVR 120, P5b PMS 100, P5d sensori 120, P5e governor 80) → ondata 2 (P5c drives 80, P5f HMI/PLC 80, P5j VDR 60 importati; P5g ECDIS in corso). <strong>Prodotti: 1.813 → 2.503 (+640)</strong>. Ricerca competitor: nessuno espone >600 SKU pubblici → catalogo pubblico = vantaggio SEO 3-5x</li>
+<li><strong>18/10</strong> — GO prodotti ricevuto («aggiungerne altri 1200»): PROD1 importato (60/70, 10 dupe saltati) → ondata 1 (P5a AVR 120, P5b PMS 100, P5d sensori 120, P5e governor 80) → ondata 2 (P5c drives 80, P5f HMI/PLC 80, P5g ECDIS 80, P5j VDR 60) → ondata 3 (P5h bridge 80, P5i GPS 60, P5k GMDSS 100, P5l fish 80) → P5m radar 100. <strong>PROGRAMMA +1.200 COMPLETATO: prodotti 1.813 → 3.003, 13/13 lotti</strong>. Qualità: audit automatico fonti su tutti i lotti (~70% OK, 28% fonti da sistemare) → fix pass in corso. Ricerca competitor: nessuno espone >600 SKU pubblici → catalogo pubblico = vantaggio SEO 3-5x</li>
 <li><strong>—</strong> — Prossimo: ondata 3 (~420: bridge, GPS, GMDSS, fish, radar hw) → target ~2.980 · GO clienti SHM2/SVC3 · backfill 108 clienti senza segmento</li>
 </ul>
 <h2>Documenti</h2>
