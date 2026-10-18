@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Novarium BO — Analisi software: rewrite &amp; performance</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #fff; --text: #37352f; --muted: #787774; --faint: #9b9a97;
+  --rule: rgba(55, 53, 47, .09); --rule-strong: rgba(55, 53, 47, .16);
+  --surface: #f7f6f3; --code-bg: rgba(135, 131, 120, .15);
+  --link-line: rgba(55, 53, 47, .35); --check: #787774;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #191919; --text: rgba(255, 255, 255, .86); --muted: rgba(255, 255, 255, .55); --faint: rgba(255, 255, 255, .4);
+    --rule: rgba(255, 255, 255, .08); --rule-strong: rgba(255, 255, 255, .14);
+    --surface: #202020; --code-bg: rgba(255, 255, 255, .08);
+    --link-line: rgba(255, 255, 255, .35); --check: rgba(255, 255, 255, .32);
+  }
+}
+* { box-sizing: border-box; }
+html { background: var(--bg); -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; padding: 4.5rem 3rem 6rem; color: var(--text); background: var(--bg);
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+}
+main > * { max-width: 720px; margin-left: auto; margin-right: auto; }
+main > :first-child { margin-top: 0; }
+p, ul, ol, blockquote, pre, dl { margin-top: 0; margin-bottom: 1em; }
+p, li, blockquote, dd { overflow-wrap: break-word; }
+h1, h2, h3, h4, h5, h6 { color: var(--text); font-weight: 600; line-height: 1.3; margin: 2em auto .5em; }
+h1 { font-size: 2.125rem; font-weight: 700; line-height: 1.2; letter-spacing: -.021em; margin-bottom: .6em; }
+h2 { font-size: 1.5rem; letter-spacing: -.017em; margin-top: 2.2em; }
+h3 { font-size: 1.25rem; letter-spacing: -.012em; }
+h4 { font-size: 1.0625rem; }
+h5, h6 { font-size: 1rem; color: var(--muted); }
+h1 + h2, h2 + h3, h3 + h4 { margin-top: 1em; }
+strong { font-weight: 600; }
+a { color: inherit; text-decoration: underline; text-decoration-color: var(--link-line); text-decoration-thickness: 1px; text-underline-offset: .2em; transition: text-decoration-color .15s; }
+a:hover { text-decoration-color: currentColor; }
+ul, ol { padding-left: 1.6em; }
+li { margin: .25em 0; padding-left: .15em; }
+li > ul, li > ol { margin: .25em 0 0; }
+li > p { margin-bottom: .5em; }
+li::marker { color: var(--muted); }
+.task-list-item { list-style: none; margin-left: -1.45em; }
+.task-list-item input {
+  appearance: none; -webkit-appearance: none; width: 1em; height: 1em; margin: 0 .55em 0 0; vertical-align: -.15em;
+  border: 1.5px solid var(--faint); border-radius: 3px; background: transparent;
+}
+.task-list-item input:checked {
+  border-color: transparent; background: var(--check) no-repeat center / 80%
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+.task-list-item:has(> input:checked, > p:first-child > input:checked) { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--faint); }
+blockquote { margin-left: auto; margin-right: auto; padding: .1em 0 .1em 1.1em; border-left: 3px solid var(--rule-strong); color: var(--muted); }
+blockquote > :last-child { margin-bottom: 0; }
+hr { height: 1px; border: 0; background: var(--rule-strong); margin: 2.5em auto; }
+img { max-width: 100%; height: auto; border-radius: 4px; }
+code, kbd, samp, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace; }
+code { font-size: .85em; padding: .15em .35em; border-radius: 4px; background: var(--code-bg); }
+pre { font-size: .85em; line-height: 1.6; padding: 1em 1.25em; background: var(--surface); border-radius: 6px; overflow-x: auto; }
+pre code { font-size: inherit; padding: 0; background: none; border-radius: 0; }
+.table-scroll { max-width: 100%; overflow-x: auto; margin: 1em 0; }
+main > .table-scroll {
+  width: max-content; min-width: min(720px, 100%); max-width: min(1240px, 100%);
+  margin: 1.5em auto 2em;
+}
+table { border-collapse: collapse; font-size: .9rem; line-height: 1.55; }
+th, td {
+  padding: .55em .9em; text-align: left; vertical-align: top;
+  border-bottom: 1px solid var(--rule); overflow-wrap: normal; word-break: normal;
+}
+th { white-space: nowrap; font-weight: 600; color: var(--muted); background: var(--surface); border-bottom-color: var(--rule-strong); }
+th:first-child, td:first-child { padding-left: .75em; }
+td { min-width: 4.5rem; max-width: 32rem; }
+td a { white-space: nowrap; }
+tbody tr:last-child td { border-bottom: 0; }
+@media (max-width: 640px) {
+  body { padding: 2rem 1.25rem 4rem; font-size: 15.5px; }
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.3rem; }
+  h3 { font-size: 1.125rem; }
+  main > .table-scroll { margin-left: -1.25rem; margin-right: -1.25rem; max-width: calc(100% + 2.5rem); min-width: 0; width: auto; padding: 0 1.25rem; }
+  td { min-width: 8rem; }
+}
+@media print { body { padding: 0; } .table-scroll { overflow: visible; } }
+
+table { border-collapse: collapse; width: 100%; margin: 1em 0; font-size: .92em; }
+th, td { border: 1px solid var(--rule-strong); padding: .4em .6em; text-align: left; vertical-align: top; }
+th { background: var(--surface); font-weight: 600; }
+code { background: var(--code-bg); border-radius: 3px; padding: .1em .3em; font-size: .88em; }
+.tag { display:inline-block; padding:.05em .5em; border-radius:10px; font-size:.78em; font-weight:600; }
+.alto { background:#fde3e3; color:#a32 } .medio { background:#fdf3d8; color:#960 } .basso { background:#e3f3e5; color:#373 }
+@media (prefers-color-scheme: dark) { .alto{background:#5c2626;color:#fbb} .medio{background:#4d4020;color:#ec6} .basso{background:#24401f;color:#8c8} }
+</style>
+</head><body><main>
+<p style="color:var(--muted);font-size:.9em"><a href="index.html">🎛️ Novarium</a> · Analisi tecnica · 18 ottobre 2026 · dati: codice main + pg_stat produzione</p>
+<h1>BO — Cosa cambierei riscrivendolo da zero &amp; come renderlo più veloce</h1>
+
+<h2>In sintesi</h2>
+<p><strong>Risposta onesta: non lo riscriverei da zero.</strong> Lo stack (NestJS + Prisma + Postgres + React) è adeguato alla scala, ci sono <strong>113k righe di test su 119k di codice</strong> (ratio ~1:1, rarissimo) e un team di 4 non può congelare lo sviluppo per mesi. Però ci sono <strong>7 scelte che cambierei</strong>, tutte attuabili in modo incrementale (una capability alla volta, senza fermare il BO). Sul fronte velocità: <strong>il 60-70% del carico DB non viene dal BO ma dal sito pubblico</strong>, e le 3 cause principali di lentezza sono tutte fixabili in giorni, non mesi.</p>
+
+<table>
+<tr><th>Dimensione</th><th>Valore</th></tr>
+<tr><td>Backend</td><td>119.055 righe prod + 113.308 test · 56 moduli NestJS</td></tr>
+<tr><td>Frontend</td><td>~127k righe · React 18 + Vite · zero librerie di stato/data-fetching (solo react-router)</td></tr>
+<tr><td>DB</td><td>83 modelli Prisma · tabella Event = <strong>2,22M righe / 3,6 GB (38% del DB)</strong> · MasterMessage 1 GB</td></tr>
+<tr><td>Hotspot di modifica (6 mesi)</td><td><code>rfq.service.ts</code> 297 commit · <code>RfqDetailPage.tsx</code> 221 commit</td></tr>
+</table>
+
+<hr>
+<h2>Parte 1 — Le 7 cose che cambierei (con vantaggi)</h2>
+
+<h3>1. La doppia verità eventi/stato → una sola proiezione <span class="tag alto">impatto alto</span></h3>
+<p><strong>Evidenza:</strong> il BO è "event-driven": ogni azione scrive un Event append-only (2,2M righe). Ma lo stato è <em>anche</em> copiato in colonne della tabella RFQ (<code>status</code>, <code>hasOrder</code>, <code>lastClientPrice</code>…). Prova che le due verità divergono: esistono funzioni di riparazione <code>syncRfqHasOrderFromTimeline</code> e <code>syncLastClientPriceFromTimeline</code> (rfq.service.ts:10835/10881) — se non divergessero mai, non servirebbero. A ogni apertura RFQ lo stato viene ri-calcolato rileggendo tutti gli eventi.</p>
+<p><strong>Da zero farei:</strong> eventi append-only (come oggi, funziona) + tabella <code>RfqProjection</code> aggiornata <em>nella stessa transazione</em> dell'evento. Replay solo per repair/debug.</p>
+<p><strong>Vantaggi:</strong> dettaglio RFQ = 1 query invece di replay; sparisce la divergenza (e le funzioni "sync"); timeline invariata per l'utente.</p>
+
+<h3>2. rfq.service.ts: 24k righe / 189 metodi → 8 service per capability <span class="tag alto">impatto alto</span></h3>
+<p><strong>Evidenza:</strong> il file più grosso è il 20% dell'intero backend e il più modificato (297 commit/6 mesi = ogni feature passa di lì). Contiene 7 metodi <code>retry*BusinessMail</code> quasi identici, 95 endpoint nel controller, 12 servizi iniettati.</p>
+<p><strong>Da zero farei:</strong> split per capability: <code>RfqLifecycle</code>, <code>RfqOffer</code>, <code>RfqMail</code>, <code>RfqLinks</code>, <code>RfqQueries</code>, <code>RfqContacts</code>, <code>RfqCopilot</code>, <code>RfqWebsite</code>.</p>
+<p><strong>Vantaggi:</strong> PR piccole e reviewabili (oggi ogni modifica = stesso file da 24k righe, conflitti garantiti); test per capability; <strong>anche Codex/agenti AI editano file da 2-3k righe in modo drasticamente più affidabile</strong> che uno da 24k — rilevante per il nostro workflow.</p>
+
+<h3>3. Parser: v1 (17k righe flat) + v2 (6k, pipeline) → solo v2, sender come config <span class="tag alto">impatto alto</span></h3>
+<p><strong>Evidenza:</strong> esiste già una v2 ben architettata (pipeline p0→p6: normalize → marker → source → llm → product → client → open-rfq). Il v1 convive: 40 file flat, <code>deterministic-apply.ts</code> da 4k righe. I 16 parser per-mittente sono fork di codice (123-174 righe ciascuno).</p>
+<p><strong>Da zero farei:</strong> v2 unica pipeline; per-sender = file di config (regex, override campi, fixture), non codice.</p>
+<p><strong>Vantaggi:</strong> allineato alla tua priorità #1 (accuratezza parser): le 2 root cause trovate il 18/10 (domain fallback, product matching) diventano fix puntuali in <code>p5-client</code>/<code>p4-product</code> invece che sparse nel flat; un nuovo fornitore = ~50 righe di config, non un branch.</p>
+
+<h3>4. Feature flag sparsi → config tipata centrale <span class="tag medio">medio-alto</span></h3>
+<p><strong>Evidenza:</strong> 139 letture <code>process.env</code> sparse; la flag <code>PARSER_FREE_SCAN_MULTI_PRODUCT</code> è letta in <strong>34 punti</strong> con parsing inline duplicato. Ci abbiamo già perso due volte ("deploy ≠ attivo in prod": 15/10 e 18/10).</p>
+<p><strong>Da zero farei:</strong> modulo <code>TypedConfig</code> (env validata all'avvio) + <code>FeatureFlagsService</code> con override da tabella <code>AppConfig</code> (esiste già!) + endpoint/pagina "stato flag in prod".</p>
+<p><strong>Vantaggio:</strong> verifica "la flag è ON?" in 10 secondi da schermata, non con query a mano. Sforzo piccolo (S).</p>
+
+<h3>5. Frontend: pagine-mostro e zero infrastruttura dati <span class="tag alto">impatto alto</span></h3>
+<p><strong>Evidenza:</strong> <code>RfqDetailPage.tsx</code> = 8.540 righe, <strong>108 useState</strong>, 24 useEffect, ~10 fetch separati all'apertura. InboxPage 6.125 righe. Nessuna libreria di stato o data-fetching (tutto manuale), nessuna virtualizzazione liste (6.689 righe inbox renderizzate nel DOM), 7.781 righe di test per una sola pagina = fa troppo. Nota positiva: 105 route lazy + layer API condiviso esistono.</p>
+<p><strong>Da zero farei:</strong> react-query (cache, dedup, refetch automatici) + decomposizione pagine in componenti/hooks + react-window sulle liste.</p>
+<p><strong>Vantaggi:</strong> inbox smette di bloccare il browser; le azioni smettono di ricaricare tutto; i test si dimezzano perché la logica esce dalle pagine.</p>
+
+<h3>6. Confini di modulo non enforced <span class="tag medio">medio</span></h3>
+<p><strong>Evidenza:</strong> 56 moduli, ma cross-import diffusi (rfq importa 11 servizi esterni, whatsapp/awaitRequests "opzionali" nel god-service); 24 file <code>.spec.ts</code> orfani nella root di <code>src/</code>.</p>
+<p><strong>Da zero farei:</strong> ESLint <code>no-restricted-paths</code> in CI: un service importa solo dal proprio modulo o da <code>common</code>.</p>
+<p><strong>Vantaggio:</strong> la regola "Giovanni solo per strutturali" diventa verificabile meccanicamente: una PR che tocca confini di modulo salta all'occhio da sola.</p>
+
+<h3>7. Tabella Event: 3,6 GB con 16 indici (4 morti) e 2 colonne-tempo duplicate <span class="tag medio">medio</span></h3>
+<p><strong>Evidenza (DB live):</strong> Event = 2,4 GB tabella + 1,1 GB di indici. <code>Event_actorId_idx</code> 2 scansioni (32 MB), <code>causationId</code> 1 (27 MB), <code>correlationId</code> 92 (48 MB), <code>traceId</code> 2.031 (48 MB). Coppie duplicate <code>timestamp</code>+<code>occurredAt</code> indicizzate entrambe. Ogni insert evento aggiorna 16 indici.</p>
+<p><strong>Da zero farei:</strong> una sola colonna tempo; drop indici morti (~155 MB + write amplification); retention: eventi legacy 2006-2020 archiviabili in tabella fredda.</p>
+<p><strong>Vantaggio:</strong> insert più veloci (il parser scrive migliaia di eventi/giorno), backup più leggeri.</p>
+
+<h3>Cosa NON cambierei</h3>
+<ul>
+<li><strong>Stack</strong> NestJS+Prisma+Postgres+React: adeguato, nessun collo strutturale.</li>
+<li><strong>Event model append-only</strong>: 13,1 eventi/RFQ in media (p95=44) → il replay non è il collo di bottiglia, il problema è solo la doppia verità (punto 1).</li>
+<li><strong>Cultura test 1:1</strong> — asset raro, da preservare sopra ogni refactor.</li>
+<li><strong>Direzione parser v2</strong> e 105 route lazy del frontend: la strada è già quella giusta.</li>
+</ul>
+
+<hr>
+<h2>Parte 2 — Come renderlo più veloce</h2>
+<p>Fonte: <code>pg_stat_statements</code> di produzione (18/10) + verifica manuale indici. Ordinato per impatto.</p>
+
+<h3>A. I tre grandi colli</h3>
+<table>
+<tr><th>#</th><th>Collo</th><th>Evidenza (produzione)</th><th>Fix</th><th>Sforzo</th></tr>
+<tr><td>1</td><td><strong>Il sito affossa il DB del BO</strong></td><td>Le 2 query #1 del DB intero sono il sito (PostgREST) che legge <code>Documents</code> per le pagine prodotto: <strong>7,3M × 426ms + 5,2M × 382ms ≈ 59 CPU-giorni</strong>. Stesso Postgres del BO → il sito ruba CPU al BO.</td><td>(a) cache/ISR Next.js sulla lista documenti prodotto (cambiano raramente); (b) indice <code>(productId, createdAt)</code>; (c) colonna <code>isImage</code> invece di ILIKE su content_type</td><td>S — la cache sito è la vittoria singola più grande</td></tr>
+<tr><td>2</td><td><strong>Inbox: ~0,5 GB letti a ogni refresh</strong></td><td><code>listItems</code> senza paginazione su <strong>6.689 item non risolti</strong>, includendo <code>bodyHtml/bodyText/rawHeaders</code> (~70 KB ciascuno, campionati 14 MB su 200) — poi li scarta per la preview. InboxItem: 2,97M seq_scan (62%).</td><td><code>take:100</code> + paginazione; select lista senza corpi (caricati al click); indice <code>(isResolved, createdAt)</code></td><td>S</td></tr>
+<tr><td>3</td><td><strong>Query JSONB su Event: 11-31 sec</strong></td><td>Filtri su <code>payload-&gt;&gt;'chiave'</code> su 2,2M righe: 580 calls × 31,4s · 1.639 × 15,9s · 3.173 × 11,4s. Assurdo: la raw SQL filtra sul payload quando esiste già la <em>colonna</em> <code>supplierRequestId</code> indicizzata.</td><td>Riscrivere la WHERE sulla colonna → da 11s a millisecondi; indice <code>(code, occurredAt)</code> per lo scan code+data (322k calls × 810ms)</td><td>S</td></tr>
+</table>
+
+<h3>B. Quick wins (&lt; 1 giorno, effetto visibile)</h3>
+<ol>
+<li><strong>Inbox</strong>: take:100 + select senza corpi → da ~0,5 GB a KB per refresh</li>
+<li><strong>Raw SQL Event</strong> su colonna invece di payload → 11,4s → ms</li>
+<li><strong><code>compression()</code></strong> in main.ts: una riga, −70/90% banda API (oggi assente)</li>
+<li><strong>Cache in-memory LegacyCategory</strong> (letta 5,27M volte × 3,9ms — tabella di poche centinaia di righe!) + tasso EUR/USD: pattern cache già usato in casa (parser-config.service.ts)</li>
+<li><strong>5 indici puri</strong> (solo migrazione, rischio zero): <code>Document(rfqId)</code> e <code>Document(masterMessageId)</code> — <strong>verificati mancanti: Documents ha 24,2M seq_scan vs 1M idx_scan</strong> — più <code>RfqLink(linkedRfqId)</code>, <code>InboxItem(isResolved, createdAt)</code>, <code>ParseRun(masterMessageId, createdAt DESC)</code></li>
+</ol>
+
+<h3>C. Strutturali (via Giovanni — schema)</h3>
+<ul>
+<li>Indici <code>Document</code> del punto B5 (fk mancanti — verifica: la tabella ha solo indici su productId e internalNoteId, ma le query filtrano per rfqId/masterMessageId)</li>
+<li>Colonna <code>rfcMessageId</code> su MasterMessage + backfill: il dedupe mail oggi cerca dentro JSONB rawHeaders (5,58M lookup)</li>
+<li>Drop indici Event morti (~155 MB, 4 indici)</li>
+<li>Retention Event pre-2020 su tabella fredda</li>
+</ul>
+
+<h3>D. Frontend</h3>
+<ul>
+<li><strong>react-window</strong> sulla lista inbox (6.689 righe DOM oggi)</li>
+<li><strong>react-query</strong>: cache + dedup delle ~10 chiamate di RfqDetailPage; refetch mirati invece di reload completi</li>
+<li><strong>getRfqById</strong>: ~10 await sequenziali indipendenti dopo il primo blocco → un solo Promise.all; valutare endpoint aggregato dettaglio</li>
+</ul>
+
+<hr>
+<h2>💡 Idea mia (nuova, data-backed)</h2>
+<p><strong>Auto-resolve discussioni stale.</strong> Dei 6.689 inbox non risolti: 4.513 sono DISCUSSION e 2.209 hanno &gt;90 giorni. Le discussioni su RFQ chiuse o senza attività da X giorni restano "aperte" per sempre, gonfiando sia la query (collo #2) sia il rumore per gli operatori. Regola: auto-resolve DISCUSSION/RFQ_THREAD se RFQ chiusa o nessun evento da 60+ giorni. <em>Misurabile:</em> count non-risolti e tempo query inbox prima/dopo, nel digest settimanale.</p>
+<p><strong>DB load nel digest del lunedì.</strong> Il digest settimanale (già attivo) può includere le top-3 query per tempo totale da pg_stat_statements: ogni deploy di questa lista (cache sito, indici) verrebbe verificato sui numeri reali la settimana dopo, chiudendo il ciclo "deploy ≠ effetto" che ci ha bruciato due volte.</p>
+
+<hr>
+<h2>Piano suggerito (ordine di esecuzione)</h2>
+<table>
+<tr><th>Quando</th><th>Cosa</th><th>Perché prima</th></tr>
+<tr><td>Batch 1 (giorni)</td><td>compression · cache LegacyCategory/EUR-USD · 5 indici · inbox select senza corpi + take · raw SQL Event su colonna</td><td>Sforzo S, rischio zero, effetto immediato su BO lento</td></tr>
+<tr><td>Batch 2 (settimana)</td><td>Cache Documents lato sito (ISR) · fix query JSONB Event rimanenti · react-window inbox</td><td>Dimezza il carico DB totale (59 CPU-giorni)</td></tr>
+<tr><td>Batch 3 (incrementale)</td><td>Proiezione stato RFQ · feature flag centrali · split rfq.service per capability · parser v2 unico · react-query</td><td>Strangler: una capability alla volta, test 1:1 come rete di sicurezza</td></tr>
+</table>
+<p style="color:var(--muted)">Nota: niente big-bang rewrite — il valore è nel percorso incrementale. I fix di performance sono quasi tutti non-strutturali (li posso preparare io in PR); solo gli indici/schema passano da Giovanni.</p>
+</main></body></html>
