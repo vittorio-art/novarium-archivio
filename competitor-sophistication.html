@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sofisticazione digitale competitor — Marine vs Imaging vs Novarium — Novarium</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #fff; --text: #37352f; --muted: #787774; --faint: #9b9a97;
+  --rule: rgba(55, 53, 47, .09); --rule-strong: rgba(55, 53, 47, .16);
+  --surface: #f7f6f3; --code-bg: rgba(135, 131, 120, .15);
+  --link-line: rgba(55, 53, 47, .35); --check: #787774;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #191919; --text: rgba(255, 255, 255, .86); --muted: rgba(255, 255, 255, .55); --faint: rgba(255, 255, 255, .4);
+    --rule: rgba(255, 255, 255, .08); --rule-strong: rgba(255, 255, 255, .14);
+    --surface: #202020; --code-bg: rgba(255, 255, 255, .08);
+    --link-line: rgba(255, 255, 255, .35); --check: rgba(255, 255, 255, .32);
+  }
+}
+* { box-sizing: border-box; }
+html { background: var(--bg); -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; padding: 4.5rem 3rem 6rem; color: var(--text); background: var(--bg);
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+}
+main > * { max-width: 720px; margin-left: auto; margin-right: auto; }
+main > :first-child { margin-top: 0; }
+p, ul, ol, blockquote, pre, dl { margin-top: 0; margin-bottom: 1em; }
+p, li, blockquote, dd { overflow-wrap: break-word; }
+h1, h2, h3, h4, h5, h6 { color: var(--text); font-weight: 600; line-height: 1.3; margin: 2em auto .5em; }
+h1 { font-size: 2.125rem; font-weight: 700; line-height: 1.2; letter-spacing: -.021em; margin-bottom: .6em; }
+h2 { font-size: 1.5rem; letter-spacing: -.017em; margin-top: 2.2em; }
+h3 { font-size: 1.25rem; letter-spacing: -.012em; }
+h4 { font-size: 1.0625rem; }
+h5, h6 { font-size: 1rem; color: var(--muted); }
+h1 + h2, h2 + h3, h3 + h4 { margin-top: 1em; }
+strong { font-weight: 600; }
+a { color: inherit; text-decoration: underline; text-decoration-color: var(--link-line); text-decoration-thickness: 1px; text-underline-offset: .2em; transition: text-decoration-color .15s; }
+a:hover { text-decoration-color: currentColor; }
+ul, ol { padding-left: 1.6em; }
+li { margin: .25em 0; padding-left: .15em; }
+li > ul, li > ol { margin: .25em 0 0; }
+li > p { margin-bottom: .5em; }
+li::marker { color: var(--muted); }
+.task-list-item { list-style: none; margin-left: -1.45em; }
+.task-list-item input {
+  appearance: none; -webkit-appearance: none; width: 1em; height: 1em; margin: 0 .55em 0 0; vertical-align: -.15em;
+  border: 1.5px solid var(--faint); border-radius: 3px; background: transparent;
+}
+.task-list-item input:checked {
+  border-color: transparent; background: var(--check) no-repeat center / 80%
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+.task-list-item:has(> input:checked, > p:first-child > input:checked) { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--faint); }
+blockquote { margin-left: auto; margin-right: auto; padding: .1em 0 .1em 1.1em; border-left: 3px solid var(--rule-strong); color: var(--muted); }
+blockquote > :last-child { margin-bottom: 0; }
+hr { height: 1px; border: 0; background: var(--rule-strong); margin: 2.5em auto; }
+img { max-width: 100%; height: auto; border-radius: 4px; }
+code, kbd, samp, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace; }
+code { font-size: .85em; padding: .15em .35em; border-radius: 4px; background: var(--code-bg); }
+pre { font-size: .85em; line-height: 1.6; padding: 1em 1.25em; background: var(--surface); border-radius: 6px; overflow-x: auto; }
+pre code { font-size: inherit; padding: 0; background: none; border-radius: 0; }
+.table-scroll { max-width: 100%; overflow-x: auto; margin: 1em 0; }
+main > .table-scroll {
+  width: max-content; min-width: min(720px, 100%); max-width: min(1240px, 100%);
+  margin: 1.5em auto 2em;
+}
+table { border-collapse: collapse; font-size: .9rem; line-height: 1.55; }
+th, td {
+  padding: .55em .9em; text-align: left; vertical-align: top;
+  border-bottom: 1px solid var(--rule); overflow-wrap: normal; word-break: normal;
+}
+th { white-space: nowrap; font-weight: 600; color: var(--muted); background: var(--surface); border-bottom-color: var(--rule-strong); }
+th:first-child, td:first-child { padding-left: .75em; }
+td { min-width: 4.5rem; max-width: 32rem; }
+td a { white-space: nowrap; }
+tbody tr:last-child td { border-bottom: 0; }
+@media (max-width: 640px) {
+  body { padding: 2rem 1.25rem 4rem; font-size: 15.5px; }
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.3rem; }
+  h3 { font-size: 1.125rem; }
+  main > .table-scroll { margin-left: -1.25rem; margin-right: -1.25rem; max-width: calc(100% + 2.5rem); min-width: 0; width: auto; padding: 0 1.25rem; }
+  td { min-width: 8rem; }
+}
+@media print { body { padding: 0; } .table-scroll { overflow: visible; } }
+</style><main>
+<h1>Sofisticazione digitale dei competitor — Marine vs Imaging vs Novarium</h1>
+<p><em>18 ottobre 2026 · Metodo: visita diretta di 16 siti (9 marine + 7 imaging), conteggio pagine da sitemap XML, rilevazione stack/chat dal codice sorgente, audit AI e canali di comunicazione. Tutte le evidenze con URL nelle sezioni sotto.</em></p>
+
+<h2>TL;DR</h2>
+<ul>
+<li><strong>Nel marine usato-ricambi nessuno è sofisticato davvero:</strong> AI = 0 su 9 siti, e-commerce vero solo su 2 (Master-Servis, Seanav), prezzi pubblici solo su 2, media contenuti 4,4/10. Il settore è 3-5 anni indietro rispetto all'imaging parts.</li>
+<li><strong>Novarium Marine è già #1 per catalogo pubblico</strong> (2.839 pagine esposte vs Mackay 1.395, Master-Servis ~2.109, Aurora 602) — e a ~3.000 SKU dopo l'import di oggi il distacco diventa 3-5x sul più grande.</li>
+<li><strong>Sull'AI siamo anni avanti a tutti</strong> (backoffice: 16 parser, split multi-RFQ, product matching, agenti che arricchiscono il catalogo). L'unico AI customer-facing del campione è DotMed.AI (marketplace imaging).</li>
+<li><strong>Dove perdiamo:</strong> niente prezzi pubblici, niente checkout, niente chat widget, niente learning center, social deboli. I benchmark imaging (UMI, AME, Block Imaging) mostrano esattamente cosa copiare.</li>
+<li><strong>Insight chiave:</strong> i 3 store Shopify imaging (UMI, MED, AME) espongono già endpoint <strong>UCP/MCP per agentic commerce</strong> — i loro cataloghi sono acquistabili da agenti AI. Nessun marine ce l'ha. Chi si muove prima prende il canale nuovo.</li>
+</ul>
+
+<h2>⚓ Competitor MARINE (9 siti auditati)</h2>
+<p>Punteggi 1-10 per dimensione. <strong>Catalogo</strong> = pubblico/strutturato; <strong>E-comm</strong> = transazionalità reale; <strong>Comun.</strong> = canali/SLA; <strong>AI</strong> = funzioni AI reali; <strong>Contenuti</strong> = blog/guide/SEO; <strong>Social</strong> = presenza attiva.</p>
+<table>
+<tr><th>Sito</th><th>Pagine (sitemap)</th><th>Catalogo</th><th>E-comm</th><th>Comun.</th><th>AI</th><th>Contenuti</th><th>Social</th><th>Note chiave</th></tr>
+<tr><td><strong>novarium-marine.com</strong></td><td><strong>2.839</strong></td><td>8</td><td>2</td><td>5</td><td>1*</td><td>6</td><td>2</td><td>Catalogo più grande del campione, 179 machine page, JSON-LD. *AI nel backoffice (unico): parser, import, matching</td></tr>
+<tr><td>master-servis.lt (LT)</td><td>~2.109</td><td>8</td><td><strong>8</strong></td><td>8</td><td>1</td><td>4</td><td>5</td><td><strong>Unico e-commerce maturo</strong>: prezzi EUR reali, carrello, checkout, Tawk.to, WhatsApp, HubSpot. Magnetrone MG5424 €893, girosfera STD22 €3.900</td></tr>
+<tr><td>mackaycomm.com (USA)</td><td>1.395</td><td>8</td><td>3</td><td><strong>8</strong></td><td>1</td><td>7</td><td><strong>8</strong></td><td>Enterprise: 73 sedi, RFQ con SLA 24h, portale myMackayOnline, ShipServ, news attivissime, LinkedIn 9.9k. Prezzi solo su magnetroni ($499-2.941)</td></tr>
+<tr><td>auroramarinesupply.com (UK)</td><td>602</td><td>6</td><td>2</td><td>5</td><td>1</td><td><strong>8</strong></td><td>1</td><td>Miglior content engine marine: blog 25 articoli (quasi settimanale), <strong>Live Stock con quantità reali</strong>. Zero prezzi, zero social</td></tr>
+<tr><td>seanav.org (UAE)</td><td>n.d. (anti-bot)</td><td>6</td><td><strong>7</strong></td><td>8</td><td>1</td><td>5</td><td>6</td><td>E-commerce con prezzi AED e sconti (Yokogawa CMZ900 39.500→35.500), WhatsApp 24/7, LinkedIn 3.8k</td></tr>
+<tr><td>measmarine.com (BD)</td><td>101 (shop ~183 listati)</td><td>7</td><td>2</td><td>7</td><td>1</td><td>7</td><td>4</td><td>UX moderna (filtri brand/condizione, ⌘K), blog tecnico attivo, newsletter. Nessun prezzo. Claim "2.291+ item" vs 183 listati</td></tr>
+<tr><td>marine-electronics.eu (DK/LT)</td><td>~0 (statico)</td><td>5</td><td>1</td><td>4</td><td>1</td><td>3</td><td>1</td><td>Claim "world's largest stock" ma catalogo HTML statico tutto RFQ. Stesso gruppo/telefono di Master-Servis</td></tr>
+<tr><td>globalshipspares.com (SG)</td><td>~0</td><td>4</td><td>1</td><td>4</td><td>1</td><td>2</td><td>1</td><td>Vetrina + "tell us what you need, we search for you"</td></tr>
+<tr><td>akhanmarine.com (TR)</td><td>~0</td><td>4</td><td>1</td><td>4</td><td>1</td><td>2</td><td>1</td><td>Specialista girosfere, liste statiche, TR/EN, nessun prezzo/quantità</td></tr>
+<tr><td>az-marine.ee (EE)</td><td>~0</td><td>3</td><td>1</td><td>4</td><td>1</td><td>2</td><td>1</td><td>WooCommerce in catalog mode, 9 prodotti, WhatsApp. Partner Danelec</td></tr>
+<tr><td><strong>Media settore (noi esclusi)</strong></td><td><strong>~600</strong></td><td><strong>5,7</strong></td><td><strong>2,9</strong></td><td><strong>5,7</strong></td><td><strong>1,0</strong></td><td><strong>4,4</strong></td><td><strong>3,1</strong></td><td></td></tr>
+</table>
+
+<h2>🔵 Benchmark IMAGING PARTS (7 siti — "i migliori" del settore Med)</h2>
+<table>
+<tr><th>Sito</th><th>Pagine (sitemap)</th><th>Catalogo</th><th>E-comm</th><th>Comun.</th><th>AI</th><th>Contenuti</th><th>Social</th><th>Note chiave</th></tr>
+<tr><td><strong>novarium.net</strong></td><td><strong>33.849</strong></td><td>7</td><td>2</td><td>5</td><td>1*</td><td>6</td><td>2</td><td>5 lingue (unico multilingua serio del campione), RFQ-only, WhatsApp. *AI backoffice: 16 parser, split multi-RFQ 136/sett, product matching</td></tr>
+<tr><td>blockimaging.com (USA)</td><td>18.027</td><td>8</td><td>3</td><td><strong>8</strong></td><td>2</td><td><strong>10</strong></td><td><strong>9</strong></td><td><strong>Il benchmark assoluto di contenuti</strong>: learning center, price guides pubblici per ogni modalità, blog con autori tecnici nominati, YouTube 5.2k, LinkedIn 12.4k, marketplace Sourcing Window. Niente prezzi, niente checkout</td></tr>
+<tr><td>directmedparts.com (USA)</td><td><strong>58.428</strong></td><td>6</td><td>2</td><td>7</td><td>1</td><td>6</td><td>6</td><td>100k+ parti RFQ-only; form iper-specializzati (MRI coil repair, sell-your-scanner); training academy AAMI; 24/7</td></tr>
+<tr><td>avantehs.com (USA)</td><td>7.740</td><td>7</td><td>5</td><td>7</td><td>2</td><td>5</td><td>5</td><td><strong>Probe Evaluation Tool</strong>: diagnosi sonda guidata per immagini + quote 24h + turnaround 3/6/10gg + approvazione online. Tawk.to, HubSpot</td></tr>
+<tr><td>dotmed.com (marketplace)</td><td>6.398</td><td>9</td><td>7</td><td>7</td><td><strong>7</strong></td><td>9</td><td>5</td><td>800k listing con prezzi, aste live, <strong>DOTmed.AI</strong>: chat AI con price guidance e listing da foto. Intercom, 4 lingue</td></tr>
+<tr><td>umiultrasoundstore.com (USA)</td><td>1.068</td><td>8</td><td><strong>8</strong></td><td>6</td><td>3</td><td>4</td><td>3</td><td>~20 persone ma store più completo: prezzi pubblici su tutto, checkout carta/wire/ACH, formazione live inclusa, <strong>endpoint UCP/MCP per agenti AI</strong></td></tr>
+<tr><td>med.equipment (USA)</td><td>1.611</td><td>7</td><td>7</td><td>6</td><td>2</td><td>4</td><td>4</td><td>Shopify con prezzi parziali, trade-in program strutturato (data wipe NIST), UCP/MCP</td></tr>
+<tr><td>ameultrasounds.com (USA)</td><td>761</td><td>7</td><td>7</td><td>6</td><td>2</td><td>5</td><td>2</td><td>Prezzi reali pubblici, schede SEO ricche con FAQ, upsell garanzie estese. Zero social/blog: vive di SEO+prezzi</td></tr>
+</table>
+
+<h2>Confronto diretto: noi vs loro</h2>
+<h3>Dove siamo AVANTI</h3>
+<ul>
+<li><strong>AI operativo — anni avanti a tutti e 16.</strong> Nessun competitor (marine o imaging) ha automazione AI visibile nei processi: noi abbiamo 16 parser RFQ specializzati, split multi-RFQ automatico (136/settimana, record in crescita), product matching con fallback dominio, import catalogo con dedup automatico, digest settimanali, SERP tracker. L'unico AI del campione è DotMed.AI (solo price guidance/marketplace). Nel marine l'AI è 0 ovunque.</li>
+<li><strong>Multilingua — unici.</strong> 5 lingue sul .net; tutti i competitor imaging sono EN-only, nel marine EN-only o TR/EN. Per i buyer del sud Europa/LatAm/Asia è un vantaggio strutturale.</li>
+<li><strong>Dimensione catalogo pubblico marine — già #1.</strong> 2.839 pagine vs ~600 di media. A ~3.000 SKU il divario è irraggiungibile per chi tiene tutto dietro RFQ (marine-electronics.eu "world's largest" non espone nulla).</li>
+<li><strong>Pagine esposte .net — 33.849, #2 del campione imaging</strong> dopo DirectMed (58k) e quasi 2x Block Imaging (18k).</li>
+<li><strong>Stack moderno</strong> (Next.js) vs WordPress/WooCommerce/HTML statico della maggioranza.</li>
+</ul>
+<h3>Dove siamo INDIETRO</h3>
+<ul>
+<li><strong>Prezzi pubblici: zero.</strong> I piccoli agili dell'imaging (UMI ~20 persone, AME, MED) pubblicano tutto e vendono online; nel marine solo Master-Servis e Seanav. È la leva singola più forte: AME vive di solo SEO+prezzi, senza social né blog.</li>
+<li><strong>Checkout/e-commerce: assente.</strong> Master-Servis (marine) e UMI/AME/MED (imaging) vendono direttamente. Noi tutto RFQ.</li>
+<li><strong>Learning center/contenuti evergreen.</strong> Block Imaging domina il funnel informativo (guide prezzi, problemi comuni, video). Aurora dimostra che nel marine bastano 25 articoli per essere #1 contenuti.</li>
+<li><strong>Chat/social.</strong> Nessuna chat widget (Master-Servis, Seanav, Avante ce l'hanno); social quasi assenti (Mackay 9.9k, Block 12.4k follower).</li>
+<li><strong>Agentic commerce (UCP/MCP): assente</strong> — UMI, MED, AME sono già acquistabili da agenti AI.</li>
+</ul>
+
+<h2>Opportunità in ordine (impatto/costo, tutte data-backed)</h2>
+<ol>
+<li><strong>Feed catalogo machine-readable + agentic endpoints (UCP/MCP).</strong> Costo basso: il catalogo è già strutturato nel DB → esporre feed/API pubblica. Nessun competitor marine ce l'ha; i 3 Shopify imaging ce l'hanno già. I procurement agent AI sono il canale dei prossimi 24 mesi e noi siamo gli unici ad avere sia catalogo strutturato sia competenza AI in casa.</li>
+<li><strong>Content engine leggero data-driven (playbook Block Imaging, adattato).</strong> Articoli dai dati BO che nessuno può copiare: le parti più richieste, i guasti comuni per modello, "quanto costa una girosfera TG-8000 oggi". Nel marine bastano ~2 articoli/mese per superare Aurora (#1 contenuti oggi).</li>
+<li><strong>WhatsApp + chat widget su Marine.</strong> Master-Servis e Seanav vendono via WhatsApp 24/7; il nostro .net ha già WhatsApp, il sito marine no. Costo quasi zero (Tawk.to gratis), allinea ai top-2 transazionali.</li>
+<li><strong>Live stock page (copiare Aurora).</strong> Se mostriamo quantità reali su ciò che abbiamo fisicamente, diventiamo l'unico grande catalogo marine con stock visibile — fiducia immediata vs i cataloghi-fumosi.</li>
+<li><strong>Decisione strategica prezzi pubblici.</strong> Non è una decisione da agente: i dati dicono che chi li pubblica (AME, UMI, Master-Servis) vive di SEO senza altro marketing; chi non li pubblica (Block) compensa con un content engine costoso. Terza via: prezzi pubblici solo su una fascia (es. parti < €500 o EOL).</li>
+<li><strong>Social minimo sindacale.</strong> 1 post LinkedIn/settimana dai dati reali (nuovi arrivi, RFQ vinte, parti rare) — costo ~0, nel marine nessuno tranne Mackay/Seanav lo fa con costanza.</li>
+</ol>
+
+<h2>Note di metodo</h2>
+<ul>
+<li>Conteggi pagine = URL nelle sitemap XML pubbliche (proxy di indicizzazione, non di ranking Google).</li>
+<li>Punteggi AI: 1 = nessuna funzione AI; il nostro "1*" customer-facing + AI backoffice reale (unico caso nel campione).</li>
+<li>Follower social da fonti pubbliche (LinkedIn/RocketReach) con tolleranza; seanav.org e marine-electronics.eu con protezione anti-bot hanno impedito alcuni conteggi (segnalati).</li>
+<li>Audit completo con URL di evidenza per ogni claim nei registri di ricerca (repo novarium-backoffice, branch marine-research-data).</li>
+</ul>
+</main></body></html>
