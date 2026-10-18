@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Arricchimento fornitori Med — Novarium</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #fff; --text: #37352f; --muted: #787774; --faint: #9b9a97;
+  --rule: rgba(55, 53, 47, .09); --rule-strong: rgba(55, 53, 47, .16);
+  --surface: #f7f6f3; --code-bg: rgba(135, 131, 120, .15);
+  --link-line: rgba(55, 53, 47, .35); --check: #787774;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #191919; --text: rgba(255, 255, 255, .86); --muted: rgba(255, 255, 255, .55); --faint: rgba(255, 255, 255, .4);
+    --rule: rgba(255, 255, 255, .08); --rule-strong: rgba(255, 255, 255, .14);
+    --surface: #202020; --code-bg: rgba(255, 255, 255, .08);
+    --link-line: rgba(255, 255, 255, .35); --check: rgba(255, 255, 255, .32);
+  }
+}
+* { box-sizing: border-box; }
+html { background: var(--bg); -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; padding: 4.5rem 3rem 6rem; color: var(--text); background: var(--bg);
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+}
+main > * { max-width: 720px; margin-left: auto; margin-right: auto; }
+main > :first-child { margin-top: 0; }
+p, ul, ol, blockquote, pre, dl { margin-top: 0; margin-bottom: 1em; }
+p, li, blockquote, dd { overflow-wrap: break-word; }
+h1, h2, h3, h4, h5, h6 { color: var(--text); font-weight: 600; line-height: 1.3; margin: 2em auto .5em; }
+h1 { font-size: 2.125rem; font-weight: 700; line-height: 1.2; letter-spacing: -.021em; margin-bottom: .6em; }
+h2 { font-size: 1.5rem; letter-spacing: -.017em; margin-top: 2.2em; }
+h3 { font-size: 1.25rem; letter-spacing: -.012em; }
+h4 { font-size: 1.0625rem; }
+h5, h6 { font-size: 1rem; color: var(--muted); }
+h1 + h2, h2 + h3, h3 + h4 { margin-top: 1em; }
+strong { font-weight: 600; }
+a { color: inherit; text-decoration: underline; text-decoration-color: var(--link-line); text-decoration-thickness: 1px; text-underline-offset: .2em; transition: text-decoration-color .15s; }
+a:hover { text-decoration-color: currentColor; }
+ul, ol { padding-left: 1.6em; }
+li { margin: .25em 0; padding-left: .15em; }
+li > ul, li > ol { margin: .25em 0 0; }
+li > p { margin-bottom: .5em; }
+li::marker { color: var(--muted); }
+.task-list-item { list-style: none; margin-left: -1.45em; }
+.task-list-item input {
+  appearance: none; -webkit-appearance: none; width: 1em; height: 1em; margin: 0 .55em 0 0; vertical-align: -.15em;
+  border: 1.5px solid var(--faint); border-radius: 3px; background: transparent;
+}
+.task-list-item input:checked {
+  border-color: transparent; background: var(--check) no-repeat center / 80%
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+.task-list-item:has(> input:checked, > p:first-child > input:checked) { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--faint); }
+blockquote { margin-left: auto; margin-right: auto; padding: .1em 0 .1em 1.1em; border-left: 3px solid var(--rule-strong); color: var(--muted); }
+blockquote > :last-child { margin-bottom: 0; }
+hr { height: 1px; border: 0; background: var(--rule-strong); margin: 2.5em auto; }
+img { max-width: 100%; height: auto; border-radius: 4px; }
+code, kbd, samp, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace; }
+code { font-size: .85em; padding: .15em .35em; border-radius: 4px; background: var(--code-bg); }
+pre { font-size: .85em; line-height: 1.6; padding: 1em 1.25em; background: var(--surface); border-radius: 6px; overflow-x: auto; }
+pre code { font-size: inherit; padding: 0; background: none; border-radius: 0; }
+.table-scroll { max-width: 100%; overflow-x: auto; margin: 1em 0; }
+main > .table-scroll {
+  width: max-content; min-width: min(720px, 100%); max-width: min(1240px, 100%);
+  margin: 1.5em auto 2em;
+}
+table { border-collapse: collapse; font-size: .9rem; line-height: 1.55; }
+th, td {
+  padding: .55em .9em; text-align: left; vertical-align: top;
+  border-bottom: 1px solid var(--rule); overflow-wrap: normal; word-break: normal;
+}
+th { white-space: nowrap; font-weight: 600; color: var(--muted); background: var(--surface); border-bottom-color: var(--rule-strong); }
+th:first-child, td:first-child { padding-left: .75em; }
+td { min-width: 4.5rem; max-width: 32rem; }
+td a { white-space: nowrap; }
+tbody tr:last-child td { border-bottom: 0; }
+@media (max-width: 640px) {
+  body { padding: 2rem 1.25rem 4rem; font-size: 15.5px; }
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.3rem; }
+  h3 { font-size: 1.125rem; }
+  main > .table-scroll { margin-left: -1.25rem; margin-right: -1.25rem; max-width: calc(100% + 2.5rem); min-width: 0; width: auto; padding: 0 1.25rem; }
+  td { min-width: 8rem; }
+}
+@media print { body { padding: 0; } .table-scroll { overflow: visible; } }
+</style></head><body><main>
+<p><a href="index.html">← Novarium</a></p>
+<h1>Allineamento sito MED → Marine</h1>
+<p><strong>Stato:</strong> tracker permanente (regola 18/10)</p>
+<p><strong>Regola (Vittorio, 18/10):</strong> ogni aggiornamento del sito MED va valutato per il porting su Marine. Il BO è già condiviso, quindi automatico; per i siti si applica quanto già fatto per la SEO (Marine nato a specchio di MED) e per il video (clone deciso).</p>
+<blockquote><strong>Proposta mia:</strong> dopo il porting hreflang su Marine, misurare in GSC le impression dalle lingue non-EN a 60 giorni: se sotto il 5% del totale, Marine resta EN-first sui contenuti futuri → risparmio sulle traduzioni editoriali</blockquote>
+
+<h2>Stato allineamento (verificato live 18/10)</h2>
+<div class="table-scroll"><table>
+<thead><tr><th>Funzione</th><th>MED</th><th>Marine</th><th>Azione</th></tr></thead>
+<tbody>
+<tr><td>Catalogo + flusso richiesta offerta</td><td>✅</td><td>✅</td><td>allineato</td></tr>
+<tr><td>5 lingue (IT/EN/FR/ES/DE)</td><td>✅</td><td>✅</td><td>allineato</td></tr>
+<tr><td>Login / portale utenti</td><td>✅</td><td>✅</td><td>allineato</td></tr>
+<tr><td>Sitemap veloci + canonical EN</td><td>✅ PR #41</td><td>✅ tranche 1</td><td>allineato</td></tr>
+<tr><td>JSON-LD Product su schede</td><td>✅ PR #45</td><td>✅ verificato su PDP live</td><td>allineato</td></tr>
+<tr><td>Intro editoriali brand/landing</td><td>✅ PR #57 (5 lingue, «Perché Novarium»)</td><td>✅ intro su brand pages (più sintetiche)</td><td>allineato · estensione «Perché Novarium» valutabile</td></tr>
+<tr><td>Redirect legacy vecchi URL</td><td>✅ PR #56</td><td>N/A (sito nuovo)</td><td>—</td></tr>
+<tr><td><strong>Hreflang in sitemap</strong></td><td>✅ PR #46</td><td>❌ <strong>assente</strong></td><td><strong>porting da fare</strong> (spec → PR)</td></tr>
+<tr><td>Cookie consent + analytics opt-in</td><td>✅</td><td>da verificare nel dettaglio</td><td>allineare se mancante</td></tr>
+<tr><td>WhatsApp contatto</td><td>✅</td><td>❌ assente</td><td>da valutare (i buyer marine usano molto WhatsApp)</td></tr>
+<tr><td>GSC proprietà</td><td>✅</td><td>pianificato</td><td>prossimo step</td></tr>
+<tr><td>Video homepage</td><td>🔄 in produzione (formato C)</td><td>clone deciso 18/10</td><td>dopo misura impatto MED</td></tr>
+<tr><td>Immagini prodotto → sito</td><td>📋 proposta in review</td><td>—</td><td>segue approvazione MED</td></tr>
+<tr><td>Split celle multi-sistema</td><td>N/A</td><td>📋 pianificato (259 celle)</td><td>Marine-specifico</td></tr>
+</tbody></table></div>
+
+<h2>Regole operative</h2>
+<ul>
+<li>Ogni nuova feature del sito MED → nuova riga nella tabella con valutazione porting</li>
+<li>Porting non-strutturale (contenuti, template pagina): stesso workflow MED (branch → PR → merge)</li>
+<li>Porting strutturale (routing, schema): review Giovanni prima</li>
+</ul>
+
+<h2>Timeline progetto</h2>
+<ul>
+<li><strong>18/10</strong> — Regola definita; prima verifica completa sui siti live: JSON-LD, intro editoriali, 5 lingue, portale già allineati; gap trovati: hreflang assente su Marine, WhatsApp da valutare</li>
+<li><strong>—</strong> — Prossimo: spec porting hreflang → PR · decisione WhatsApp · verifica cookie consent</li>
+</ul>
+</main></body></html>
