@@ -88,13 +88,14 @@ tbody tr:last-child td { border-bottom: 0; }
 @media print { body { padding: 0; } .table-scroll { overflow: visible; } }
 
 /* Progetti in corso — titoli evidenti */
-:root { --accent-med: #2563eb; --accent-marine: #0e7490; }
-@media (prefers-color-scheme: dark) { :root { --accent-med: #6ea8fe; --accent-marine: #22d3ee; } }
+:root { --accent-med: #2563eb; --accent-marine: #0e7490; --accent-cross: #7c3aed; }
+@media (prefers-color-scheme: dark) { :root { --accent-med: #6ea8fe; --accent-marine: #22d3ee; --accent-cross: #a78bfa; } }
 ol.projects { padding-left: 1.7em; }
 ol.projects > li { margin: 1.3em 0; }
 ol.projects > li::marker { font-weight: 700; font-size: 1.08em; }
 ol.projects.med > li::marker { color: var(--accent-med); }
 ol.projects.marine > li::marker { color: var(--accent-marine); }
+ol.projects.cross > li::marker { color: var(--accent-cross); }
 ol.projects > li > p > a:first-child,
 ol.projects > li > p > strong:first-child {
   display: block; font-size: 1.16rem; font-weight: 700;
@@ -104,6 +105,8 @@ ol.projects.med > li > p > a:first-child,
 ol.projects.med > li > p > strong:first-child { color: var(--accent-med); }
 ol.projects.marine > li > p > a:first-child,
 ol.projects.marine > li > p > strong:first-child { color: var(--accent-marine); }
+ol.projects.cross > li > p > a:first-child,
+ol.projects.cross > li > p > strong:first-child { color: var(--accent-cross); }
 ol.projects > li > p > a:first-child:hover { text-decoration: underline; }
 </style></head><body><main>
 <h1>🎛️ Novarium</h1>
@@ -117,11 +120,9 @@ ol.projects > li > p > a:first-child:hover { text-decoration: underline; }
 <li>🔴 <strong>DMCA anti-clone</strong> — aspetta <strong>Vittorio</strong> (dal 13/10, materiale riservato)</li>
 </ul>
 <hr>
-<h2>🔵 MED</h2>
-<h3>Progetti in corso</h3>
-<ol class="projects med">
-<li><p><a href="proposta-parser.html"><strong>Parser</strong></a> split multi-RFQ live e in crescita (record 136/settimana ✅) · analisi 18/10 su tutti i 16 parser: zero carico umano sui 15 speciali, il carico vero è il generico (76 client_unresolved + 311 various-parts/mese) — root cause trovate e <strong>già implementate da me</strong>: <a href="https://github.com/vittorio-art/novarium-backoffice/pull/66">PR #66 product matching</a> + <a href="https://github.com/vittorio-art/novarium-backoffice/pull/67">PR #67 client domain fallback</a> — test verdi, in attesa di tuo test su test3<br>
-<em>proposta mia:</em> i ~700 codici ricorrenti cercati dai clienti ma mai in catalogo sono domanda reale già misurata — la top-list guida l'arricchimento catalogo (cosa aggiungere per convertire di più) → <a href="proposta-parser.html">proposta parser</a></p></li>
+<h2>🌐 MED + MARINE</h2>
+<h3>Progetti in corso (trasversali)</h3>
+<ol class="projects cross">
 <li><p><strong>Digest BO settimanale</strong> attivo dal 19/10: ogni lunedì 8:00 arriva in chat (RFQ vs settimana prima, salute parser, client_unresolved, anomalie) · serve a verificare dai dati che ogni fix deployato produca davvero effetto</p></li>
 <li><p><strong>SERP tracker settimanale (Med + Marine)</strong> attivo dal 19/10: ogni lunedì 9:00, 30 query fisse (15 Med + 15 Marine, part number reali + keyword categoria) lette via browser, posizioni novarium.net salvate e confrontate con la settimana prima · baseline onesta 18/10: <strong>0/30 in top-10</strong> (davanti ameultrasounds/labx/ebay sul Med, mackaycomm/master-servis sul Marine) — i progressi si misurano da qui<br>
 <em>proposta mia:</em> nel tracker salvo anche i domini competitor che compaiono in top-10: quando saliamo noi vediamo chi scende — misura diretta di chi stiamo spiazzando, query per query</p></li>
@@ -129,6 +130,14 @@ ol.projects > li > p > a:first-child:hover { text-decoration: underline; }
 <em>proposta mia:</em> la «domanda non convertita» dell'analisi 5 anni (parti cercate e mai quotate) sono keyword con intento d'acquisto provato → candidati perfetti per nuove landing → <a href="seo-recap-onde-abc.html">recap onde ABC</a></p></li>
 <li><p><a href="proposta-immagini.html"><strong>Immagini prodotto → sito</strong></a> proposta pronta, in tua review<br>
 <em>proposta mia:</em> prima di investire: verifico dallo storico se le RFQ con foto allegate dal cliente convertono di più — prova interna del ROI → <a href="proposta-immagini.html">proposta</a></p></li>
+<li><p><a href="proj-video-homepage.html"><strong>Video homepage Novarium.net</strong></a> da valutare (18/10): formato scelto <strong>C Ibrido</strong> (avatar AI + motion graphics) su HeyGen (~€30 una tantum); storyboard + script pronti in 5 lingue (IT/EN/FR/ES/DE), lip-sync automatico; deciso futuro clone per Marine · prossimo: materiali brand da Vittorio → master IT → test3<br>
+<em>proposta mia:</em> misurare l'impatto del video sulla conversione: play rate e tasso RFQ prima/dopo pubblicazione da analytics — se funziona, replicare il formato per Marine</p></li>
+</ol>
+<hr>
+<h2>🔵 MED</h2>
+<h3>Progetti in corso</h3>
+<ol class="projects med"><li><p><a href="proposta-parser.html"><strong>Parser</strong></a> split multi-RFQ live e in crescita (record 136/settimana ✅) · analisi 18/10 su tutti i 16 parser: zero carico umano sui 15 speciali, il carico vero è il generico (76 client_unresolved + 311 various-parts/mese) — root cause trovate e <strong>già implementate da me</strong>: <a href="https://github.com/vittorio-art/novarium-backoffice/pull/66">PR #66 product matching</a> + <a href="https://github.com/vittorio-art/novarium-backoffice/pull/67">PR #67 client domain fallback</a> — test verdi, in attesa di tuo test su test3<br>
+<em>proposta mia:</em> i ~700 codici ricorrenti cercati dai clienti ma mai in catalogo sono domanda reale già misurata — la top-list guida l'arricchimento catalogo (cosa aggiungere per convertire di più) → <a href="proposta-parser.html">proposta parser</a></p></li>
 <li><p><a href="proj-supplier-update.html"><strong>Supplier self-update</strong></a> in corso lato vostro (report + bozze mail)<br>
 <em>proposta mia:</em> dai tempi storici di risposta individuo i fornitori «fantasma» ricorrenti → direttamente recall telefonico, senza aspettare la scadenza → lista recall telefonico</p></li>
 <li><p><a href="proposta-pesi-misure.html"><strong>Pesi e misure</strong></a> proposta pronta, in tua review<br>
@@ -138,8 +147,6 @@ condiviso tu+Rassamee: cifratura nel browser, recovery key, audit, backup automa
 collaudo manuale test3 superato 17/10 · UI ricostruita a griglia + Riordina (17/10, in attesa deploy) · 18/10: su main fix parsing JSON globale accanto al vault parser (push diretto backend, 3 file) · prossimo: report finale Codex → merge → deploy tuo; password reali DOPO rotazione service_role (P0) · <em>proposta mia:</em> ogni settimana ti mando il riepilogo accessi dal log audit (chi ha sbloccato, quando)</p></li>
 <li><p><a href="proj-fornitori-med.html"><strong>Arricchimento fornitori Med</strong></a> in corso, mail già partite<br>
 <em>proposta mia:</em> scoring fornitori per conversione RFQ→ordine dai 5 anni di storico: arricchire prima chi porta margine, non in ordine alfabetico →ordine dai 5 anni di storico: arricchire prima chi porta margine, non in ordine alfabetico</p></li>
-<li><p><a href="proj-video-homepage.html"><strong>Video homepage Novarium.net</strong></a> da valutare (18/10): formato scelto <strong>C Ibrido</strong> (avatar AI + motion graphics) su HeyGen (~€30 una tantum); storyboard + script pronti in 5 lingue (IT/EN/FR/ES/DE), lip-sync automatico; deciso futuro clone per Marine · prossimo: materiali brand da Vittorio → master IT → test3<br>
-<em>proposta mia:</em> misurare l'impatto del video sulla conversione: play rate e tasso RFQ prima/dopo pubblicazione da analytics — se funziona, replicare il formato per Marine</p></li>
 </ol>
 <h3>Ricerche &amp; docs</h3>
 <ul>
