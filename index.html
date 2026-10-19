@@ -108,6 +108,21 @@ ol.projects.marine > li > p > strong:first-child { color: var(--accent-marine); 
 ol.projects.cross > li > p > a:first-child,
 ol.projects.cross > li > p > strong:first-child { color: var(--accent-cross); }
 ol.projects > li > p > a:first-child:hover { text-decoration: underline; }
+
+ol.projects > li > p > .tag + a, ol.projects > li > p > .tag + strong {
+  font-size: 1.16rem; font-weight: 700; letter-spacing: -.011em; line-height: 1.35;
+}
+.tag { display: inline-block; font-size: .66rem; font-weight: 700; letter-spacing: .05em;
+  padding: .14em .5em; border-radius: 5px; margin-right: .55em; vertical-align: .22em; }
+li.m .tag { color: var(--accent-med); background: rgba(37,99,235,.13); }
+li.x .tag { color: var(--accent-cross); background: rgba(124,58,237,.13); }
+li.mr .tag { color: var(--accent-marine); background: rgba(14,116,144,.13); }
+li.m::marker { color: var(--accent-med); }
+li.x::marker { color: var(--accent-cross); }
+li.mr::marker { color: var(--accent-marine); }
+li.m > p > .tag + a, li.m > p > .tag + strong { color: var(--accent-med); }
+li.x > p > .tag + a, li.x > p > .tag + strong { color: var(--accent-cross); }
+li.mr > p > .tag + a, li.mr > p > .tag + strong { color: var(--accent-marine); }
 </style></head><body><main>
 <h1>🎛️ Novarium</h1>
 <p><a href="accessi-account.html">🔐 Accessi &amp; Account</a> · <strong>agg. 19/10/2026</strong></p>
@@ -120,34 +135,39 @@ ol.projects > li > p > a:first-child:hover { text-decoration: underline; }
 <li>🔴 <strong>DMCA anti-clone</strong> — aspetta <strong>Vittorio</strong> (dal 13/10, materiale riservato)</li>
 </ul>
 <hr>
-<h2>🌐 MED + MARINE</h2>
-<h3>Progetti in corso (trasversali)</h3>
-<ol class="projects cross">
-<li><p><strong>Digest BO settimanale</strong> attivo dal 19/10: ogni lunedì 8:00 arriva in chat (RFQ vs settimana prima, salute parser, client_unresolved, anomalie) · serve a verificare dai dati che ogni fix deployato produca davvero effetto</p></li>
-<li><p><strong>SERP tracker settimanale (Med + Marine)</strong> attivo dal 19/10: ogni lunedì 9:00, 30 query fisse (15 Med + 15 Marine, part number reali + keyword categoria) lette via browser, posizioni novarium.net salvate e confrontate con la settimana prima · baseline onesta 18/10: <strong>0/30 in top-10</strong> (davanti ameultrasounds/labx/ebay sul Med, mackaycomm/master-servis sul Marine) — i progressi si misurano da qui<br>
+<h2>🎛️ PROGETTI IN CORSO</h2>
+<ol class="projects">
+<li class="x"><p><span class="tag">MED+MARINE</span><strong>Digest BO settimanale</strong><br>attivo dal 19/10: ogni lunedì 8:00 arriva in chat (RFQ vs settimana prima, salute parser, client_unresolved, anomalie) · serve a verificare dai dati che ogni fix deployato produca davvero effetto</p></li>
+<li class="x"><p><span class="tag">MED+MARINE</span><strong>SERP tracker settimanale (Med + Marine)</strong><br>attivo dal 19/10: ogni lunedì 9:00, 30 query fisse (15 Med + 15 Marine, part number reali + keyword categoria) lette via browser, posizioni novarium.net salvate e confrontate con la settimana prima · baseline onesta 18/10: <strong>0/30 in top-10</strong> (davanti ameultrasounds/labx/ebay sul Med, mackaycomm/master-servis sul Marine) — i progressi si misurano da qui<br>
 <em>proposta mia:</em> nel tracker salvo anche i domini competitor che compaiono in top-10: quando saliamo noi vediamo chi scende — misura diretta di chi stiamo spiazzando, query per query</p></li>
-<li><p><a href="seo-recap-onde-abc.html"><strong>SEO</strong></a> Onde A, B, C in produzione (redirect legacy ✅, landing sonde ✅)<br>
+<li class="x"><p><span class="tag">MED+MARINE</span><a href="seo-recap-onde-abc.html"><strong>SEO</strong></a><br>Onde A, B, C in produzione (redirect legacy ✅, landing sonde ✅)<br>
 <em>proposta mia:</em> la «domanda non convertita» dell'analisi 5 anni (parti cercate e mai quotate) sono keyword con intento d'acquisto provato → candidati perfetti per nuove landing → <a href="seo-recap-onde-abc.html">recap onde ABC</a></p></li>
-<li><p><a href="proposta-immagini.html"><strong>Immagini prodotto → sito</strong></a> proposta pronta, in tua review<br>
+<li class="x"><p><span class="tag">MED+MARINE</span><a href="proposta-immagini.html"><strong>Immagini prodotto → sito</strong></a><br>proposta pronta, in tua review<br>
 <em>proposta mia:</em> prima di investire: verifico dallo storico se le RFQ con foto allegate dal cliente convertono di più — prova interna del ROI → <a href="proposta-immagini.html">proposta</a></p></li>
-<li><p><a href="proj-video-homepage.html"><strong>Video homepage Novarium.net</strong></a> da valutare (18/10): formato scelto <strong>C Ibrido</strong> (avatar AI + motion graphics) su HeyGen (~€30 una tantum); storyboard + script pronti in 5 lingue (IT/EN/FR/ES/DE), lip-sync automatico; deciso futuro clone per Marine · prossimo: materiali brand da Vittorio → master IT → test3<br>
+<li class="x"><p><span class="tag">MED+MARINE</span><a href="proj-video-homepage.html"><strong>Video homepage Novarium.net</strong></a><br>da valutare (18/10): formato scelto <strong>C Ibrido</strong> (avatar AI + motion graphics) su HeyGen (~€30 una tantum); storyboard + script pronti in 5 lingue (IT/EN/FR/ES/DE), lip-sync automatico; deciso futuro clone per Marine · prossimo: materiali brand da Vittorio → master IT → test3<br>
 <em>proposta mia:</em> misurare l'impatto del video sulla conversione: play rate e tasso RFQ prima/dopo pubblicazione da analytics — se funziona, replicare il formato per Marine</p></li>
+<li class="m"><p><span class="tag">MED</span><a href="proposta-parser.html"><strong>Parser</strong></a><br>split multi-RFQ live e in crescita (record 136/settimana ✅) · analisi 18/10 su tutti i 16 parser: zero carico umano sui 15 speciali, il carico vero è il generico (76 client_unresolved + 311 various-parts/mese) — root cause trovate e <strong>già implementate da me</strong>: <a href="https://github.com/vittorio-art/novarium-backoffice/pull/66">PR #66 product matching</a> + <a href="https://github.com/vittorio-art/novarium-backoffice/pull/67">PR #67 client domain fallback</a> — test verdi, in attesa di tuo test su test3<br>
+<em>proposta mia:</em> i ~700 codici ricorrenti cercati dai clienti ma mai in catalogo sono domanda reale già misurata — la top-list guida l'arricchimento catalogo (cosa aggiungere per convertire di più) → <a href="proposta-parser.html">proposta parser</a></p></li>
+<li class="m"><p><span class="tag">MED</span><a href="proj-supplier-update.html"><strong>Supplier self-update</strong></a><br>in corso lato vostro (report + bozze mail)<br>
+<em>proposta mia:</em> dai tempi storici di risposta individuo i fornitori «fantasma» ricorrenti → direttamente recall telefonico, senza aspettare la scadenza → lista recall telefonico</p></li>
+<li class="m"><p><span class="tag">MED</span><a href="proposta-pesi-misure.html"><strong>Pesi e misure</strong></a><br>proposta pronta, in tua review<br>
+<em>proposta mia:</em> prima di partire dimensiono il beneficio: quante quote di trasporto stimate a occhio negli ordini storici, e con che scarti → <a href="proposta-pesi-misure.html">proposta</a></p></li>
+<li class="m"><p><span class="tag">MED</span><a href="https://github.com/vittorio-art/novarium-backoffice/pull/60"><strong>Accessi (vault password)</strong></a><br>implementato da Codex, PR #60 draft, test verdi<br>
+condiviso tu+Rassamee: cifratura nel browser, recovery key, audit, backup automatico sul Mac + lettore offline (funziona anche a BO spento)<br>
+collaudo manuale test3 superato 17/10 · UI ricostruita a griglia + Riordina (17/10, in attesa deploy) · 18/10: su main fix parsing JSON globale accanto al vault parser (push diretto backend, 3 file) · prossimo: report finale Codex → merge → deploy tuo; password reali DOPO rotazione service_role (P0) · <em>proposta mia:</em> ogni settimana ti mando il riepilogo accessi dal log audit (chi ha sbloccato, quando)</p></li>
+<li class="m"><p><span class="tag">MED</span><a href="proj-fornitori-med.html"><strong>Arricchimento fornitori Med</strong></a><br>in corso, mail già partite<br>
+<em>proposta mia:</em> scoring fornitori per conversione RFQ→ordine dai 5 anni di storico: arricchire prima chi porta margine, non in ordine alfabetico →ordine dai 5 anni di storico: arricchire prima chi porta margine, non in ordine alfabetico</p></li>
+<li class="mr"><p><span class="tag">MARINE</span><a href="proj-marine-arricchimento.html"><strong>Arricchimento prodotti/clienti/fornitori</strong></a><br>in corso: 948 clienti · 120 fornitori · <strong>3.003 prodotti</strong> ✅ (18/10: programma +1.200 COMPLETATO, 13/13 lotti importati — ora fix qualità fonti) · attendono GO: 56 fleet op + 42 service<br>
+<em>proposta mia:</em> nessun competitor usato-ricambi espone più di ~600 SKU pubblici (Aurora 534, MEAS 183, i grossi baltici tengono tutto nascosto dietro RFQ) — a ~3.000 SKU pubblici siamo 3-5x il massimo: misuro i count SKU dei 5 competitor ogni trimestre per presidiare il gap → dati in <a href="proj-marine-arricchimento.html">timeline progetto</a></p></li>
+<li class="mr"><p><span class="tag">MARINE</span><a href="proj-marine-website.html"><strong>Costruzione website Marine</strong></a><br><strong>LIVE 17/10</strong>: PDP con intro/meta, 179 machine pages, 48 brand pages indexable — prossimo: proprietà GSC Marine<br>
+<em>proposta mia (17/10):</em> 14 brand hanno 1 solo ricambio → pagine noindex; portarli a ≥2 con il prossimo lotto arricchimento li rende indicizzabili</p></li>
+<li class="mr"><p><span class="tag">MARINE</span><a href="porting-med-marine.html"><strong>Allineamento sito MED → Marine</strong></a><br>tracker permanente (regola 18/10): ogni update del sito MED valutato per Marine · verifica live 18/10: JSON-LD, intro editoriali, 5 lingue, portale già allineati; gap: <strong>hreflang assente</strong> (porting da fare), WhatsApp da valutare · prossimo: spec hreflang → PR<br>
+<em>proposta mia:</em> dopo il porting hreflang misuro in GSC le impression non-EN a 60gg: se sotto il 5%, Marine resta EN-first sui contenuti futuri → risparmio traduzioni</p></li>
+<li class="mr"><p><span class="tag">MARINE</span><a href="proj-marine-mailings.html"><strong>Progetto partenza — mailings a clienti e fornitori</strong></a><br>
+<em>proposta mia:</em> la deadline Danelec (fine supporto 12/2026) è il gancio naturale della prima campagna: «prima che finisca il supporto» </p></li>
 </ol>
 <hr>
 <h2>🔵 MED</h2>
-<h3>Progetti in corso</h3>
-<ol class="projects med"><li><p><a href="proposta-parser.html"><strong>Parser</strong></a> split multi-RFQ live e in crescita (record 136/settimana ✅) · analisi 18/10 su tutti i 16 parser: zero carico umano sui 15 speciali, il carico vero è il generico (76 client_unresolved + 311 various-parts/mese) — root cause trovate e <strong>già implementate da me</strong>: <a href="https://github.com/vittorio-art/novarium-backoffice/pull/66">PR #66 product matching</a> + <a href="https://github.com/vittorio-art/novarium-backoffice/pull/67">PR #67 client domain fallback</a> — test verdi, in attesa di tuo test su test3<br>
-<em>proposta mia:</em> i ~700 codici ricorrenti cercati dai clienti ma mai in catalogo sono domanda reale già misurata — la top-list guida l'arricchimento catalogo (cosa aggiungere per convertire di più) → <a href="proposta-parser.html">proposta parser</a></p></li>
-<li><p><a href="proj-supplier-update.html"><strong>Supplier self-update</strong></a> in corso lato vostro (report + bozze mail)<br>
-<em>proposta mia:</em> dai tempi storici di risposta individuo i fornitori «fantasma» ricorrenti → direttamente recall telefonico, senza aspettare la scadenza → lista recall telefonico</p></li>
-<li><p><a href="proposta-pesi-misure.html"><strong>Pesi e misure</strong></a> proposta pronta, in tua review<br>
-<em>proposta mia:</em> prima di partire dimensiono il beneficio: quante quote di trasporto stimate a occhio negli ordini storici, e con che scarti → <a href="proposta-pesi-misure.html">proposta</a></p></li>
-<li><p><a href="https://github.com/vittorio-art/novarium-backoffice/pull/60"><strong>Accessi (vault password)</strong></a> implementato da Codex, PR #60 draft, test verdi<br>
-condiviso tu+Rassamee: cifratura nel browser, recovery key, audit, backup automatico sul Mac + lettore offline (funziona anche a BO spento)<br>
-collaudo manuale test3 superato 17/10 · UI ricostruita a griglia + Riordina (17/10, in attesa deploy) · 18/10: su main fix parsing JSON globale accanto al vault parser (push diretto backend, 3 file) · prossimo: report finale Codex → merge → deploy tuo; password reali DOPO rotazione service_role (P0) · <em>proposta mia:</em> ogni settimana ti mando il riepilogo accessi dal log audit (chi ha sbloccato, quando)</p></li>
-<li><p><a href="proj-fornitori-med.html"><strong>Arricchimento fornitori Med</strong></a> in corso, mail già partite<br>
-<em>proposta mia:</em> scoring fornitori per conversione RFQ→ordine dai 5 anni di storico: arricchire prima chi porta margine, non in ordine alfabetico →ordine dai 5 anni di storico: arricchire prima chi porta margine, non in ordine alfabetico</p></li>
-</ol>
 <h3>Ricerche &amp; docs</h3>
 <ul>
 <li><a href="bo-analisi-5-anni.html">Analisi flussi 5 anni</a> — 81.857 RFQ: clienti, fornitori, dormienti, domanda non convertita</li>
@@ -158,17 +178,6 @@ collaudo manuale test3 superato 17/10 · UI ricostruita a griglia + Riordina (17
 </ul>
 <hr>
 <h2>⚓ MARINE</h2>
-<h3>Progetti in corso</h3>
-<ol class="projects marine">
-<li><p><a href="proj-marine-arricchimento.html"><strong>Arricchimento prodotti/clienti/fornitori</strong></a> in corso: 948 clienti · 120 fornitori · <strong>3.003 prodotti</strong> ✅ (18/10: programma +1.200 COMPLETATO, 13/13 lotti importati — ora fix qualità fonti) · attendono GO: 56 fleet op + 42 service<br>
-<em>proposta mia:</em> nessun competitor usato-ricambi espone più di ~600 SKU pubblici (Aurora 534, MEAS 183, i grossi baltici tengono tutto nascosto dietro RFQ) — a ~3.000 SKU pubblici siamo 3-5x il massimo: misuro i count SKU dei 5 competitor ogni trimestre per presidiare il gap → dati in <a href="proj-marine-arricchimento.html">timeline progetto</a></p></li>
-<li><p><a href="proj-marine-website.html"><strong>Costruzione website Marine</strong></a> <strong>LIVE 17/10</strong>: PDP con intro/meta, 179 machine pages, 48 brand pages indexable — prossimo: proprietà GSC Marine<br>
-<em>proposta mia (17/10):</em> 14 brand hanno 1 solo ricambio → pagine noindex; portarli a ≥2 con il prossimo lotto arricchimento li rende indicizzabili</p></li>
-<li><p><a href="porting-med-marine.html"><strong>Allineamento sito MED → Marine</strong></a> tracker permanente (regola 18/10): ogni update del sito MED valutato per Marine · verifica live 18/10: JSON-LD, intro editoriali, 5 lingue, portale già allineati; gap: <strong>hreflang assente</strong> (porting da fare), WhatsApp da valutare · prossimo: spec hreflang → PR<br>
-<em>proposta mia:</em> dopo il porting hreflang misuro in GSC le impression non-EN a 60gg: se sotto il 5%, Marine resta EN-first sui contenuti futuri → risparmio traduzioni</p></li>
-<li><p><a href="proj-marine-mailings.html"><strong>Progetto partenza — mailings a clienti e fornitori</strong></a>
-<em>proposta mia:</em> la deadline Danelec (fine supporto 12/2026) è il gancio naturale della prima campagna: «prima che finisca il supporto» </p></li>
-</ol>
 <h3>Ricerche &amp; docs</h3>
 <ul>
 <li><a href="marine-ricerca-mercato.html">Ricerca di mercato Marine v2</a> — filiera usato, modello buyer, stime mondiali (14/10)</li>
