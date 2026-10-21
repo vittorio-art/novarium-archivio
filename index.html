@@ -148,7 +148,7 @@ li.mr > p > .tag + a, li.mr > p > .tag + strong { color: var(--accent-marine); }
 <em>proposta mia:</em> misurare l'impatto del video sulla conversione: play rate e tasso RFQ prima/dopo pubblicazione da analytics — se funziona, replicare il formato per Marine</p></li>
 <li class="m"><p><span class="tag">MED</span><a href="proposta-parser.html"><strong>Parser</strong></a><br>split multi-RFQ live e in crescita (record 136/settimana ✅) · analisi 18/10 su tutti i 16 parser: zero carico umano sui 15 speciali, il carico vero è il generico (76 client_unresolved + 311 various-parts/mese) — root cause trovate e <strong>già implementate da me</strong>: <a href="https://github.com/vittorio-art/novarium-backoffice/pull/66">PR #66 product matching</a> + <a href="https://github.com/vittorio-art/novarium-backoffice/pull/67">PR #67 client domain fallback</a> — test verdi, in attesa di tuo test su test3<br>
 <em>proposta mia:</em> i ~700 codici ricorrenti cercati dai clienti ma mai in catalogo sono domanda reale già misurata — la top-list guida l'arricchimento catalogo (cosa aggiungere per convertire di più) → <a href="proposta-parser.html">proposta parser</a></p></li>
-<li class="m"><p><span class="tag">MED</span><a href="proj-supplier-update.html"><strong>Supplier self-update</strong></a><br>in corso lato vostro (report + bozze mail)<br>
+<li class="m"><p><span class="tag">MED</span><a href="proj-supplier-update.html"><strong>Supplier self-update</strong></a><br>in corso lato vostro · 20/10 su main: conteggi audit allineati, risposte manuali e gestione sospensioni; deploy non verificato<br>
 <em>proposta mia:</em> dai tempi storici di risposta individuo i fornitori «fantasma» ricorrenti → direttamente recall telefonico, senza aspettare la scadenza → lista recall telefonico</p></li>
 <li class="m"><p><span class="tag">MED</span><a href="proposta-pesi-misure.html"><strong>Pesi e misure</strong></a><br>proposta pronta, in tua review<br>
 <em>proposta mia:</em> prima di partire dimensiono il beneficio: quante quote di trasporto stimate a occhio negli ordini storici, e con che scarti → <a href="proposta-pesi-misure.html">proposta</a></p></li>
@@ -164,12 +164,14 @@ collaudo manuale test3 superato 17/10 · UI ricostruita a griglia + Riordina (17
 <li class="mr"><p><span class="tag">MARINE</span><a href="porting-med-marine.html"><strong>Allineamento sito MED → Marine</strong></a><br>tracker permanente (regola 18/10): ogni update del sito MED valutato per Marine · verifica live 18/10: JSON-LD, intro editoriali, 5 lingue, portale già allineati; gap: <strong>hreflang assente</strong> (porting da fare), WhatsApp da valutare · prossimo: spec hreflang → PR<br>
 <em>proposta mia:</em> dopo il porting hreflang misuro in GSC le impression non-EN a 60gg: se sotto il 5%, Marine resta EN-first sui contenuti futuri → risparmio traduzioni</p></li>
 <li class="mr"><p><span class="tag">MARINE</span><a href="proj-marine-mailings.html"><strong>Progetto partenza — mailings a clienti e fornitori</strong></a><br>
+20/10 su main: layout email Marine e catalogo campagne con footer dedicato; deploy e invio campagne non verificati.<br>
 <em>proposta mia:</em> la deadline Danelec (fine supporto 12/2026) è il gancio naturale della prima campagna: «prima che finisca il supporto» </p></li>
 </ol>
 <hr>
 <h2>🔵 MED</h2>
 <h3>Ricerche &amp; docs</h3>
 <ul>
+<li><a href="bo-report-business-flussi.html#timeline-aggiornamenti">Aggiornamenti BO 20/10</a> — sospensioni contatti, richiesta originale nelle risposte Item NA, normalizzazione schede e ritocchi Inbox/RFQ; codice su main, deploy non verificato.</li>
 <li><a href="bo-analisi-5-anni.html">Analisi flussi 5 anni</a> — 81.857 RFQ: clienti, fornitori, dormienti, domanda non convertita</li>
 <li><a href="bo-analisi-rewrite-performance.html"><strong>Analisi software BO: rewrite &amp; performance (18/10)</strong></a> — 7 scelte che cambierei (no big-bang: percorso incrementale) + 3 colli di velocità misurati su pg_stat prod: il sito pesa 59 CPU-giorni sul DB del BO, inbox legge ~0,5 GB/refresh, query JSONB Event 11-31s · quick wins &lt;1 giorno inclusi</li>
 <li><a href="bo-report-business-flussi.html">Report business e flussi</a> · <a href="bo-gap-analysis.html">Gap analysis BO</a> · <a href="op-pulizia-legacy.html">Pulizia legacy</a><br>19/10: su main Keep personale persistente tra browser, limitato a Other Messages; deploy non verificato. <a href="bo-report-business-flussi.html#timeline-aggiornamenti">Timeline BO</a>.</li>
