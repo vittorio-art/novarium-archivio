@@ -91,7 +91,17 @@ tbody tr:last-child td { border-bottom: 0; }
 <strong>Da:</strong> Vittorio (con Letta, l'assistente AI che ha analizzato repo BO, sito e SEO)
 <strong>Premessa:</strong> tutta l'analisi è stata fatta in <strong>sola lettura</strong>. Nessuna modifica è stata fatta ai repo, al DB o alla produzione. Ogni azione sui repo attende il tuo GO. I documenti di dettaglio citati sono in <code>~/Documents/novarium-business/</code> e <code>~/Documents/novarium-seo/</code>.</p>
 <hr>
-<h2>1. SICUREZZA — chiave Supabase <code>service_role</code> tracciata in git (priorità)</h2>
+<section id="verifica-20261022">
+<h2>Timeline — verifica 22 ottobre 2026</h2>
+<p><strong>Esito: parzialmente verificato, non ancora chiuso.</strong> Giovanni comunica l'implementazione di Supabase e documentazione. Verifica indipendente sul ramo principale del repository:</p>
+<ul>
+<li><strong>Confermato:</strong> client server, configurazioni MED/Marine e istruzioni di deploy aggiornati per la nuova chiave Supabase; file ambiente rimosso dal tracking e aggiunta regola di esclusione.</li>
+<li><strong>Da confermare da Giovanni:</strong> disattivazione effettiva della vecchia chiave, aggiornamento ambienti e deploy con test MED/Marine, verifica accessi e log. Creare una nuova secret key non revoca automaticamente la precedente chiave legacy. La rimozione del file non elimina lo storico.</li>
+<li><strong>Documentazione:</strong> aggiornate le istruzioni Supabase; l'allineamento BO richiesto sotto non risulta applicato su main. Restano dichiarazioni di autenticazione assente, decisioni obsolete su inbox/parser, riferimenti mancanti e tre documenti vuoti.</li>
+</ul>
+<p>Verifica di codice e documenti, non collaudo produzione né verifica della dashboard Supabase. Nessuna modifica al BO, al DB o al deploy.</p>
+</section>
+<h2>1. SICUREZZA — segnalazione originale e piano (storico, vedere verifica sopra)</h2>
 <p><strong>Problema:</strong> un file <code>.env</code> di produzione è tracciato in git (nome file e commit nel memo privato — chiedere a Vittorio) e contiene:</p>
 <ul>
 <li><code>SUPABASE_URL</code></li>
@@ -100,7 +110,7 @@ tbody tr:last-child td { border-bottom: 0; }
 <p>Lo stesso file è tracciato anche in due clone satellite del repo. Chiunque abbia accesso in lettura al repo — su GitHub o in locale — ha la chiave master del DB.</p>
 <p><strong>Piano di remediation in 5 passi:</strong></p>
 <ol>
-<li><strong>Rotazione della chiave</strong> dalla dashboard Supabase → la vecchia chiave si invalida istantaneamente. Subito dopo vanno aggiornati gli env (prod + locali) per non interrompere il sito. <em>(Questo passo lo fate tu/Vittorio: non ho accesso alla dashboard.)</em></li>
+<li><strong>Sostituzione e revoca della chiave</strong> dalla dashboard Supabase: aggiornare gli ambienti e verificare il funzionamento, quindi confermare l'invalidazione della chiave precedente con la procedura adatta al suo tipo. La sola creazione di una nuova secret key non invalida le chiavi legacy. <em>(Questo passo lo fate tu/Vittorio: non ho accesso alla dashboard.)</em></li>
 <li><strong>Aggiornamento env + redeploy</strong> via <code>ops/deploy-bo-prod.sh</code> e verifica che tutto funzioni.</li>
 <li><strong>Verifica accessi:</strong> chi ha accesso al repo GitHub; controllo dei log Supabase per uso anomalo della chiave.</li>
 <li><strong>Pulizia git (la faccio io, col tuo GO):</strong> rimozione del file dal tracking + aggiunta di <code>*.prod.env</code> al <code>.gitignore</code> + scansione dell'intera history con gitleaks per intercettare altri segreti.</li>
