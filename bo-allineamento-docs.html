@@ -94,6 +94,12 @@ tbody tr:last-child td { border-bottom: 0; }
 <strong>Regola rispettata</strong>: nessun file del repo è stato modificato. Questo documento propone, per ogni intervento, il testo attuale citato ↔ il testo proposto pronto da incollare.
 <strong>Fonti</strong>: <code>bozza-gap-tecnica.md</code> (sez. 8 + priorità #12), <code>bozza-flussi-bo.md</code> (sez. 5), README e docs del repo, verifiche dirette su codice (moduli <code>backoffice-auth</code>, <code>inbox</code>, <code>parser</code>; modelli Prisma <code>InboxItem</code>, <code>ParseRun</code>, <code>PortalAccount</code>, <code>MarketingCampaign</code>, <code>Ticket</code>).</p>
 </blockquote>
+<section id="riverifica-20261022">
+<h2>Timeline — seconda verifica 22 ottobre, ore 12:03 CEST</h2>
+<p><strong>Aggiornamento ora presente su main.</strong> Verificati: autenticazione descritta come implementata, riferimenti README esistenti, deploy Docker Compose documentato, nuovo stato progetto, revoche esplicite per inbox/parser, rimozione dei tre documenti vuoti.</p>
+<p><strong>Residuo da correggere:</strong> il documento decisioni ha perso le sezioni Architettura (event-driven, modify/amend, centralità timeline) e UX (fallback testo, nessun wizard rigido, nessuna validazione bloccante invasiva). La voce «nessuna state machine persistita» resta in fondo, ma non sostituisce le altre regole eliminate. Ripristinare le sezioni non oggetto di revoca, salvo scelta esplicita di Giovanni.</p>
+<p>Il riepilogo aggiunto è datato 10 ottobre: non va interpretato come certificazione degli attuali flag operativi (WhatsApp/parser) senza un controllo separato. Esito: interventi principali verificati, chiusura definitiva dopo il residuo documentale.</p>
+</section>
 <section id="verifica-20261022">
 <h2>Timeline — verifica 22 ottobre 2026</h2>
 <p><strong>Allineamento BO non ancora verificato su main.</strong> Le istruzioni Supabase sono state aggiornate. Il README principale conserva però l'autenticazione come «planned» e nel TODO; le decisioni congelate escludono ancora inbox materializzata e parser automatico; restano tre documenti vuoti e riferimenti a documenti inesistenti. Il README risulta invariato dal 15 febbraio. Se il lavoro BO è in un altro ramo o non ancora pubblicato, occorre il relativo riferimento prima di chiudere il punto.</p>
