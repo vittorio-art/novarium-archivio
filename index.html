@@ -164,6 +164,7 @@ collaudo manuale test3 superato 17/10 · UI ricostruita a griglia + Riordina (17
 <li class="mr"><p><span class="tag">MARINE</span><a href="porting-med-marine.html"><strong>Allineamento sito MED → Marine</strong></a><br>tracker permanente (regola 18/10): ogni update del sito MED valutato per Marine · verifica live 18/10: JSON-LD, intro editoriali, 5 lingue, portale già allineati; gap: <strong>hreflang assente</strong> (porting da fare), WhatsApp da valutare · prossimo: spec hreflang → PR<br>
 <em>proposta mia:</em> dopo il porting hreflang misuro in GSC le impression non-EN a 60gg: se sotto il 5%, Marine resta EN-first sui contenuti futuri → risparmio traduzioni</p></li>
 <li class="mr"><p><span class="tag">MARINE</span><a href="proj-marine-mailings.html"><strong>Progetto partenza — mailings a clienti e fornitori</strong></a><br>
+21/10 su main: affinati template e anteprime campagne salvate; invii e deploy non verificati.<br>
 20/10 su main: layout email Marine e catalogo campagne con footer dedicato; deploy e invio campagne non verificati.<br>
 <em>proposta mia:</em> la deadline Danelec (fine supporto 12/2026) è il gancio naturale della prima campagna: «prima che finisca il supporto» </p></li>
 </ol>
@@ -171,6 +172,7 @@ collaudo manuale test3 superato 17/10 · UI ricostruita a griglia + Riordina (17
 <h2>🔵 MED</h2>
 <h3>Ricerche &amp; docs</h3>
 <ul>
+<li><a href="bo-report-business-flussi.html#timeline-aggiornamenti">Aggiornamenti 21–22/10</a> — risposte NA/offerte e allegati; filtri brand Marine; configurazione nuova chiave Supabase e rimozione file ambiente dal repository. Revoca chiavi precedenti e deploy non verificati.</li>
 <li><a href="bo-report-business-flussi.html#timeline-aggiornamenti">Aggiornamenti BO 20/10</a> — sospensioni contatti, richiesta originale nelle risposte Item NA, normalizzazione schede e ritocchi Inbox/RFQ; codice su main, deploy non verificato.</li>
 <li><a href="bo-analisi-5-anni.html">Analisi flussi 5 anni</a> — 81.857 RFQ: clienti, fornitori, dormienti, domanda non convertita</li>
 <li><a href="bo-analisi-rewrite-performance.html"><strong>Analisi software BO: rewrite &amp; performance (18/10)</strong></a> — 7 scelte che cambierei (no big-bang: percorso incrementale) + 3 colli di velocità misurati su pg_stat prod: il sito pesa 59 CPU-giorni sul DB del BO, inbox legge ~0,5 GB/refresh, query JSONB Event 11-31s · quick wins &lt;1 giorno inclusi</li>
