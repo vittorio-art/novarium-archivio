@@ -91,6 +91,12 @@ tbody tr:last-child td { border-bottom: 0; }
 <strong>Da:</strong> Vittorio (con Letta, l'assistente AI che ha analizzato repo BO, sito e SEO)
 <strong>Premessa:</strong> tutta l'analisi è stata fatta in <strong>sola lettura</strong>. Nessuna modifica è stata fatta ai repo, al DB o alla produzione. Ogni azione sui repo attende il tuo GO. I documenti di dettaglio citati sono in <code>~/Documents/novarium-business/</code> e <code>~/Documents/novarium-seo/</code>.</p>
 <hr>
+<section id="riverifica-20261022">
+<h2>Timeline — seconda verifica 22 ottobre, ore 12:03 CEST</h2>
+<p>Giovanni conferma che la vecchia chiave è ancora attiva in attesa di verifica. Controllo pubblico: HTTP 200 su home, categoria e prodotto campione sia MED sia Marine; HTTP 200 sulla pagina iniziale BO. Nessun invio di richieste o modifica dati. Questo controllo non certifica i flussi autenticati né quale chiave usino i servizi (le pagine possono essere in cache).</p>
+<p><strong>Prima della revoca:</strong> Giovanni deve verificare che tutti i servizi e ambienti utilizzatori siano passati alla nuova chiave e che le letture effettive funzionino; quindi revocare la precedente e ripetere i test. Nessuna scadenza automatica assunta come garanzia di revoca.</p>
+<p><strong>Documentazione ora pubblicata:</strong> corretti auth, riferimenti, deploy, stato progetto e revoche inbox/parser; rimossi i tre file vuoti. Residuo: nel documento decisioni sono state eliminate anche le sezioni Architettura e UX, non oggetto delle revoche richieste. Ripristinarle salvo decisione esplicita. Vedere <a href="bo-allineamento-docs.html#riverifica-20261022">dettaglio</a>.</p>
+</section>
 <section id="verifica-20261022">
 <h2>Timeline — verifica 22 ottobre 2026</h2>
 <p><strong>Esito: parzialmente verificato, non ancora chiuso.</strong> Giovanni comunica l'implementazione di Supabase e documentazione. Verifica indipendente sul ramo principale del repository:</p>
