@@ -608,6 +608,7 @@ tbody tr:last-child td { border-bottom: 0; }
 <p><em>Documento redatto il 2026-10-10. Aggiornato il 2026-10-15: guard rail <code>client_cannot_order</code> implementato (PR #43, route UNRECOGNIZED come T2); free-scan multi-split default ON (PR #42).</em></p>
 <hr>
 <h2>Timeline progetto</h2>
+<p><strong>22/10/2026 — Stato risposte fornitori:</strong> su main logica condivisa per allineare eventi parser e riepilogo risposta fornitore in transazione, impedendo che una rielaborazione vecchia sovrascriva una risposta più recente; recupero in lettura degli eventi precedenti senza scritture durante GET. Verifica diff il 23/10; non dimostra un miglioramento misurato dell'accuratezza né un deploy avvenuto.</p>
 <ul>
 <li><strong>13/10</strong> — Proposta miglioramento parser in 5 fasi</li>
 <li><strong>15/10</strong> — PR #44 auto-categoria DirectMed + flag split multi-RFQ su main</li>
