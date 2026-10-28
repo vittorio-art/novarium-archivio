@@ -90,7 +90,29 @@ tbody tr:last-child td { border-bottom: 0; }
 <blockquote>
 <p><strong>Regola d'oro: NESSUNA PASSWORD, chiave o codice di backup in questo file.</strong> Solo la mappa: cosa esiste, con quale account, dove sono custodite le credenziali. File pubblico nell'archivio — trattarlo di conseguenza.</p>
 </blockquote>
-<p><strong>Ultimo aggiornamento: 13/10/2026</strong> · Per modifiche: &quot;aggiungi/aggiorna account X&quot; all'agente → ripubblica (stesso link).</p>
+<p><strong>Domini e posta aggiornati: 28/10/2026</strong> · Le altre voci mantengono le rispettive date di verifica.</p>
+<h2 id="domini-posta">Domini e caselle — stato e piano</h2>
+<ul>
+<li><strong>Marine:</strong> novarium-marine.com e novarium-marine.net su Namecheap, account Novarium. Acquisto .net e migrazione sito completati il 27/10. Il .com va mantenuto e rinnovato per i redirect. Verifica pubblica 28/10: .com/en → .net/en con query conservata (308); .net/en risponde HTTPS 200. <a href="proj-marine-website.html#timeline-domini">Timeline sito</a>.</li>
+<li><strong>novarium.net e martinidonati.com:</strong> trasferimento Hover (gestione Giovanni) → account Namecheap Novarium previsto; completamento non confermato.</li>
+<li><strong>Posta:</strong> le 12 caselle novarium.net sono su Namecheap nell’account di Giovanni. Giovanni cura il passaggio al vostro account; creazione/migrazione e storico da verificare prima di disattivare le vecchie caselle. Non risultano completati in questo recap.</li>
+</ul>
+<h3>9 caselle da mantenere</h3>
+<p>Tutte @novarium.net: <strong>accounting, ez, info, lil, m5, onlineservices, rj, vmd, vr</strong>.</p>
+<p><strong>Da rimuovere, non ancora confermate eliminate:</strong> bot.master, bot, mac. Prima verificare dati e servizi collegati.</p>
+<h3>Inoltri previsti</h3>
+<ul>
+<li>info → m5</li>
+<li>onlineservices → m5 (ricezione nel BO)</li>
+<li>vr → vmd, rj</li>
+<li>accounting → info</li>
+</ul>
+<p><strong>Escluso dal piano:</strong> info → ez, lil, vmd, rj. Le quattro caselle restano attive; è l’inoltro a essere escluso. Questi sono inoltri concordati, non una verifica della configurazione effettiva.</p>
+<h3>Timeline domini e posta</h3>
+<ul>
+<li><strong>27/10:</strong> acquistato .net; DNS, HTTPS e redirect del sito attivati. Dopo una regressione da altro rilascio, ripristinato Nginx Marine e salvata la correzione sul ramo principale. Posta e domini Hover non modificati da questa migrazione web.</li>
+<li><strong>28/10:</strong> consolidati piano delle 9 caselle e inoltri corretti. Restano aperti trasferimenti e migrazione posta, Search Console e verifica finale di firme/template. <a href="proj-marine-mailings.html#verifica-template">Anomalia template Marine</a>: segnalata, risoluzione non confermata.</li>
+</ul>
 <h2>💶 Costi ricorrenti attivi (stima, cambio indicativo 1 $ ≈ 0,92 €)</h2>
 <ul>
 <li>🖥️ <strong>Infrastruttura</strong> ≈ <strong>86 €/mese</strong>: AWS Lightsail 49,99 $ (~46 €) · Supabase 40 € · dominio Marine 11,48 $/anno (~10 €/anno)</li>
@@ -137,7 +159,7 @@ tbody tr:last-child td { border-bottom: 0; }
 </tr>
 <tr>
 <td><strong>Namecheap</strong></td>
-<td>Dominio <a href="http://novarium-marine.com">novarium-marine.com</a></td>
+<td>Domini novarium-marine.com e <a href="https://www.novarium-marine.net/en">novarium-marine.net</a></td>
 <td>user <code>Novarium2026</code> — intestato Vittorio Martini Donati, Novarium Via Roma Genova; contatto <a href="/cdn-cgi/l/email-protection#641216240a0b1205160d11094a0a0110"><span class="__cf_email__" data-cfemail="a2d4d0e2cccdd4c3d0cbd7cf8cccc7d6">[email&#160;protected]</span></a>, +39 335 5293470</td>
 <td>password manager Vittorio</td>
 <td>11,48 $/anno auto-rinnovo (VISA •8319)</td>
@@ -145,8 +167,8 @@ tbody tr:last-child td { border-bottom: 0; }
 </tr>
 <tr>
 <td><strong>Domini &quot;core&quot;</strong></td>
-<td><a href="http://novarium.net">novarium.net</a>, <a href="http://vittoriomartinidonati.com">vittoriomartinidonati.com</a>, (<a href="http://novarium.eu/.it?">novarium.eu/.it?</a>)</td>
-<td><strong>Attualmente presso GC (Giovanni)</strong></td>
+<td><a href="https://novarium.net">novarium.net</a>, martinidonati.com</td>
+<td><strong>Hover, gestiti da Giovanni; trasferimento a Namecheap previsto</strong></td>
 <td>—</td>
 <td>DA COMPLETARE</td>
 <td>⚠️ In attesa trasferimento GC→Novarium (nota 11/9)</td>
@@ -154,7 +176,7 @@ tbody tr:last-child td { border-bottom: 0; }
 <tr>
 <td><strong>DNS</strong></td>
 <td>Configurazione servizi sui domini</td>
-<td><strong>Attualmente presso GC</strong></td>
+<td><strong>Marine: Namecheap. Altri domini: da verificare nel trasferimento</strong></td>
 <td>—</td>
 <td>—</td>
 <td>Se giù: si ferma TUTTO (server, posta)</td>
@@ -162,7 +184,7 @@ tbody tr:last-child td { border-bottom: 0; }
 <tr>
 <td><strong>Posta elettronica</strong></td>
 <td>Caselle sui domini</td>
-<td><a href="http://novarium.net">novarium.net</a> <strong>presso GC</strong> · <a href="http://martinidonati.com">martinidonati.com</a> presso Novarium</td>
+<td><strong>novarium.net: Namecheap, account Giovanni → account Novarium (previsto)</strong>. Caselle martinidonati.com non verificate in questo aggiornamento.</td>
 <td>—</td>
 <td>DA COMPLETARE</td>
 <td>Trasferimento caselle GC→Novarium in programma</td>
