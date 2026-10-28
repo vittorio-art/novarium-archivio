@@ -90,11 +90,12 @@ tbody tr:last-child td { border-bottom: 0; }
 <p><a href="index.html">← Novarium</a></p>
 <h1>Marine — Costruzione website</h1>
 <p><strong>Stato:</strong> LIVE 17/10 · tutte le tranche deployate, in attesa proprietà GSC Marine</p>
-<p>novarium-marine.com è online come presenza base. Progetto: costruzione del sito vero, a specchio della struttura SEO di Med (catalogo, landing indicizzabili).</p>
+<p>Dominio pubblico aggiornato: <a href="https://www.novarium-marine.net/en">www.novarium-marine.net</a>. Il 28/10 la home .com/en reindirizza a .net/en (HTTP finale 200). Progetto: sito a specchio della struttura SEO di Med (catalogo, landing indicizzabili).</p>
 <blockquote><strong>Proposta mia:</strong> la «domanda non convertita» dell'analisi 5 anni (parti cercate e mai quotate) sono keyword con intento d'acquisto provato → candidati perfetti per nuove landing</blockquote>
 <blockquote><strong>Proposta mia (17/10):</strong> 14 brand hanno 1 solo ricambio a catalogo → le loro pagine restano noindex (thin). Sono i candidati esatti per il prossimo lotto di arricchimento catalogo (modello PROD1): portarli a ≥2 ricambi li rende indicizzabili</blockquote>
 <h2>Timeline progetto</h2>
 <ul>
+<li><strong>27–28/10/2026</strong> — Su main routing .net nelle configurazioni Nginx, sito e ricostruzioni; link .net in firme/moduli; instradamento token per divisione ed etichette upload inglesi. Verifica pubblica 28/10: https://www.novarium-marine.com/en → https://www.novarium-marine.net/en, HTTP 200; anche accesso diretto .net/en HTTP 200. Controllo limitato alle home: non certifica tutti i token, URL o moduli.</li>
 <li><strong>26/10/2026</strong> — Su main consolidamento di tutti gli URL Marine sul dominio HTTPS www: redirect 308 anche prima delle esclusioni API/token/asset, preservando metodo e query; configurazioni Nginx aggiornate. Supera le esclusioni descritte il 22/10. Aggiornati anche selettore paese sito/chatbot e classificazione dei clienti provenienti dal sito Marine. Verificati file e diff redirect il 27/10; deploy non verificato.</li>
 <li><strong>23/10/2026</strong> — Su main rimosse dal menu desktop/mobile le voci Machines e Brands. Il diff riguarda i link di navigazione, non dimostra la rimozione delle pagine. Verificato il 24/10; deploy non verificato. Da considerare nel prossimo monitor SEO la raggiungibilità di queste pagine tramite altri link interni.</li>
 <li><strong>22/10/2026</strong> — Su main ulteriori modifiche ai filtri brand/tipi apparecchiatura e pagine prodotto. Aggiunto redirect 301 dal dominio senza www a www per pagine pubbliche GET/HEAD, escluse rotte protette da token. Verifica codice il 23/10; deploy di questo aggiornamento non verificato.</li>
