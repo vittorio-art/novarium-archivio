@@ -608,6 +608,7 @@ tbody tr:last-child td { border-bottom: 0; }
 <p><em>Documento redatto il 2026-10-10. Aggiornato il 2026-10-15: guard rail <code>client_cannot_order</code> implementato (PR #43, route UNRECOGNIZED come T2); free-scan multi-split default ON (PR #42).</em></p>
 <hr>
 <h2>Timeline progetto</h2>
+<p><strong>30/10/2026 — Su main:</strong> raggruppamento azioni Inbox multiprodotto e parti irrisolte; creazione prodotto disponibile anche nelle righe RFQ aggiuntive. Timeline offerte: tutti gli eventi restano visibili, senza ripetere gli stessi allegati. Verificati file commit delle ultime 24 ore, contando una sola volta le coppie duplicate. Test non eseguiti, deploy e miglioramento misurato non verificati; <a href="bo-report-business-flussi.html#timeline-aggiornamenti">warning test RFQ/frontend dichiarati</a>.</p>
 <p><strong>23/10/2026 — Routing cliente:</strong> su main ricontrollo abilitazione ordini/sospensione; senza titolare attivo la risoluzione resta irrisolta invece di usare il mittente non abilitato; con più titolari candidati viene richiesta conferma. Verificato diff il 24/10; deploy e impatto sull'accuratezza non verificati.</p>
 <p><strong>22/10/2026 — Stato risposte fornitori:</strong> su main logica condivisa per allineare eventi parser e riepilogo risposta fornitore in transazione, impedendo che una rielaborazione vecchia sovrascriva una risposta più recente; recupero in lettura degli eventi precedenti senza scritture durante GET. Verifica diff il 23/10; non dimostra un miglioramento misurato dell'accuratezza né un deploy avvenuto.</p>
 <ul>
