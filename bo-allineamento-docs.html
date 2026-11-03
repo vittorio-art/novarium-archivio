@@ -95,11 +95,13 @@ tbody tr:last-child td { border-bottom: 0; }
 <strong>Fonti</strong>: <code>bozza-gap-tecnica.md</code> (sez. 8 + priorità #12), <code>bozza-flussi-bo.md</code> (sez. 5), README e docs del repo, verifiche dirette su codice (moduli <code>backoffice-auth</code>, <code>inbox</code>, <code>parser</code>; modelli Prisma <code>InboxItem</code>, <code>ParseRun</code>, <code>PortalAccount</code>, <code>MarketingCampaign</code>, <code>Ticket</code>).</p>
 </blockquote>
 <section id="riverifica-20261022">
-<h2>Timeline — seconda verifica 22 ottobre, ore 12:03 CEST</h2>
-<p><strong>Ricontrollo 03/11/2026:</strong> lettura del documento <code>docs/02_PROJECT/03_DECISIONS_FROZEN.md</code> su main BO (<code>2e45cd00</code>): sezioni Architettura/UX ancora assenti. Ultima modifica del file: <code>99309879</code>, 22/10. Resta il ripristino o una decisione esplicita di Giovanni; nessuna modifica al repository BO eseguita.</p>
+<h2>Stato concluso — ripristino 3 novembre 2026</h2>
+<p><strong>Ripristino completato:</strong> Vittorio conferma il 03/11 alle 18:14 (Europe/Rome) il ripristino del titolo e delle sezioni originali Architettura/UX, senza coinvolgere Giovanni. Verifica indipendente GitHub in sola lettura: documento <code>docs/02_PROJECT/03_DECISIONS_FROZEN.md</code> presente su main BO nel commit <code>a745f28c</code>, con sole 15 righe aggiunte e nessuna eliminata. Sezione tecnica e registro revoche invariati. Residuo documentale chiuso; nessuna modifica BO o produzione eseguita da questo aggiornamento archivio.</p>
+<h3>Storico — seconda verifica 22 ottobre e ricontrollo precedente al ripristino</h3>
+<p>Nel primo ricontrollo del 03/11 su main BO <code>2e45cd00</code>, Architettura/UX erano ancora assenti. Questo stato e la richiesta di ripristino sotto sono superati dalla verifica conclusiva sopra.</p>
 <p><strong>Aggiornamento ora presente su main.</strong> Verificati: autenticazione descritta come implementata, riferimenti README esistenti, deploy Docker Compose documentato, nuovo stato progetto, revoche esplicite per inbox/parser, rimozione dei tre documenti vuoti.</p>
-<p><strong>Residuo da correggere:</strong> il documento decisioni ha perso le sezioni Architettura (event-driven, modify/amend, centralità timeline) e UX (fallback testo, nessun wizard rigido, nessuna validazione bloccante invasiva). La voce «nessuna state machine persistita» resta in fondo, ma non sostituisce le altre regole eliminate. Ripristinare le sezioni non oggetto di revoca, salvo scelta esplicita di Giovanni.</p>
-<p>Il riepilogo aggiunto è datato 10 ottobre: non va interpretato come certificazione degli attuali flag operativi (WhatsApp/parser) senza un controllo separato. Esito: interventi principali verificati, chiusura definitiva dopo il residuo documentale.</p>
+<p><strong>Residuo storico, ora risolto:</strong> erano state eliminate le sezioni Architettura (event-driven, modify/amend, centralità timeline) e UX (fallback testo, nessun wizard rigido, nessuna validazione bloccante invasiva), non oggetto delle revoche richieste. Ripristinate il 03/11.</p>
+<p>Il riepilogo aggiunto è datato 10 ottobre: non va interpretato come certificazione degli attuali flag operativi (WhatsApp/parser) senza un controllo separato. Questa cautela sui servizi non riapre il ripristino documentale, completato.</p>
 </section>
 <section id="verifica-20261022">
 <h2>Timeline — verifica 22 ottobre 2026</h2>
