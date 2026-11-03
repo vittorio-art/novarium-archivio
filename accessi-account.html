@@ -90,30 +90,55 @@ tbody tr:last-child td { border-bottom: 0; }
 <blockquote>
 <p><strong>Regola d'oro: NESSUNA PASSWORD, chiave o codice di backup in questo file.</strong> Solo la mappa: cosa esiste, con quale account, dove sono custodite le credenziali. File pubblico nell'archivio — trattarlo di conseguenza.</p>
 </blockquote>
-<p><strong>Domini e posta aggiornati: 28/10/2026</strong> · Le altre voci mantengono le rispettive date di verifica.</p>
+<p><strong>Domini e posta aggiornati: 03/11/2026</strong> · Conferme di Giovanni e dell’utente; non è un accesso di verifica ai pannelli dei provider. Le altre voci mantengono le rispettive date di verifica.</p>
 <h2 id="domini-posta">Domini e caselle — stato e piano</h2>
-<ul>
-<li><strong>Marine:</strong> novarium-marine.com e novarium-marine.net su Namecheap, account Novarium. Acquisto .net e migrazione sito completati il 27/10. Il .com va mantenuto e rinnovato per i redirect. Verifica pubblica 28/10: .com/en → .net/en con query conservata (308); .net/en risponde HTTPS 200. <a href="proj-marine-website.html#timeline-domini">Timeline sito</a>.</li>
-<li><strong>novarium.net e martinidonati.com:</strong> trasferimento Hover (gestione Giovanni) → account Namecheap Novarium previsto; completamento non confermato.</li>
-<li><strong>Posta:</strong> le 12 caselle novarium.net sono su Namecheap nell’account di Giovanni. Giovanni cura il passaggio al vostro account; creazione/migrazione e storico da verificare prima di disattivare le vecchie caselle. Non risultano completati in questo recap.</li>
-</ul>
-<h3>9 caselle da mantenere</h3>
-<p>Tutte @novarium.net: <strong>accounting, ez, info, lil, m5, onlineservices, rj, vmd, vr</strong>.</p>
-<p><strong>Da rimuovere, non ancora confermate eliminate:</strong> bot.master, bot, mac. Prima verificare dati e servizi collegati.</p>
-<h3>Inoltri previsti</h3>
-<ul>
-<li>info → m5</li>
-<li>onlineservices → m5 (ricezione nel BO)</li>
-<li>vr → vmd, rj</li>
-<li>accounting → info</li>
-</ul>
-<p><strong>Escluso dal piano:</strong> info → ez, lil, vmd, rj. Le quattro caselle restano attive; è l’inoltro a essere escluso. Questi sono inoltri concordati, non una verifica della configurazione effettiva.</p>
+<p><strong>Account di destinazione dei quattro domini: Namecheap <code>Novarium2026</code>.</strong> I due domini Marine sono già nell’account utente; i due domini Hover no. Trasferimento del registrar, migrazione del sito e passaggio delle caselle sono operazioni distinte.</p>
+<div class="table-scroll"><table>
+<thead><tr><th>Dominio / servizio</th><th>Gestione e stato</th><th>Scadenza</th><th>Rinnovo automatico</th></tr></thead>
+<tbody>
+<tr><td>novarium-marine.net</td><td>Namecheap, account utente. Acquistato 27/10/2026; sito principale <a href="https://www.novarium-marine.net/en">www.novarium-marine.net</a>.</td><td>27/10/2027 (screenshot 30/10/2026)</td><td>ON nello screenshot 30/10/2026; non riverificato oggi</td></tr>
+<tr><td>novarium-marine.com</td><td>Namecheap, account utente. Da mantenere: redirect permanente verso .net preservando percorsi e query; HTTPS necessario su entrambi.</td><td>16/09/2027 (screenshot 30/10/2026)</td><td>ON nello screenshot 30/10/2026; non riverificato oggi</td></tr>
+<tr><td>novarium.net</td><td>Hover, gestione Giovanni. Ordine di trasferimento del 30/10 annullato; attesa sblocco Giovanni e nuova conferma.</td><td>Da confermare</td><td>Da verificare</td></tr>
+<tr><td>martinidonati.com</td><td>Hover, gestione Giovanni. Ordine di trasferimento del 30/10 annullato; attesa sblocco Giovanni e nuova conferma.</td><td>Da confermare</td><td>Da verificare</td></tr>
+<tr><td>Certificati HTTPS Marine</td><td>Separati dalle registrazioni dei domini. Mantenere HTTPS per .com e .net, con e senza www.</td><td>.net: 25/01/2027, verifica del 27/10/2026; .com: da confermare</td><td>Rinnovo webroot attivo per entrambi nella verifica del 27/10; esito dei rinnovi da verificare</td></tr>
+<tr><td>Private Email @novarium.net</td><td>Namecheap, gestione Giovanni; passaggio all’account utente non confermato completato.</td><td>Abbonamento posta: da confermare, distinto dalla scadenza dominio</td><td>Da verificare</td></tr>
+</tbody></table></div>
+<p><strong>Trasferimenti Hover:</strong> ordini del 30/10 annullati dall’utente alle 12:38, in attesa dello sblocco da Giovanni. I codici EPP erano stati inseriti nella procedura poi annullata: non costituiscono prova di trasferimento. Vecchie ricevute superate; attesi nuovi documenti e conferme. Nessuna ricevuta pubblicata.</p>
+<p><strong>Continuità DNS:</strong> non cambiare nameserver o record DNS per il solo trasferimento; verificare con Giovanni la continuità di zona, MX e TXT. La migrazione delle caselle tra account Namecheap è separata: storico e servizi collegati da verificare prima di disattivare le vecchie caselle.</p>
+<h3>8 caselle e inoltri correnti — conferma 03/11/2026</h3>
+<p>Lo username di ogni casella è il suo indirizzo completo. <strong>Password: Non pubblicate; gestione privata.</strong> Gli inoltri sotto sostituiscono il precedente piano del 28/10; “nessuno indicato” non certifica l’assenza di altre regole.</p>
+<div class="table-scroll"><table>
+<thead><tr><th>Casella / username</th><th>Inoltri comunicati</th></tr></thead>
+<tbody>
+<tr><td>vmd@novarium.net</td><td>Nessuno indicato</td></tr>
+<tr><td>rj@novarium.net</td><td>Nessuno indicato</td></tr>
+<tr><td>ez@novarium.net</td><td>Nessuno indicato</td></tr>
+<tr><td>lil@novarium.net</td><td>Nessuno indicato</td></tr>
+<tr><td>m5@novarium.net</td><td>vittorio@martinidonati.com</td></tr>
+<tr><td>onlineservices@novarium.net</td><td>rj@novarium.net, ez@novarium.net, lil@novarium.net, m5@novarium.net</td></tr>
+<tr><td>info@novarium.net</td><td>rj@novarium.net, ez@novarium.net, lil@novarium.net, m5@novarium.net</td></tr>
+<tr><td>vr@novarium.net</td><td>rj@novarium.net, vmd@novarium.net</td></tr>
+</tbody></table></div>
+<p><strong>accounting@novarium.net cancellata</strong> (conferma utente). <strong>bot, bot.master e mac</strong>: assenti dall’elenco attuale; rimozioni previste in precedenza, senza una nuova verifica individuale della cancellazione.</p>
+<h3>Configurazione client Private Email</h3>
+<p>Server in entrata e uscita: <code>mail.privateemail.com</code>. Username: indirizzo completo della propria casella. Webmail: <a href="https://privateemail.com">https://privateemail.com</a>.</p>
+<div class="table-scroll"><table>
+<thead><tr><th>Protocollo</th><th>Porta</th><th>Sicurezza</th></tr></thead>
+<tbody>
+<tr><td>IMAP</td><td>993 oppure 143</td><td>993 SSL/TLS; 143 STARTTLS</td></tr>
+<tr><td>POP3</td><td>995</td><td>SSL/TLS</td></tr>
+<tr><td>SMTP</td><td>465 oppure 587</td><td>465 SSL/TLS; 587 STARTTLS</td></tr>
+</tbody></table></div>
+<p><strong>Controllo HTTP pubblico 03/11/2026:</strong> <code>www.novarium-marine.com/en?ref=a%2Fb&amp;tag=1&amp;tag=2</code> restituisce 308 verso lo stesso percorso e query su <code>www.novarium-marine.net</code>; HTTPS .net/en risponde 200. È un controllo web, non una verifica della proprietà degli account o della posta.</p>
 <h3>Timeline domini e posta</h3>
 <ul>
-<li><strong>27/10:</strong> acquistato .net; DNS, HTTPS e redirect del sito attivati. Dopo una regressione da altro rilascio, ripristinato Nginx Marine e salvata la correzione sul ramo principale. Posta e domini Hover non modificati da questa migrazione web.</li>
-<li><strong>28/10:</strong> consolidati piano delle 9 caselle e inoltri corretti. Restano aperti trasferimenti e migrazione posta, Search Console e verifica finale di firme/template. <a href="proj-marine-mailings.html#verifica-template">Anomalia template Marine</a>: segnalata, risoluzione non confermata.</li>
+<li><strong>03/11/2026:</strong> confermati otto indirizzi e inoltri correnti; accounting cancellata. Trasferimenti Hover e passaggio account posta non completati/confermati. Aggiornamento del solo archivio: nessuna modifica a posta reale, DNS o DB.</li>
+<li><strong>30/10:</strong> annullati gli ordini Hover → Namecheap in attesa sblocco; screenshot dei due domini Marine con scadenze e auto-rinnovo ON. Merge PR #68 già registrato nella <a href="proj-marine-website.html#timeline-domini">timeline sito</a>: non prova un nuovo deploy.</li>
+<li><strong>28/10:</strong> precedente piano caselle/inoltri, ora superato dalle conferme del 03/11. Fix firme/template presenti su main; verifica operativa degli invii ancora aperta, come nella <a href="proj-marine-mailings.html#verifica-template">scheda mailings</a>. Search Console Marine resta pendente.</li>
+<li><strong>27/10:</strong> acquistato .net; DNS, HTTPS e redirect del sito attivati. Dopo una regressione da altro rilascio, ripristinato Nginx Marine e salvata la correzione sul ramo principale. Posta e domini Hover non modificati da questa migrazione web. Verifica pubblica 28/10: redirect 308 .com/en → .net/en con query conservata e HTTPS 200 sulla destinazione.</li>
 </ul>
-<h2>💶 Costi ricorrenti attivi (stima, cambio indicativo 1 $ ≈ 0,92 €)</h2>
+<h2>💶 Costi ricorrenti (stima storica, cambio indicativo 1 $ ≈ 0,92 €)</h2>
+<p>Stima precedente all’acquisto del secondo dominio Marine: non è un totale corrente verificato; costi completi domini e posta da confermare. La periodicità mensile non indica la data della prossima scadenza.</p>
 <ul>
 <li>🖥️ <strong>Infrastruttura</strong> ≈ <strong>86 €/mese</strong>: AWS Lightsail 49,99 $ (~46 €) · Supabase 40 € · dominio Marine 11,48 $/anno (~10 €/anno)</li>
 <li>📧 <strong>Comunicazioni</strong> ≈ <strong>41 €/mese</strong>: SendGrid 19,99 $ (~18 €) · Kapso 25 $ (~23 €)</li>
@@ -129,6 +154,8 @@ tbody tr:last-child td { border-bottom: 0; }
 <th>Account / login</th>
 <th>Credenziali dove</th>
 <th>Costo</th>
+<th>Scadenza</th>
+<th>Rinnovo automatico</th>
 <th>Note</th>
 </tr>
 </thead>
@@ -139,6 +166,8 @@ tbody tr:last-child td { border-bottom: 0; }
 <td>Root: <a href="/cdn-cgi/l/email-protection#71071805051e03181e311c100305181f18151e1f1005185f121e1c"><span class="__cf_email__" data-cfemail="d5a3bca1a1baa7bcba95b8b4a7a1bcbbbcb1babbb4a1bcfbb6bab8">[email&#160;protected]</span></a> + authenticator MFA</td>
 <td>password manager Vittorio</td>
 <td>49,99 $/mese</td>
+<td>Da confermare</td>
+<td>Da verificare</td>
 <td>Se giù: BO e sito fermi</td>
 </tr>
 <tr>
@@ -147,6 +176,8 @@ tbody tr:last-child td { border-bottom: 0; }
 <td><a href="/cdn-cgi/l/email-protection#a1d7d3e1cfced7c0d3c8d4cc8fcfc4d5"><span class="__cf_email__" data-cfemail="334541735d5c4552415a465e1d5d5647">[email&#160;protected]</span></a> (project <code>lblumvooaevubjcqlwct</code>, eu-west-2)</td>
 <td>Vault Letta (<code>NOVARIUM_DB_URL</code>) + <code>.env</code> backend</td>
 <td>25+15 = 40 €/mese</td>
+<td>Da confermare</td>
+<td>Da verificare</td>
 <td>⚠️ rotazione service_role in attesa GO Giovanni; usare pooler :6543</td>
 </tr>
 <tr>
@@ -155,15 +186,19 @@ tbody tr:last-child td { border-bottom: 0; }
 <td>Org <code>vittorio-art</code> + authenticator</td>
 <td>account GitHub</td>
 <td>DA COMPLETARE</td>
+<td>Da confermare</td>
+<td>Da verificare</td>
 <td>Connesso a Letta. Se giù: niente danno diretto ma si perde storico/backup sorgenti</td>
 </tr>
 <tr>
 <td><strong>Namecheap</strong></td>
 <td>Domini novarium-marine.com e <a href="https://www.novarium-marine.net/en">novarium-marine.net</a></td>
-<td>user <code>Novarium2026</code> — intestato Vittorio Martini Donati, Novarium Via Roma Genova; contatto <a href="/cdn-cgi/l/email-protection#641216240a0b1205160d11094a0a0110"><span class="__cf_email__" data-cfemail="a2d4d0e2cccdd4c3d0cbd7cf8cccc7d6">[email&#160;protected]</span></a>, +39 335 5293470</td>
-<td>password manager Vittorio</td>
-<td>11,48 $/anno auto-rinnovo (VISA •8319)</td>
-<td>Codici backup rigenerati/DA RIGENERARE — vedi avvisi in calce alla chat del 13/10</td>
+<td>Account <code>Novarium2026</code></td>
+<td>Non pubblicate; gestione privata</td>
+<td>Costo complessivo dei due domini: da confermare</td>
+<td>Vedi prospetto domini: .net 27/10/2027; .com 16/09/2027</td>
+<td>ON per entrambi, screenshot 30/10/2026</td>
+<td>Due domini Marine attivi; scadenze e fonte nel prospetto domini sopra</td>
 </tr>
 <tr>
 <td><strong>Domini &quot;core&quot;</strong></td>
@@ -171,7 +206,9 @@ tbody tr:last-child td { border-bottom: 0; }
 <td><strong>Hover, gestiti da Giovanni; trasferimento a Namecheap previsto</strong></td>
 <td>—</td>
 <td>DA COMPLETARE</td>
-<td>⚠️ In attesa trasferimento GC→Novarium (nota 11/9)</td>
+<td>Da confermare</td>
+<td>Da verificare</td>
+<td>Ordini del 30/10 annullati; attesa sblocco Giovanni e nuova conferma</td>
 </tr>
 <tr>
 <td><strong>DNS</strong></td>
@@ -179,15 +216,19 @@ tbody tr:last-child td { border-bottom: 0; }
 <td><strong>Marine: Namecheap. Altri domini: da verificare nel trasferimento</strong></td>
 <td>—</td>
 <td>—</td>
+<td>Nessuna scadenza autonoma documentata; dipende dal servizio DNS e dai domini</td>
+<td>Da verificare</td>
 <td>Se giù: si ferma TUTTO (server, posta)</td>
 </tr>
 <tr>
 <td><strong>Posta elettronica</strong></td>
 <td>Caselle sui domini</td>
-<td><strong>novarium.net: Namecheap, account Giovanni → account Novarium (previsto)</strong>. Caselle martinidonati.com non verificate in questo aggiornamento.</td>
+<td><strong>novarium.net: Namecheap, account Giovanni → account Novarium2026 (passaggio non confermato)</strong>. Caselle martinidonati.com non verificate in questo aggiornamento.</td>
 <td>—</td>
 <td>DA COMPLETARE</td>
-<td>Trasferimento caselle GC→Novarium in programma</td>
+<td>Abbonamento posta da confermare; separato dai domini</td>
+<td>Da verificare</td>
+<td>8 caselle confermate il 03/11; migrazione account e storico da confermare</td>
 </tr>
 <tr>
 <td><strong>Monitoring</strong></td>
@@ -195,6 +236,8 @@ tbody tr:last-child td { border-bottom: 0; }
 <td>VM AWS dedicata + repo GitHub</td>
 <td>come sopra</td>
 <td>inclusa AWS</td>
+<td>Compreso in AWS; prossima fatturazione da confermare</td>
+<td>Da verificare</td>
 <td>Nota 11/9: prevede alert WhatsApp quando giù</td>
 </tr>
 </tbody>
@@ -208,6 +251,8 @@ tbody tr:last-child td { border-bottom: 0; }
 <th>Account / login</th>
 <th>Credenziali dove</th>
 <th>Costo</th>
+<th>Scadenza</th>
+<th>Rinnovo automatico</th>
 <th>Note</th>
 </tr>
 </thead>
@@ -215,25 +260,31 @@ tbody tr:last-child td { border-bottom: 0; }
 <tr>
 <td><strong>SendGrid</strong></td>
 <td>Email in uscita dal BO (offerte, token)</td>
-<td><a href="/cdn-cgi/l/email-protection#2a5c435e5e455843456a474b585e4344434e45444b5e4304494547"><span class="__cf_email__" data-cfemail="95e3fce1e1fae7fcfad5f8f4e7e1fcfbfcf1fafbf4e1fcbbf6faf8">[email&#160;protected]</span></a>, billing <a href="/cdn-cgi/l/email-protection#90f9fef6ffd0feffe6f1e2f9e5fdbefef5e4"><span class="__cf_email__" data-cfemail="8ce5e2eae3cce2e3faedfee5f9e1a2e2e9f8">[email&#160;protected]</span></a></td>
+<td><a href="/cdn-cgi/l/email-protection#2a5c435e5e455843456a474b585e4344434e45444b5e4304494547"><span class="__cf_email__" data-cfemail="95e3fce1e1fae7fcfad5f8f4e7e1fcfbfcf1fafbf4e1fcbbf6faf8">[email&#160;protected]</span></a></td>
 <td><code>.env</code> backend</td>
 <td>19,99 $/mese</td>
+<td>Da confermare</td>
+<td>Da verificare</td>
 <td>Se giù: BO non invia posta</td>
 </tr>
 <tr>
 <td><strong>Kapso (WhatsApp)</strong></td>
 <td>Integrazione WhatsApp ↔ BO</td>
-<td>login Google, email <a href="/cdn-cgi/l/email-protection#7f090d3f1110091e0d160a1251111a0b"><span class="__cf_email__" data-cfemail="3f494d7f5150495e4d564a5211515a4b">[email&#160;protected]</span></a>, CC via biz</td>
+<td>login Google, email <a href="/cdn-cgi/l/email-protection#7f090d3f1110091e0d160a1251111a0b"><span class="__cf_email__" data-cfemail="3f494d7f5150495e4d564a5211515a4b">[email&#160;protected]</span></a></td>
 <td><code>.env</code> backend</td>
 <td>25 $/mese</td>
+<td>Da confermare</td>
+<td>Da verificare</td>
 <td>Attivo da 7/10/2026; in attesa permessi <strong>Meta</strong> per proattivi (&gt;24h)</td>
 </tr>
 <tr>
 <td><strong>Meta Business</strong></td>
 <td>Autorizzazioni WhatsApp Business</td>
-<td>account business (setup in onboarding Kapso, 7/10 — &quot;cc via biz&quot;)</td>
+<td>account business (setup in onboarding Kapso, 7/10)</td>
 <td>presso Meta/Kapso</td>
 <td>—</td>
+<td>Da confermare</td>
+<td>Da verificare</td>
 <td>In attesa loro OK per messaggi proattivi (&gt;24h)</td>
 </tr>
 </tbody>
@@ -247,6 +298,8 @@ tbody tr:last-child td { border-bottom: 0; }
 <th>Account / login</th>
 <th>Credenziali dove</th>
 <th>Costo</th>
+<th>Scadenza</th>
+<th>Rinnovo automatico</th>
 <th>Note</th>
 </tr>
 </thead>
@@ -257,14 +310,18 @@ tbody tr:last-child td { border-bottom: 0; }
 <td>account OpenAI Vittorio</td>
 <td><code>.env</code> backend (API) + Mac</td>
 <td>100 €/mese (ridotto da 187,70 di aprile)</td>
+<td>Da confermare</td>
+<td>Da verificare</td>
 <td>Se giù: parser AI e copilot del BO fermi</td>
 </tr>
 <tr>
 <td><strong>Letta</strong></td>
 <td>Agente AI (SEO, business, Marine — questo)</td>
-<td>login Google <a href="/cdn-cgi/l/email-protection#76001f020219041f19361b1704021f181f12191817021f5815191b"><span class="__cf_email__" data-cfemail="d1a7b8a5a5bea3b8be91bcb0a3a5b8bfb8b5bebfb0a5b8ffb2bebc">[email&#160;protected]</span></a> · billing <a href="/cdn-cgi/l/email-protection#acc5c2cac3ecc2c3dacddec5d9c182c2c9d8"><span class="__cf_email__" data-cfemail="543d3a323b143a3b2235263d21397a3a3120">[email&#160;protected]</span></a> su VISA Novarium (P.IVA non inseribile in fattura)</td>
+<td>Account Letta, accesso Google</td>
 <td>account Letta</td>
 <td>20 $/mese Pro</td>
+<td>Da confermare</td>
+<td>Da verificare</td>
 <td>Attivo da 10/10/2026; crediti a consumo + ricarica $20 (12/10)</td>
 </tr>
 </tbody>
@@ -278,6 +335,8 @@ tbody tr:last-child td { border-bottom: 0; }
 <th>Account / login</th>
 <th>Credenziali dove</th>
 <th>Costo</th>
+<th>Scadenza</th>
+<th>Rinnovo automatico</th>
 <th>Note</th>
 </tr>
 </thead>
@@ -288,6 +347,8 @@ tbody tr:last-child td { border-bottom: 0; }
 <td>account Google Vittorio</td>
 <td>accesso Google</td>
 <td>gratuito</td>
+<td>Non applicabile (servizio gratuito)</td>
+<td>Non applicabile</td>
 <td>✅ Accesso funzionante — dati 6 mesi già condivisi con l'agente (10/10). Proprietà Marine: da creare quando parte il monitoring Marine</td>
 </tr>
 </tbody>
