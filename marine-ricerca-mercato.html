@@ -87,7 +87,50 @@ tbody tr:last-child td { border-bottom: 0; }
 }
 @media print { body { padding: 0; } .table-scroll { overflow: visible; } }
 </style></head><body><main><h1>Ricerca di Mercato — Divisione MARINE di Novarium srl</h1>
-<p><strong>v2 — aggiornata 14/10/2026</strong> (v1: 12/10). Novità v2: sezione Filiera dell'usato + sezione Buyer riscritta con split chiarito (finali / intermediari / canale).</p>
+<section id="priorita-2026-11-07">
+<h2>7 novembre 2026 — Priorità commerciali: service e automazione</h2>
+<p><strong>Prima proposta, da valutare.</strong> Obiettivo: individuare chi acquista ricambi per riparare, non aumentare indiscriminatamente i contatti. Le 50–100 aziende pertinenti sono un'ipotesi, non un risultato. Nessun contatto commerciale inviato e nessuna modifica al DB.</p>
+<h3>1. Selezione dei contatti</h3>
+<p><strong>Verificato nel DB, sola lettura:</strong> 963 schede Client MARINE, 963 groupId distinti; 163 service, 264 repair_yard, 42 refit_yard, 283 newbuild_yard, 69 shipowner, 15 ship_manager, 4 yard e 123 senza segmento. 283 schede hanno blockedForMarketing attivo. Questi sono tag storici, non qualifiche commerciali verificate. Gruppi distinti non garantiscono aziende realmente diverse. Il perimetro dei «circa 500» resta da identificare.</p>
+<ul>
+<li><strong>A — priorità:</strong> riparazione elettronica/elettrica documentata, marchi e sistemi pertinenti, acquisto esterno di usato/ricondizionato confermato da richieste o interlocutore. Preferenza a guasti urgenti e sistemi fuori produzione.</li>
+<li><strong>B — da qualificare:</strong> competenze tecniche provate, ma disponibilità ad acquistare usato o accesso a fornitori esterni non dimostrati. Autorizzazione OEM non significa esclusività: verificare per marchio.</li>
+<li><strong>C — fuori priorità:</strong> solo costruzione nuova, meccanica, vendita del nuovo o intermediazione generica. Eventuale ruolo di fonte surplus resta separato.</li>
+<li><strong>Non classificato:</strong> prove insufficienti; non confondere assenza di informazioni con esclusione. Rispettare sempre blocchi marketing e sospensioni.</li>
+</ul>
+<h3>2. Primi esempi documentati</h3>
+<p>Le fonti sono pagine aziendali consultate il 7/11/2026: verificano ciò che l'azienda dichiara, non qualità, affidabilità o intenzione d'acquisto.</p>
+<div class="table-scroll"><table><thead><tr><th>Azienda / chiave dominio</th><th>Fatto documentato</th><th>Priorità proposta e lacuna</th></tr></thead><tbody>
+<tr><td>Blue Electric Marine<br>blueelectricmarine.nl</td><td><a href="https://www.blueelectricmarine.nl/services/siemens-plc-programming-marine-automation">Diagnostica Siemens S7, HMI e reti su yacht e impianti industriali</a>; base Paesi Bassi.</td><td>B: esempio molto aderente al ponte Marine–industria. Da verificare acquisto ricambi, usato e volumi; non è già un buyer provato.</td></tr>
+<tr><td>Goltens<br>goltens.com</td><td><a href="https://www.goltens.com/services/diesel-engine-services/electrical-automation-and-controls/">Riparazione PCB, AVR e controlli per marine e impianti a terra</a>.</td><td>B: parlare con il reparto automazione della singola sede, non con il gruppo genericamente. Acquisto esterno di elettronica usata non dimostrato.</td></tr>
+<tr><td>A. S. Moloobhoy<br>asmoloobhoy.com</td><td><a href="https://www.asmoloobhoy.com/what-we-do/service">Service NAVCOM in India, stock PCB e numerose autorizzazioni OEM</a>.</td><td>B: verificare gap EOL e marchi non coperti. Già citata nello storico sotto “Moloobhoy”: aggiornamento, non nuova scoperta.</td></tr>
+<tr><td>Aeliya Marine Tech<br>aeliyamarinetech.com / aeliyamarine.net</td><td><a href="https://aeliyamarine.net/">Dichiara stock nuovo, surplus, usato e ricondizionato Marine/industriale</a>; <a href="https://aeliyamarinetech.com/collections/plc-systems">catalogo e sede Bhavnagar</a>.</td><td>Potenziale fornitore e concorrente, non buyer dimostrato. Validare banco prova, provenienza, foto seriali, resi e disponibilità effettiva. Domini trattati come alias candidati, non due lead.</td></tr>
+<tr><td>MRO Electric<br>mroelectric.com</td><td><a href="https://www.mroelectric.com/product/6ES7315-2EH14-0AB0">Offerta CPU Siemens ricondizionata e servizio riparazione</a>.</td><td>Benchmark e possibile fornitore tecnico industriale; condizioni wholesale e convenienza da verificare.</td></tr>
+</tbody></table></div>
+<p>Controllo preliminare per frammenti di nome nel DB Marine: nessuna corrispondenza per queste cinque aziende. Non prova che siano assenti: resta necessario confronto domini, ragioni sociali e alias prima di creare qualunque anagrafica.</p>
+<h3>3. Prodotti concreti: cosa sappiamo e cosa no</h3>
+<ul>
+<li><strong>Siemens 6ES7315-2EH14-0AB0, CPU S7-300:</strong> MRO pubblica un'offerta refurbished a USD 3.601 (circa EUR 3.313 al cambio illustrativo 0,92 EUR/USD, non cambio corrente verificato). Dimostra un'offerta sopra EUR 300, non prezzo realizzato né margine Novarium. Blue Electric documenta assistenza S7-300 in ambito marine/industriale, <strong>non l'impiego navale di questo esatto PN</strong>. Prima di qualificarlo: foto targhetta installata, revisione, firmware, programma e memoria, interfacce, certificazioni pertinenti. Candidato di ricerca, non prodotto Marine già validato.</li>
+<li><strong>DEIF PPM 300 / modulo ACM3.2:</strong> il <a href="https://www.deif.com/marine-offshore/multi-line-300/ppm-300/">costruttore documenta uso marine/offshore e protezione differenziale generatore ANSI 87G del modulo ACM3.2</a>. <a href="https://www.deif.com/documentation/ppm-300/">Esistono note di conversione PPM-2/PPM-3 verso PPM-300</a>: non sono ricambi automaticamente intercambiabili. Mancano codice d'ordine completo, revisione, prezzo usato ≥EUR 300 e domanda industriale documentata.</li>
+</ul>
+<p><strong>Regola:</strong> stesso marchio, aspetto o protocollo non significa compatibilità. Impiego marino documentato e valore commerciale ≥EUR 300 restano obbligatori per qualificare prodotti Marine. Niente import, acquisti o magazzino sulla sola base di questi esempi.</p>
+<h3>4. Dove cercare e incontrare gli operatori</h3>
+<ol>
+<li><strong>Subito: rete <a href="https://cirm.org/">CIRM</a></strong>, che include produttori, integratori e service di elettronica marina. Usare la rete per individuare specialisti; appartenenza non prova acquisto di usato. Prima interviste, non adesione a pagamento.</li>
+<li><strong>India: Mumbai per service; Bhavnagar–Alang per sourcing.</strong> Moloobhoy e Aeliya sono punti di partenza documentati, non prova della qualità dell'intero distretto. Alang è già trattata nella filiera storica sottostante. Tenere separate domanda di riparazione e offerta da recupero.</li>
+<li><strong><a href="https://www.smm-hamburg.com/fair/about-smm/inmex-smm-india">INMEX SMM India, Mumbai, 22–24 settembre 2027</a>:</strong> fiera ampia, da filtrare su electronics, automation e repair. Prima sfruttare gli elenchi espositori; visita solo con appuntamenti pertinenti.</li>
+<li><strong><a href="https://www.europort.nl/visitor/practical-information">Europort, Rotterdam, 2–5 novembre 2027</a>:</strong> confronto europeo e incontri con service/fornitori. Non aspettare la fiera per iniziare: liste e colloqui ora.</li>
+</ol>
+<h3>5. MED come guida, non come prova</h3>
+<p>Trasferire il metodo già noto: PN esatto → fornitore competente → disponibilità e test → risposta rapida. Ipotesi da misurare: urgenza, obsolescenza e costo del fermo favoriscono ricondizionato anche in Marine. Differenze da verificare: approvazioni di classe, configurazione/software, consegna in porto e responsabilità del service. Mancano confronti quantitativi su vendite, margini e resi MED/Marine; non attribuire al Marine i risultati MED.</p>
+<h3>Prossimo lotto e storico</h3>
+<p><strong>Proposta:</strong> primo campione di 30 aziende (15 service, 10 repair/refit con segnali elettronici, 5 senza tag), senza stima statistica sull'intero DB. Qualificare poi tutte le schede del perimetro concordato. Per 10 interlocutori prioritari, chiedere dopo autorizzazione: ultimi tre PN cercati, condizioni accettate, motivo del mancato acquisto e chi decide. Serve identificare la lista dei circa 500 mediante nome/filtro BO o elenco ID; accesso DB già verificato, nessuna nuova credenziale necessaria.</p>
+<p><strong>Idea da testare:</strong> usare i codici delle riparazioni non concluse per cercare nuovi clienti industriali con la stessa base installata. Un PN comune e una richiesta concreta sono un segnale migliore della semplice etichetta “automazione”. Validare su tre casi prima di ampliare il catalogo.</p>
+<p><strong>Registro aggiornabile:</strong> riutilizzare questa pagina e le schede esistenti. Chiave azienda = ID BO + dominio normalizzato + alias verificati; chiave prodotto = OEM + PN completo + revisione. Per ogni riscontro: data, fonte, fatto/ipotesi/mancante, ruolo buyer/fornitore/entrambi, stato A/B/C/non classificato, prossimo passo. Lo storico del 14/10 resta sotto come snapshot, non fotografia attuale. Dettagli privati delle conversazioni e condizioni commerciali rimangono nel BO, non in questa pagina pubblica.</p>
+<h3>Timeline</h3><ul><li>07/11/2026: nuovo brief continuativo, conteggi DB verificati, cinque esempi aziendali, due piste prodotto e priorità incontri. Nessuna azienda dichiarata buyer confermato; nessun outreach eseguito.</li><li>14/10/2026: ricerca v2 e filiera dell'usato, conservate sotto.</li></ul>
+</section>
+<hr>
+<p><strong>Storico v2 — 14/10/2026</strong> (v1: 12/10). Numeri e stime seguenti sono storici e non riconfermati dalla ricerca del 7/11.</p>
 <hr>
 <h2>0. FILIERA DELL'USATO — come fluiscono le parti (nuovo 14/10)</h2>
 <pre><code>DEMOLIZIONE NAVI          UPGRADE/RETROFIT        SURPLUS
