@@ -90,12 +90,14 @@ tbody tr:last-child td { border-bottom: 0; }
 <blockquote>
 <p><strong>Regola d'oro: NESSUNA PASSWORD, chiave o codice di backup in questo file.</strong> Solo la mappa: cosa esiste, con quale account, dove sono custodite le credenziali. File pubblico nell'archivio — trattarlo di conseguenza.</p>
 </blockquote>
-<p><strong>Domini e posta aggiornati: 03/11/2026</strong> · Conferme di Giovanni e dell’utente; non è un accesso di verifica ai pannelli dei provider. Le altre voci mantengono le rispettive date di verifica.</p>
+<p><strong>Domini aggiornati: 09/11/2026 · Posta: 03/11/2026</strong> · Industrial aggiunto dal memo di Vittorio del 9 novembre; non è un accesso di verifica ai pannelli dei provider. Le altre voci mantengono le rispettive date di verifica.</p>
 <h2 id="domini-posta">Domini e caselle — stato e piano</h2>
-<p><strong>Tutti e quattro i domini sono ACTIVE nell’account Namecheap <code>Novarium2026</code>, con auto-rinnovo ON e privacy ON.</strong> Fonte: screenshot dell’utente del 03/11/2026, ore 17:21. I trasferimenti dei due domini da Hover risultano completati alla data della conferma; il giorno effettivo del trasferimento non è documentato. Trasferimento del registrar, migrazione del sito e passaggio delle caselle sono operazioni distinte.</p>
+<p><strong>Cinque domini su Namecheap, incluso novarium-industrial.net acquistato il 09/11/2026.</strong> Per i quattro domini precedenti, account <code>Novarium2026</code>, stato ACTIVE, auto-rinnovo ON e privacy ON sono documentati dallo screenshot del 03/11/2026, ore 17:21. Per Industrial: Domain Privacy gratuita nell’ordine; <strong>auto-rinnovo dominio non verificato</strong>. I trasferimenti da Hover risultano completati alla conferma del 03/11; il giorno effettivo non è documentato. Registrar, sito, certificati HTTPS e caselle sono servizi distinti.</p>
 <div class="table-scroll"><table>
 <thead><tr><th>Dominio / servizio</th><th>Gestione e stato</th><th>Scadenza</th><th>Rinnovo automatico</th></tr></thead>
 <tbody>
+<tr><td>novarium-industrial.net</td><td>Namecheap; acquistato il 09/11/2026 per un anno, Domain Privacy gratuita nell’ordine. Sito principale <a href="https://www.novarium-industrial.net">www.novarium-industrial.net</a>. Fonte: memo Vittorio 09/11.</td><td>09/11/2027 attesa dalla durata annuale; data nel pannello da verificare</td><td><strong>Non verificato</strong>; non confondere con rinnovo HTTPS</td></tr>
+<tr><td>Certificato HTTPS Industrial</td><td>Dominio principale e www coperti; redirect HTTP e senza www verso HTTPS con www. Fonte: memo Vittorio 09/11.</td><td>Scadenza certificato non riportata nel memo</td><td>Rinnovo collaudato secondo il memo; distinto dall’auto-rinnovo del dominio</td></tr>
 <tr><td>novarium-marine.net</td><td>Namecheap, account Novarium2026: ACTIVE, privacy ON. Acquistato 27/10/2026; sito principale <a href="https://www.novarium-marine.net/en">www.novarium-marine.net</a>.</td><td>27/10/2027 (screenshot 03/11/2026)</td><td>ON, screenshot 03/11/2026</td></tr>
 <tr><td>novarium-marine.com</td><td>Namecheap, account Novarium2026: ACTIVE, privacy ON. Da mantenere: redirect permanente verso .net preservando percorsi e query; HTTPS necessario su entrambi.</td><td>16/09/2027 (screenshot 03/11/2026)</td><td>ON, screenshot 03/11/2026</td></tr>
 <tr><td>novarium.net</td><td>Namecheap, account Novarium2026: ACTIVE, privacy ON. Trasferimento da Hover completato, confermato il 03/11/2026.</td><td>11/09/2028 (screenshot 03/11/2026)</td><td>ON, screenshot 03/11/2026</td></tr>
@@ -107,6 +109,10 @@ tbody tr:last-child td { border-bottom: 0; }
 <p><strong>Ambienti di test non utilizzati — conferma Vittorio 03/11, 18:10 Europe/Rome:</strong> <code>test2.novarium.net</code> e <code>test3.novarium.net</code> non richiedono ripristino o rinnovo per l’attività attuale; non sono un incidente prioritario e non riguardano Marine. Il report Codex read-only delle 18:09 documenta certificati salvati scaduti rispettivamente il 16/07/2026 e l’11/08/2026, rinnovo standalone del 03/11 alle 04:08 fallito per porta 80 occupata e controllo HTTPS fallito sul nome host. Un’eventuale dismissione dei rinnovi inutili va valutata dal responsabile server previa verifica delle dipendenze; non è stata eseguita. Evidenze tecniche riferite da Codex, non nostri test server; nessuna modifica a runtime, certificati o configurazione effettuata per questo aggiornamento.</p>
 <p><strong>Trasferimenti Hover completati:</strong> confermati dallo screenshot del 03/11/2026. L’annullamento degli ordini del 30/10 resta un evento storico superato, non lo stato attuale. Screenshot e ricevute con informazioni account non pubblicati.</p>
 <p><strong>Continuità DNS:</strong> non cambiare nameserver o record DNS per il solo trasferimento; verificare con Giovanni la continuità di zona, MX e TXT. La migrazione delle caselle tra account Namecheap è separata: storico e servizi collegati da verificare prima di disattivare le vecchie caselle.</p>
+<h3>Industrial — acquisto, DNS e contatti (09/11/2026)</h3>
+<p>Ordine Namecheap 219067360, durata iniziale un anno, USD 12,68 inclusa quota ICANN (circa €11,67 al cambio illustrativo 0,92, non cambio verificato). Domain Privacy gratuita nell’ordine.</p>
+<p>DNS: <strong>A @ → 51.102.89.115</strong>; <strong>CNAME www → novarium-industrial.net</strong>; TTL 30 minuti per entrambi. Il memo riporta risoluzione pubblica verificata, servizio dedicato pubblicato, HTTPS e redirect completati e rinnovo certificato collaudato. Nessuna modifica DNS o server eseguita durante questo aggiornamento dell’archivio.</p>
+<p>Nessuna nuova casella Industrial configurata: contatto <strong>info@novarium.net</strong>. Footer Marine e Industrial: WhatsApp +39 389 661 6675; telefono +39 0185 234 691. <a href="marine-ricerca-mercato.html#memo-2026-11-09">Memo completo Marine e Industrial</a>.</p>
 <h3>8 caselle e inoltri correnti — conferma 03/11/2026</h3>
 <p>Lo username di ogni casella è il suo indirizzo completo. <strong>Password: Non pubblicate; gestione privata.</strong> Gli inoltri sotto sostituiscono il precedente piano del 28/10; “nessuno indicato” non certifica l’assenza di altre regole.</p>
 <div class="table-scroll"><table>
@@ -134,6 +140,7 @@ tbody tr:last-child td { border-bottom: 0; }
 <p><strong>Controllo HTTP pubblico 03/11/2026:</strong> <code>www.novarium-marine.com/en?ref=a%2Fb&amp;tag=1&amp;tag=2</code> restituisce 308 verso lo stesso percorso e query su <code>www.novarium-marine.net</code>; HTTPS .net/en risponde 200. È un controllo web, non una verifica della proprietà degli account o della posta.</p>
 <h3>Timeline domini e posta</h3>
 <ul>
+<li><strong>09/11/2026:</strong> aggiunto il quinto dominio, novarium-industrial.net, da memo Vittorio: acquisto annuale Namecheap, DNS, sito dedicato, redirect e HTTPS completati; rinnovo certificato collaudato. Auto-rinnovo dominio non verificato. Nessuna casella Industrial; contatto info@novarium.net. Aggiornamento documentale, nessuna modifica ai servizi.</li>
 <li><strong>03/11/2026:</strong> confermati otto indirizzi e inoltri correnti; accounting cancellata. Screenshot utente ore 17:21: tutti e quattro i domini ACTIVE in Namecheap, auto-rinnovo e privacy ON; trasferimenti Hover confermati completati alla data odierna, senza attribuire una data effettiva di trasferimento. Passaggio account posta ancora non confermato. Aggiornamento del solo archivio: nessuna modifica a posta reale, DNS o DB.</li>
 <li><strong>30/10 (storico superato dalla conferma del 03/11):</strong> annullati gli ordini Hover → Namecheap in attesa sblocco; screenshot dei due domini Marine con scadenze e auto-rinnovo ON. Merge PR #68 già registrato nella <a href="proj-marine-website.html#timeline-domini">timeline sito</a>: non prova un nuovo deploy.</li>
 <li><strong>28/10:</strong> precedente piano caselle/inoltri, ora superato dalle conferme del 03/11. Fix firme/template presenti su main; verifica operativa degli invii ancora aperta, come nella <a href="proj-marine-mailings.html#verifica-template">scheda mailings</a>. Search Console Marine resta pendente.</li>
@@ -215,7 +222,7 @@ tbody tr:last-child td { border-bottom: 0; }
 <tr>
 <td><strong>DNS</strong></td>
 <td>Configurazione servizi sui domini</td>
-<td><strong>Marine: Namecheap. Altri domini: gestione DNS da verificare separatamente dal trasferimento registrar completato</strong></td>
+<td><strong>Marine e Industrial: Namecheap. Altri domini: gestione DNS da verificare separatamente dal trasferimento registrar completato</strong></td>
 <td>—</td>
 <td>—</td>
 <td>Nessuna scadenza autonoma documentata; dipende dal servizio DNS e dai domini</td>
