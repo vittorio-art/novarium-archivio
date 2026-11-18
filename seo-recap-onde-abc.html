@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Recap del lavoro SEO Novarium al 16 ottobre 2026: Onde A, B e C in produzione, verifiche e interventi residui.">
+  <meta name="description" content="SEO Novarium: review Sonde, fix pubblicati e verificati il 18 novembre 2026; follow-up su 10 prodotti, risultati di ranking ancora da misurare.">
   <title>Recap SEO — Onde A, B, C | Archivio Novarium</title>
   <style>
     :root { color-scheme: light dark; --bg:#fff; --text:#37352f; --muted:#666; --rule:#ddd; --surface:#f7f6f3; --status-bg:#edf7ef; --status-text:#225b30; }
@@ -44,11 +44,19 @@
 <main>
   <nav aria-label="Archivio"><a href="index.html#seo">← Archivio · SEO</a> · <a href="cruscotto-lavori.html#seo">Cruscotto lavori</a></nav>
   <h1>Recap SEO — Onde A, B, C</h1>
-  <p class="meta">Aggiornato al 16 ottobre 2026 · Riepilogo dei lavori e dei report post-deploy disponibili.</p>
+  <p class="meta">Aggiornato al 18 novembre 2026 · Fase tecnica Sonde completata nel campione verificato; obiettivo di visibilità aperto.</p>
   <div class="status">
-    <p><strong>Gli interventi delle tre onde sono in produzione.</strong></p>
-    <p>Anche il problema dei permessi della cache è stato corretto e verificato sul catalogo reale. Restano tre interventi tecnici separati e la misurazione dei risultati su Google.</p>
+    <p><strong>Fix Sonde del 18 novembre pubblicati e verificati.</strong></p>
+    <p>15 sonde per pagina negli hub ecografo, paginazione HTML, canonical autonomo delle pagine successive e descrizioni neutre coerenti con il JSON-LD. Nessun nuovo blocco nell’audit dei 10 prodotti; questo non dimostra ancora un miglioramento di ranking.</p>
   </div>
+
+  <h2 id="review-novembre">Review 17–18 novembre — risultati e chiusura tecnica</h2>
+  <ul>
+    <li><strong>Confronto su 10 modelli:</strong> Lysis e Mediteck non vincono necessariamente grazie a più testo o a prezzi pubblici. Il limite dei collegamenti dagli hub e la descrizione libera presentata come applicazione clinica erano difetti concreti; corretti, senza attribuire loro da soli tutto il divario Sonde/Imaging.</li>
+    <li><strong>Deploy:</strong> completamento riportato da Codex e controllo pubblico indipendente: Aplio 300 mostra 15 + 6 sonde, link di pagina 2 nell’HTML e canonical autoreferenziale; PVT-375BT con descrizione neutra.</li>
+    <li><strong>Consolidamento:</strong> 22 URL di 10 prodotti terminano con HTTP 200; 48 pagine hub HTTP 200, tutti i 10 prodotti collegati almeno una volta al proprio URL EN canonico. Nessun ciclo, 404, canonical a redirect o noindex EN osservato nel campione. Le versioni IT noindex con canonical EN rispettano la strategia concordata.</li>
+    <li><strong>Baseline disponibile:</strong> export GSC 19/10–15/11, limitato a 1.000 righe. Riunendo le varianti: 94 prodotti Sonde e 118 click; non sono il totale del catalogo né una misura di crescita. PVT-375BT ora indicizzata, ma ancora debole nelle ricerche.</li>
+  </ul>
 
   <h2>Onda A — Accesso e scansione</h2>
   <div class="table-scroll"><table>
@@ -91,18 +99,18 @@
   </ul>
   <p class="meta">Fonte dello stato runtime: report post-deploy Codex condivisi da Vittorio. La verifica completa desktop/mobile del rilascio live e il controllo manuale dei chip Aloka restano da completare; non sono certificati dall’ultimo report.</p>
 
-  <h2>Ancora aperto — non confondere con lavori da deployare</h2>
+  <h2>Residui separati — non bloccano la chiusura dei fix Sonde</h2>
   <ol>
-    <li><strong>Cache dati sitemap oltre 2 MB:</strong> avviso distinto dai permessi, ancora aperto. Preservare il prerender già funzionante.</li>
-    <li><strong>Redirect legacy:</strong> catena osservata <code>308 → 307 → 301 → 200</code>; eliminare il passaggio temporaneo aggiuntivo senza cambiare il prodotto di destinazione.</li>
-    <li><strong>Staging isolato:</strong> predisporre un ambiente realmente separato. Test3 non è un ambiente di prova indipendente dalla produzione.</li>
+    <li><strong>Cache dati sitemap oltre 2 MB:</strong> segnalazione storica del 16/10 non ricollaudata in questa review; nessun nuovo guasto dimostrato. Non riaprire un rilascio senza verificarla.</li>
+    <li><strong>Redirect legacy:</strong> due catene di tre passaggi nel campione attuale, permanenti e funzionanti. Accorciamento secondario da valutare al prossimo lavoro sul routing; nessuna prova che causi il ranking debole.</li>
+    <li><strong>Test3:</strong> nato per il test pre-live, oggi condivide il servizio pubblico secondo verifica Codex. Non usarlo come staging isolato. Nessuna nuova infrastruttura prevista per questo intervento.</li>
   </ol>
 
   <h2>Misurazione — risultati ancora da valutare</h2>
   <ul>
-    <li><strong>29 ottobre:</strong> primo checkpoint GSC dopo il reinvio sitemap del 15/10: scansione, errori e prime impressioni delle nuove pagine.</li>
-    <li><strong>Circa 13 novembre:</strong> confronto impressioni, clic e query Sonde vs Parts, incluse le ricerche per ecografo.</li>
-    <li>Gli effetti delle ultime modifiche vanno letti dalla data effettiva del rilascio. Nessun aumento di ranking o traffico è ancora dimostrato da questo recap.</li>
+    <li><strong>25 novembre, ore 09:00 italiane:</strong> primo follow-up del rilascio del 18/11, su coorte fissa di 10 prodotti; riunire vecchi URL e lingue per ID prodotto, senza confondere prodotti diversi con lo stesso codice.</li>
+    <li>Controllare nuova scansione Google, impressioni e click per marca/codice su periodi completi confrontabili. Servono export GSC aggiornati; i controlli HTTP pubblici non provano indicizzazione o ranking.</li>
+    <li>Traffico scarso o mancata nuova scansione: esito inconclusivo, non fallimento certo. Nessuna attesa obbligatoria di 4–6 settimane per correggere altri difetti verificati. Non usare le vecchie stime del “30% imaging indicizzato”: non erano valide.</li>
   </ul>
   <footer>
     <p><a href="index.html#seo">Torna alla sezione SEO dell’archivio</a> · <a href="cruscotto-lavori.html#seo">Stato progetti</a></p>
@@ -115,7 +123,9 @@
 <li><strong>12/10</strong> — Spiegazione + riconciliazione + spec</li>
 <li><strong>15/10</strong> — Onda A in produzione</li>
 <li><strong>16/10</strong> — Onde B, C live — questo recap</li>
-<li><strong>—</strong> — Prossimo: misurazione 4-6 settimane; residui con Giovanni</li>
+<li><strong>17/11</strong> — Review GSC e confronto di 10 modelli con Lysis/Mediteck; individuati difetti di collegamento e descrizione, senza causalità di ranking dimostrata.</li>
+<li><strong>18/11</strong> — Fix MED online; verifica pubblica e audit 22 URL / 48 pagine hub completati. Fase tecnica chiusa nel perimetro verificato; ranking aperto.</li>
+<li><strong>25/11, 09:00 Italia</strong> — Follow-up coorte fissa: scansione, impressioni, click; valutazione separata dalla riuscita tecnica del deploy.</li>
 </ul>
 <p><a href="index.html">← Novarium (stato lavori)</a></p>
 </main>
