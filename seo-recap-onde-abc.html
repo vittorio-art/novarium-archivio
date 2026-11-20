@@ -44,11 +44,22 @@
 <main>
   <nav aria-label="Archivio"><a href="index.html#seo">← Archivio · SEO</a> · <a href="index.html#seo">Cruscotto lavori</a></nav>
   <h1>Recap SEO — Onde A, B, C</h1>
-  <p class="meta">Aggiornato al 18 novembre 2026 · Fase tecnica Sonde completata nel campione verificato; obiettivo di visibilità aperto.</p>
+  <p class="meta">Aggiornato al 20 novembre 2026 · Nuove pagine visibili online; verifica pubblica mirata, ranking ancora da misurare.</p>
   <div class="status">
-    <p><strong>Fix Sonde del 18 novembre pubblicati e verificati.</strong></p>
-    <p>15 sonde per pagina negli hub ecografo, paginazione HTML, canonical autonomo delle pagine successive e descrizioni neutre coerenti con il JSON-LD. Nessun nuovo blocco nell’audit dei 10 prodotti; questo non dimostra ancora un miglioramento di ranking.</p>
+    <p><strong>20/11: nuove pagine Sonde e Parts online; problema prioritario nella paginazione Parts.</strong></p>
+    <p>La verifica pubblica conferma i principali percorsi Sonde, ma le pagine successive di due hub Parts rispondono 503 anche alla riprova seriale. Non è una misura del ranking e non certifica l’intero sito. Commit e momento esatto del deploy non verificati.</p>
   </div>
+
+  <h2 id="verifica-20nov">Verifica pubblica — 20 novembre, ore 17:37–17:38 Italia</h2>
+  <ul>
+    <li><strong>PASS Sonde:</strong> Philips pagina 2 HTTP 200, 15 prodotti e canonical autonomo; CV70 HTTP 200 con 12 prodotti, filtro Convex con 2 e noindex/follow. Canon → Toshiba: un redirect 308. P50 e AU590 restituiscono 200 senza prodotti aggregati; AU590 resta noindex.</li>
+    <li><strong>FAIL prioritario Parts:</strong> Brilliance 64 pagine 2 e 4 e CX50 pagina 2 restituiscono 503. Brilliance pagina base e page=1 restituiscono contemporaneamente 200. Riprova seriale conferma pagina 2 di entrambi: “Catalog temporarily unavailable”, Retry-After 60, no-store e X-Robots-Tag noindex/nofollow. Brilliance pagina 5, attesa fuori range secondo i test locali, risponde anch’essa 503: il controllo 404 pubblico non è passato. Causa da diagnosticare, non attribuita automaticamente al proxy.</li>
+    <li><strong>PASS campione categorie legacy:</strong> MRI e Ultrasound Parts base HTTP 200 con canonical proprio e nessun blocco robots osservato; CT filtrata Philips 200, noindex/follow e canonical alla categoria base.</li>
+    <li><strong>PASS sitemap controllate:</strong> ecografi Sonde 2.310 URL distinti; macchine Parts 14.305 URL distinti. Nessun duplicato nelle due sitemap. Gli otto hub generici/alias del primo gruppo sono fuori sitemap nelle cinque lingue; le rispettive pagine EN sono 200 noindex/follow.</li>
+    <li><strong>Residuo secondario:</strong> i quattro casi successivi (Model n/a Fujitsu, Sirona Model n/a, Philips Angiography e Planar Monitor) risultano ancora index/follow nel campione EN e presenti in sitemap nelle cinque lingue (20 URL). Da riallineare alle esclusioni concordate, senza riaprire l’audit del catalogo.</li>
+    <li><strong>Non verificato:</strong> tutti gli URL singolarmente, funzionalità browser/mobile, Core Web Vitals, prestazioni reali, nuove scansioni Google e impatto su impressioni/click. Nessuna modifica a MED, DB o deploy eseguita durante il controllo.</li>
+  </ul>
+  <p>Prossimo passo: diagnosi mirata delle risposte 503 sulle pagine Parts valide; poi riprova pubblica degli stessi URL. Non servono nuovi redesign o una ricerca di dettagli marginali.</p>
 
   <h2 id="review-novembre">Review 17–18 novembre — risultati e chiusura tecnica</h2>
   <ul>
@@ -119,6 +130,7 @@
 <hr>
 <h2>Timeline progetto</h2>
 <ul>
+<li><strong>20/11</strong> — Verifica HTTP pubblica delle nuove pagine: Sonde e principali regole SEO confermate nel campione; 503 ripetibili nella paginazione Parts da risolvere. Follow-up GSC del 25/11 confermato sulla coorte di 10 prodotti; ora e commit del deploy non dedotti dai controlli.</li>
 <li><strong>10/10</strong> — Report Sonde vs Parts: Parts 357 click vs Sonde 152</li>
 <li><strong>12/10</strong> — Spiegazione + riconciliazione + spec</li>
 <li><strong>15/10</strong> — Onda A in produzione</li>
