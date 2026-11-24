@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Macro Signal Lab</title>
+  <style>
+    :root { color-scheme:light dark; --bg:#fff; --ink:#37352f; --muted:#62615c; --rule:#e2e0da; --surface:#f7f6f3; }
+    @media (prefers-color-scheme:dark) { :root { --bg:#191919; --ink:#e8e7e3; --muted:#b7b5ae; --rule:#3d3c39; --surface:#222; } }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--ink); font:1rem/1.65 system-ui,sans-serif; }
+    main { width:min(46rem, 100% - 2rem); margin:clamp(2rem,7vw,5rem) auto; }
+    h1 { font-size:clamp(2.1rem,7vw,3.2rem); line-height:1.12; letter-spacing:-.035em; margin:.4rem 0 .7rem; }
+    h2 { font-size:1.25rem; margin:0 0 .65rem; }
+    p { margin:.3rem 0 .8rem; }
+    a { color:inherit; text-decoration-color:var(--muted); text-underline-offset:.2em; }
+    .meta { color:var(--muted); font-size:.85rem; }
+    nav { display:flex; flex-wrap:wrap; gap:.4rem 1rem; padding:1rem 0; margin:1rem 0; border-block:1px solid var(--rule); }
+    .callout { padding:1rem 1.2rem; background:var(--surface); border-radius:.45rem; }
+    section { margin:2rem 0; scroll-margin:1rem; }
+    details { padding:.6rem 0; border-bottom:1px solid var(--rule); }
+    summary { cursor:pointer; font-weight:650; }
+    :focus-visible { outline:2px solid currentColor; outline-offset:4px; }
+    footer { margin-top:2.5rem; padding-top:1rem; border-top:1px solid var(--rule); }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <p class="meta">Centro di controllo · 24 novembre 2026</p>
+    <h1>Macro Signal Lab</h1>
+    <p>Ricerca sperimentale sui segnali macroeconomici e sui mercati finanziari.</p>
+  </header>
+  <nav aria-label="Sezioni">
+    <a href="#stato">Stato</a><a href="#metodo">Metodo</a><a href="#esperimenti">Esperimenti</a><a href="#prossime">Prossime attività</a>
+  </nav>
+  <section id="stato" class="callout">
+    <h2>Stato del laboratorio</h2>
+    <p><strong>Collaudo tecnico riuscito.</strong> L’infrastruttura ha letto i dati di prova e generato un rapporto verificabile.</p>
+    <p><strong>Ricerca non ancora avviata.</strong> Il collaudo non dimostra capacità predittiva.</p>
+  </section>
+  <section id="metodo">
+    <h2>Metodo</h2>
+    <details><summary>I due sciami</summary><p>La ricerca studia se combinazioni ricorrenti di movimenti macroeconomici anticipano quelli dell’S&amp;P 500. Prima si cercano gruppi di pesature simili, poi si esaminano le combinazioni di segnali associate.</p></details>
+    <details><summary>Come si verifica un segnale</summary><p>Il confronto si fa su periodi non usati per costruire il modello, con i soli dati disponibili all’epoca e con un termine di paragone semplice.</p></details>
+  </section>
+  <section id="esperimenti">
+    <h2>Esperimenti e risultati</h2>
+    <details><summary>Concluso · verifica del percorso tecnico</summary><p>Lettura delle fonti, controllo del formato e generazione del rapporto. Questa prova non è un backtest.</p></details>
+    <details><summary>In preparazione · ricerca sui due sciami</summary><p>Prima dell’avvio vanno fissati il metodo di calcolo e le regole del confronto. Nessun risultato predittivo da riportare.</p></details>
+  </section>
+  <section id="prossime">
+    <h2>Prossime attività</h2>
+    <ol>
+      <li>Definire come stimare le pesature e distinguere gli ambienti di mercato.</li>
+      <li>Controllare quali dati erano effettivamente disponibili alle date simulate.</li>
+      <li>Solo dopo questi controlli, avviare la verifica storica indipendente.</li>
+    </ol>
+  </section>
+  <footer class="meta">Sintesi web. Dati, rapporti e documentazione operativa restano nell’archivio riservato.</footer>
+</main>
+</body>
+</html>
