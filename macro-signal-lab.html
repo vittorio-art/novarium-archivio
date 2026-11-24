@@ -43,6 +43,7 @@
     <p><strong>Esperimento 03 concluso.</strong> Pesature diverse si sovrappongono nello spazio dei movimenti macroeconomici. Non emergono zone distinte che resistano ai cambi di scala. <a href="#esperimento-03">Vai ai risultati</a>.</p>
     <p><strong>Esperimento 04 concluso.</strong> Materie prime e tassi formano due sciami ricorrenti, ma non migliorano la previsione dell’S&amp;P 500. <a href="#esperimento-04">Vai ai risultati</a>.</p>
     <p><strong>Esperimento 05 concluso.</strong> I due sciami si ritrovano a posteriori solo nel rialzo a bassa volatilità. Nessuno emerge prima del test. <a href="#esperimento-05">Vai ai quattro ambienti</a>.</p>
+    <p><strong>Esperimento 06 concluso.</strong> Il collaudo distingue il riconoscimento degli sciami dalla capacità di prevedere. Nessun metodo raggiunge l’obiettivo dell’80%, nemmeno con il segnale forte. <a href="#esperimento-06">Vai ai risultati</a>.</p>
   </section>
   <section id="metodo">
     <h2>Metodo</h2>
@@ -70,11 +71,17 @@
       <p>Nei 129 mesi di verifica separata, nessuna variante migliora l’errore quadratico rispetto alla media storica progressiva. Il confronto usa dati consolidati a posteriori: non dimostra cosa fosse utilizzabile in tempo reale.</p>
       <p><a href="https://github.com/vittorio-art/macro-signal-lab/blob/91783ae688f6590908df7f5465a0bd334985e516/docs/esperimento-04.md">Rapporto e tabella comparativa</a> · <a href="https://github.com/vittorio-art/macro-signal-lab/blob/91783ae688f6590908df7f5465a0bd334985e516/data/experiment04/grafici-interattivi.zip">Scarica i grafici 2D e 3D</a> (GitHub, accesso riservato). Estrai lo ZIP e apri <code>index.html</code> nel browser, anche senza connessione.</p>
     </details>
-    <details id="esperimento-05" open>
+    <details id="esperimento-05">
       <summary>Concluso · Esperimento 05: i quattro ambienti</summary>
       <p>Dal 1998, incrociando rendimento a sei mesi dell’S&amp;P 500 e VIX rispetto alla sua mediana storica progressiva: 52 mesi rialzisti con VIX alto, 195 rialzisti con VIX basso, 69 ribassisti con VIX alto e 29 ribassisti con VIX basso. Solo nel rialzo a bassa volatilità si vedono due sciami di materie prime e tassi (32 e 37 mesi).</p>
       <p>Prima del test non emerge nessuno sciame: nei 129 mesi di verifica il modello coincide con la media per ambiente (RMSE 4,415 punti, contro 4,346 della media generale e 4,350 del 04A). Le differenze sono incerte; il ribasso con VIX basso conta solo cinque mesi nel test. Nessun metodo adottato.</p>
       <p><a href="https://github.com/vittorio-art/macro-signal-lab/blob/e8f226b56e150fd2eba4be616a3e2eed4f046d40/docs/esperimento-05.md">Rapporto e tabella comparativa</a> · <a href="https://github.com/vittorio-art/macro-signal-lab/blob/e8f226b56e150fd2eba4be616a3e2eed4f046d40/data/experiment05/grafici-interattivi.zip">Scarica le quattro mappe 2D e la successione mensile</a> (GitHub, accesso riservato). Estrai lo ZIP e apri <code>index.html</code> nel browser.</p>
+    </details>
+    <details id="esperimento-06" open>
+      <summary>Concluso · Esperimento 06: collaudo della macchina</summary>
+      <p>640 simulazioni da 345 mesi. Il metodo 04A recupera entrambi gli sciami ben separati in tutte le prove in cui esistono, ma trova due gruppi persistenti anche nel 49,2% delle storie senza sciami. In queste ultime non rileva alcun vantaggio predittivo.</p>
+      <p>Con segnale forte, il miglioramento del 04A è statisticamente riconosciuto nel 63,3% delle storie. Passare al modello le etichette vere lascia quasi invariato il tasso (62,5%): riconoscere meglio i gruppi non basta. Nei metodi basati sui pesi, invece, la separazione si perde già nella regressione. Metodologia invariata.</p>
+      <p><a href="https://github.com/vittorio-art/macro-signal-lab/blob/25478b01bc1c23aae6e99deccf68e7749d72dc13/docs/esperimento-06.md">Rapporto</a> · <a href="https://github.com/vittorio-art/macro-signal-lab/blob/25478b01bc1c23aae6e99deccf68e7749d72dc13/data/experiment06/comparison.csv">Tabella comparativa</a> · <a href="https://github.com/vittorio-art/macro-signal-lab/blob/25478b01bc1c23aae6e99deccf68e7749d72dc13/data/experiment06/grafici-interattivi.zip">Cinque grafici interattivi</a> (GitHub, accesso riservato). Estrai lo ZIP e apri <code>index.html</code> nel browser, anche senza connessione.</p>
     </details>
     <details><summary>In attesa · ricerca sui due sciami</summary><p>Non fa parte dell’Esperimento 01.</p></details>
   </section>
